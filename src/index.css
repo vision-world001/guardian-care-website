@@ -1,0 +1,820 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Guardian Care — design tokens
+   Ported 1:1 from the original brand stylesheet.
+   ============================================================ */
+@theme {
+  /* Surfaces */
+  --color-bg: #00060f;
+  --color-bg-2: #040d1a;
+  --color-panel: #071426;
+  --color-panel-2: #0a1b30;
+
+  /* Hairlines */
+  --color-line: rgba(61, 220, 151, 0.18);
+  --color-line-2: rgba(255, 255, 255, 0.09);
+
+  /* Type */
+  --color-ink: #ffffff;
+  --color-muted: #93a4b8;
+  --color-faint: #63768c;
+
+  /* Accents */
+  --color-green: #3ddc97;
+  --color-green-bright: #5df0b0;
+  --color-green-deep: #22b478;
+  --color-green-glow: rgba(61, 220, 151, 0.13);
+  --color-blue: #2e9bff;
+  --color-blue-bright: #5cb4ff;
+  --color-blue-glow: rgba(46, 155, 255, 0.13);
+  --color-amber: #ffb340;
+  --color-orange: #ff8a5c;
+  --color-red: #ff6b5a;
+  --color-purple: #a78bfa;
+
+  /* Surfaces that let the ground through. The site now sits on a luminous
+     field rather than flat black, so the panels on top of it are translucent —
+     a solid fill would punch a hole in the light behind it. */
+  --color-glass: rgba(10, 27, 48, 0.52);
+  --color-glass-2: rgba(10, 27, 48, 0.72);
+
+  /* Corner radii, named by the thing they belong to rather than by size, so a
+     card and a tile stay distinguishable if either is retuned later. */
+  --radius-tile: 10px;
+  --radius-card: 14px;
+  --radius-frame: 18px;
+  --radius-pill: 999px;
+
+  /* Typefaces */
+  --font-sans: 'Barlow', sans-serif;
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.19, 1, 0.22, 1);
+  --animate-fadeup: fadeup 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  --animate-blip: blip 1.6s ease-in-out infinite;
+
+  /* Entry-page solar field. Everything here is slow on purpose: a background
+     that resolves in under a few seconds reads as a loading state. */
+  --animate-drift: drift 26s ease-in-out infinite;
+
+  /* One dash travelling the length of a flow path. The offset matches the
+     dash pattern's period, so the loop has no seam. */
+  --animate-flow: flow 3.4s linear infinite;
+
+  /* The hero's fan of rays, turning about the sun. Two and a half minutes for
+     a revolution: fast enough that the frame is never quite the same twice,
+     slow enough that nobody catches it moving. */
+  --animate-sunspin: sunspin 150s linear infinite;
+
+  /* The core bloom, breathing. Deliberately out of step with the rotation so
+     the two never resolve into a pattern. */
+  --animate-bloom: bloom 19s ease-in-out infinite;
+
+  @keyframes fadeup {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes blip {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -100;
+    }
+  }
+
+  /* The translate is carried through the keyframe because the element is
+     centred on the sun by transform, not by layout — drop it and the fan
+     jumps to the corner on the first frame. */
+  @keyframes sunspin {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  @keyframes bloom {
+    0%,
+    100% {
+      opacity: 0.72;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.09);
+    }
+  }
+
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(2.5%, -3%, 0) scale(1.08);
+    }
+  }
+
+}
+
+/* ============================================================
+   Day theme — the consumer journey
+   ------------------------------------------------------------
+   The two journeys are lit differently on purpose. The business page is a
+   console: dark, because an operator reads it all day in a room with screens
+   in it. The consumer page is about somebody's house at midday, and a
+   homeowner opening it once a month should walk into daylight, not into an
+   operations centre.
+
+   Every token below is the same hue as its dark counterpart, restepped for a
+   white ground. Nothing else in the codebase changes: Tailwind compiles each
+   colour utility to `var(--color-…)`, so redefining the variables on <html>
+   flips the entire route — page, chrome, charts and all.
+
+   The accents are darker than the brand's own green and blue because those
+   are display colours meant for near-black, and at 3.4:1 they fail as text on
+   white. `#0e8259` clears 4.8:1 as type AND passes every check for a chart
+   series (CVD ΔE 20.3, contrast above 3:1), so one token still does both jobs.
+   ============================================================ */
+.theme-day {
+  --color-bg: #f7f9fb;
+  --color-bg-2: #eaf0f7;
+  --color-panel: #ffffff;
+  --color-panel-2: #f3f7fb;
+
+  --color-line: rgba(14, 130, 89, 0.24);
+  --color-line-2: rgba(10, 30, 54, 0.13);
+
+  --color-ink: #07182b;
+  --color-muted: #4a6076;
+  --color-faint: #5f7386;
+
+  --color-green: #0e8259;
+  --color-green-bright: #12a06e;
+  --color-green-deep: #0a6644;
+  --color-green-glow: rgba(14, 130, 89, 0.11);
+  --color-blue: #1668c9;
+  --color-blue-bright: #2e86e8;
+  --color-blue-glow: rgba(22, 104, 201, 0.1);
+  --color-amber: #9a5c00;
+  --color-orange: #b4531c;
+  --color-red: #c0392b;
+  --color-purple: #6d4bd6;
+
+  --color-glass: rgba(255, 255, 255, 0.74);
+  --color-glass-2: rgba(255, 255, 255, 0.88);
+}
+
+/* Handset chrome. A phone is a dark object in both themes — that is what makes
+   it read as hardware rather than as another panel — but its rail has to
+   separate from the page behind it, and a white highlight on a white page does
+   not. On the day theme the rail becomes brushed steel instead. */
+:root {
+  /* The glow under a gradient button. Deliberately not the green-glow token:
+     that one is tuned for washes behind panels, and at 13% it disappears
+     entirely under a button on a white page. This is sized for a cast shadow
+     and restepped per theme, so the lift reads the same in both. */
+  --btn-glow: rgba(61, 220, 151, 0.4);
+
+  --scroll-track: #020a14;
+  --scroll-thumb: rgba(255, 255, 255, 0.14);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.28);
+
+  --device-body: #02070e;
+  --device-rail: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.05) 26%,
+    rgba(255, 255, 255, 0.02) 62%,
+    rgba(255, 255, 255, 0.2)
+  );
+  --device-button: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.26),
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.18)
+  );
+  /* Glare is the reflection of a bright room in dark glass; over the day
+     theme's white screen the same white sheen would be invisible, so it
+     inverts into a faint cool shadow raking the same way. */
+  --device-glare: linear-gradient(
+    118deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.045) 43%,
+    rgba(255, 255, 255, 0.08) 47%,
+    transparent 57%
+  );
+
+  /* Stands in for a photograph that failed to load. It has to belong to the
+     page it fails on, or a missing file leaves a hole of the opposite theme. */
+  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(61, 220, 151, 0.18), transparent 62%),
+    radial-gradient(ellipse at 78% 74%, rgba(46, 155, 255, 0.2), transparent 64%),
+    linear-gradient(160deg, #0a1b30, #00060f);
+}
+
+.theme-day {
+  --btn-glow: rgba(14, 130, 89, 0.34);
+  --scroll-track: #e7eef6;
+  --scroll-thumb: rgba(10, 30, 54, 0.22);
+  --scroll-thumb-hover: rgba(10, 30, 54, 0.38);
+  --device-body: #10161d;
+  --device-rail: linear-gradient(155deg, #9aa7b5, #46525f 26%, #333e4a 62%, #8a97a5);
+  --device-button: linear-gradient(180deg, #8d9aa8, #47525e 40%, #7e8b99);
+  --device-glare: linear-gradient(
+    118deg,
+    transparent 34%,
+    rgba(10, 30, 54, 0.035) 44%,
+    rgba(10, 30, 54, 0.06) 48%,
+    transparent 58%
+  );
+
+  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(255, 205, 130, 0.5), transparent 62%),
+    radial-gradient(ellipse at 78% 74%, rgba(150, 205, 255, 0.45), transparent 64%),
+    linear-gradient(160deg, #ffffff, #eaf0f7);
+}
+
+/* Utilities whose values are literal rather than tokenised have to be restated
+   for the day theme. These sit outside `@layer`, so they win over the
+   `utilities` layer without needing `!important`. */
+.theme-day .glass {
+  background: var(--color-glass);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(10, 30, 54, 0.05);
+}
+
+.theme-day .glass-solid {
+  background: var(--color-glass-2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px rgba(10, 30, 54, 0.05);
+}
+
+/* Elevation on a light ground is a soft, cool, wide shadow — the near-opaque
+   black used on the dark theme reads as a smudge here. */
+.theme-day .shadow-lift {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 18px 44px -22px rgba(12, 38, 68, 0.28),
+    0 2px 8px -4px rgba(12, 38, 68, 0.12);
+}
+
+.theme-day .shadow-lift-hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 30px 66px -28px rgba(12, 38, 68, 0.34),
+    0 4px 12px -6px rgba(12, 38, 68, 0.16);
+}
+
+/* Both veils change sign: on the dark theme they darken toward black, here
+   they wash toward the page's own white. */
+.theme-day .bg-home-veil {
+  background:
+    radial-gradient(ellipse 900px 520px at 50% 34%, rgba(247, 249, 251, 0.46), transparent 76%),
+    radial-gradient(ellipse 1000px 560px at 50% 82%, rgba(247, 249, 251, 0.38), transparent 78%);
+}
+
+.theme-day .bg-photo-veil {
+  background: linear-gradient(
+    180deg,
+    rgba(247, 249, 251, 0.1) 0%,
+    rgba(247, 249, 251, 0.42) 62%,
+    var(--color-bg) 100%
+  );
+}
+
+/* Photographs no longer have to be pulled down to survive a black page; they
+   only need their contrast held back so they do not shout past the type. */
+.theme-day .img-graded {
+  filter: brightness(1.02) contrast(0.96) saturate(0.94);
+}
+
+/* ============================================================
+   Night scope — one dark band inside the day
+   ------------------------------------------------------------
+   A section that opts back out of the day theme. Restating the dark values
+   rather than "unsetting" them is the only thing that works: the day tokens
+   live on <html>, so a descendant cannot inherit its way back past them.
+
+   Kept below the `.theme-day` rules on purpose. The two override blocks match
+   on specificity, so the later one wins, and a night section inside a day page
+   gets its glass, elevation, veils and photo grading back.
+
+   Used for the one section that is about somebody else — the reader's own
+   installer — where dropping the lights says *this part is not yours to do*
+   faster than a paragraph can.
+   ============================================================ */
+.theme-night {
+  --btn-glow: rgba(61, 220, 151, 0.4);
+  --scroll-track: #020a14;
+  --scroll-thumb: rgba(255, 255, 255, 0.14);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.28);
+  --color-bg: #00060f;
+  --color-bg-2: #040d1a;
+  --color-panel: #071426;
+  --color-panel-2: #0a1b30;
+
+  --color-line: rgba(61, 220, 151, 0.18);
+  --color-line-2: rgba(255, 255, 255, 0.09);
+
+  --color-ink: #ffffff;
+  --color-muted: #93a4b8;
+  --color-faint: #63768c;
+
+  --color-green: #3ddc97;
+  --color-green-bright: #5df0b0;
+  --color-green-deep: #22b478;
+  --color-green-glow: rgba(61, 220, 151, 0.13);
+  --color-blue: #2e9bff;
+  --color-blue-bright: #5cb4ff;
+  --color-blue-glow: rgba(46, 155, 255, 0.13);
+  --color-amber: #ffb340;
+  --color-orange: #ff8a5c;
+  --color-red: #ff6b5a;
+  --color-purple: #a78bfa;
+
+  --color-glass: rgba(10, 27, 48, 0.52);
+  --color-glass-2: rgba(10, 27, 48, 0.72);
+
+  --device-body: #02070e;
+  --device-rail: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.05) 26%,
+    rgba(255, 255, 255, 0.02) 62%,
+    rgba(255, 255, 255, 0.2)
+  );
+
+  /* `color` inherits as a computed value, so it arrives already resolved
+     against the day palette. The scope has to re-set it. */
+  color: var(--color-ink);
+}
+
+.theme-night .glass {
+  background: var(--color-glass);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.theme-night .glass-solid {
+  background: var(--color-glass-2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.theme-night .shadow-lift {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 18px 48px -24px rgba(0, 0, 0, 0.9);
+}
+
+.theme-night .shadow-lift-hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 30px 70px -30px rgba(0, 0, 0, 0.95);
+}
+
+.theme-night .bg-photo-veil {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 6, 15, 0.15) 0%,
+    rgba(0, 6, 15, 0.55) 62%,
+    var(--color-bg) 100%
+  );
+}
+
+.theme-night .img-graded {
+  filter: brightness(0.82) contrast(1.06) saturate(0.92);
+}
+
+/* The ground a night section stands on. Flat black would read as a hole cut in
+   the page; the two glows give it the same depth the dark journey has, and the
+   top and bottom edges fade so the band is lit rather than pasted on. */
+@utility bg-night-band {
+  background:
+    radial-gradient(ellipse 760px 420px at 18% 12%, rgba(61, 220, 151, 0.1), transparent 62%),
+    radial-gradient(ellipse 820px 480px at 84% 78%, rgba(46, 155, 255, 0.13), transparent 64%),
+    linear-gradient(180deg, #00060f, #040d1a 52%, #00060f);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-green);
+    outline-offset: 3px;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Scroll chrome. The default bar is a strip of operating system dropped down
+     the edge of the page; at this width it reads as part of the design instead.
+     Both syntaxes are needed — the standard two properties for Firefox, the
+     -webkit- pseudo-elements for everything else — and the same rules cover the
+     inner scrollers too, like the day chart on a phone. */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: var(--scroll-track);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /* The border is the track showing through, which insets the thumb without
+       needing a second element. */
+    border: 2px solid var(--scroll-track);
+    border-radius: 999px;
+    background: var(--scroll-thumb);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+
+/* Tabular figures for metrics and readouts. */
+@utility mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The signature green-to-blue gradient, clipped to text. */
+@utility text-brand-gradient {
+  background: linear-gradient(100deg, var(--color-green), var(--color-blue));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* The same gradient as a fill, for buttons and rules. */
+@utility bg-brand-gradient {
+  background: linear-gradient(100deg, var(--color-green), var(--color-blue));
+}
+
+/* Layered radial glows behind the entry splitter and the two journey heroes.
+   Kept as utilities because the multi-stop values are unreadable inline. */
+@utility bg-entry-glow {
+  background:
+    radial-gradient(ellipse 800px 560px at 22% 20%, rgba(61, 220, 151, 0.11), transparent 60%),
+    radial-gradient(ellipse 860px 600px at 80% 60%, rgba(46, 155, 255, 0.13), transparent 62%),
+    linear-gradient(180deg, #00060f, #040d1a);
+}
+
+/* Radials only, deliberately. This used to close with an opaque
+   `linear-gradient(180deg,#00060f,#040d1a)`, which painted straight over the
+   console field behind it — so the journey opened on a blank ground and only
+   picked up its grid at the second section. The hero is a brighter part of the
+   same page now, not a lid on it. */
+@utility bg-business-glow {
+  background:
+    radial-gradient(ellipse 780px 520px at 12% 18%, rgba(61, 220, 151, 0.12), transparent 60%),
+    radial-gradient(ellipse 820px 560px at 88% 42%, rgba(46, 155, 255, 0.14), transparent 62%);
+}
+
+/* A translucent surface with a lit top edge. The inset highlight is what makes
+   a flat panel read as a pane of glass catching light from above rather than as
+   a rectangle of slightly different grey. */
+@utility glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+@utility glass-solid {
+  background: var(--color-glass-2);
+  backdrop-filter: blur(18px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Elevation for the two surfaces a visitor is meant to reach for. */
+@utility shadow-lift {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 18px 48px -24px rgba(0, 0, 0, 0.9);
+}
+
+@utility shadow-lift-hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 30px 70px -30px rgba(0, 0, 0, 0.95);
+}
+
+/* ---- Entry solar field ---------------------------------------------------
+
+   The points themselves are painted on a canvas; this is the falloff that
+   keeps the copy and the two cards off the brightest part of the field. */
+@utility bg-solar-veil {
+  background:
+    radial-gradient(ellipse 640px 340px at 50% 26%, rgba(0, 6, 15, 0.55), transparent 74%),
+    radial-gradient(ellipse 900px 460px at 50% 78%, rgba(0, 6, 15, 0.4), transparent 76%);
+}
+
+/* The falloff over the consumer journey's day-cycle field. Weaker than the
+   entry veil — that one sits under centred type on a single screen, this one
+   has to leave charts and readouts legible for the length of a page. */
+@utility bg-home-veil {
+  background:
+    radial-gradient(ellipse 900px 520px at 50% 34%, rgba(0, 6, 15, 0.42), transparent 76%),
+    radial-gradient(ellipse 1000px 560px at 50% 82%, rgba(0, 6, 15, 0.34), transparent 78%);
+}
+
+/* Photographs sit on a near-black page, so every one of them is graded down
+   and cooled slightly before it lands — an untreated daylight photo dropped
+   into this palette glares, and reads as stock art pasted onto a product. */
+@utility img-graded {
+  filter: brightness(0.82) contrast(1.06) saturate(0.92);
+}
+
+/* ---- Consumer hero: the sun on the page ----------------------------------
+
+   The sky the hero sits in. Warm and open at the top right where the sun is,
+   cooling down and to the left into the page's own white, so the frame reads
+   as one continuous piece of daylight rather than as a panel with a gradient
+   on it. */
+@utility bg-hero-sky {
+  background:
+    radial-gradient(ellipse 900px 620px at 78% 8%, rgba(255, 226, 168, 0.85), transparent 62%),
+    radial-gradient(ellipse 1100px 700px at 92% 22%, rgba(255, 198, 120, 0.42), transparent 66%),
+    radial-gradient(ellipse 900px 560px at 6% 82%, rgba(150, 205, 255, 0.34), transparent 68%),
+    linear-gradient(168deg, #fffaf1 0%, #f9fbfe 52%, #f2f7fc 100%);
+}
+
+/* The shine itself: two fans of rays at different periods, so the spacing
+   reads as light rather than as a wheel. Both are painted on one square
+   element centred on the sun, which is what lets the whole thing turn about
+   the sun rather than about the middle of the screen. */
+@utility bg-hero-rays {
+  background:
+    repeating-conic-gradient(
+      rgba(255, 176, 64, 0.2) 0deg 1.4deg,
+      transparent 1.4deg 11deg
+    ),
+    repeating-conic-gradient(
+      from 4deg,
+      rgba(255, 214, 140, 0.16) 0deg 2.6deg,
+      transparent 2.6deg 17deg
+    );
+}
+
+/* Rays have to dissolve with distance or they read as a printed starburst. */
+@utility mask-sun {
+  mask-image: radial-gradient(
+    closest-side,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.95) 22%,
+    rgba(0, 0, 0, 0.5) 44%,
+    transparent 66%
+  );
+}
+
+/* Holds the fan off the headline. Heaviest on the left where the words are,
+   and landing on the page's own ground at the bottom edge so the hero has no
+   seam under it. */
+@utility bg-hero-veil {
+  background: linear-gradient(
+    180deg,
+    rgba(247, 249, 251, 0.34) 0%,
+    rgba(247, 249, 251, 0.2) 44%,
+    rgba(247, 249, 251, 0.72) 88%,
+    var(--color-bg) 100%
+  );
+
+  @media (min-width: 1000px) {
+    background:
+      linear-gradient(
+        96deg,
+        rgba(247, 249, 251, 0.86) 0%,
+        rgba(247, 249, 251, 0.62) 30%,
+        rgba(247, 249, 251, 0.16) 58%,
+        transparent 100%
+      ),
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 58%,
+        rgba(247, 249, 251, 0.66) 90%,
+        var(--color-bg) 100%
+      );
+  }
+}
+
+/* The fade that marries a photograph to the page underneath it. */
+@utility bg-photo-veil {
+  background: linear-gradient(180deg, rgba(0, 6, 15, 0.15) 0%, rgba(0, 6, 15, 0.55) 62%, var(--color-bg) 100%);
+}
+
+/* ---- Business journey: the console field -------------------------------
+
+   A faint measured grid with two slow glows behind it. The consumer page is
+   lit like a house at midday; this one is lit like an instrument — the grid
+   is the difference, and it is what stops six sections of #00060f reading as
+   an empty document. Held far enough back that no readout ever competes with
+   it. */
+@utility bg-console-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ---- Lit borders --------------------------------------------------------
+
+   A flat 1px hairline all the way round reads as a container *drawn on* the
+   page. A real surface catching light from above is bright along its top edge
+   and almost nothing along its bottom, and that one difference is most of what
+   separates a modern panel from a boxed one.
+
+   A plain `border` cannot be graded, so the rim is a masked pseudo-element: a
+   gradient filling the box, with its own middle punched out by compositing two
+   masks, leaving exactly the 1px frame. `border-radius: inherit` keeps it
+   locked to whatever radius the panel is using, so a panel can change shape
+   without the rim being retuned.
+
+   Anything wearing this should drop its own `border`, or the two stack. */
+@utility ring-lit {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.24),
+      rgba(255, 255, 255, 0.08) 26%,
+      rgba(255, 255, 255, 0.045) 64%,
+      rgba(255, 255, 255, 0.1)
+    );
+    /* Longhands, not the `mask` shorthand: the shorthand resets
+       `mask-composite` back to `add`, and the build reorders it after the
+       composite declaration — which fills the whole panel with the gradient
+       instead of punching its middle out. Chrome survived that on the -webkit-
+       properties; Firefox would not have. */
+    mask-image:
+      linear-gradient(#000 0 0),
+      linear-gradient(#000 0 0);
+    mask-clip: content-box, border-box;
+    mask-composite: exclude;
+    -webkit-mask-image:
+      linear-gradient(#000 0 0),
+      linear-gradient(#000 0 0);
+    -webkit-mask-clip: content-box, border-box;
+    -webkit-mask-composite: xor;
+  }
+}
+
+/* The same rim with its top edge left open, for a panel attached beneath
+   something else — the strip above already drew that line. */
+@utility ring-lit-open-top {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 0 1px 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.045) 55%,
+      rgba(255, 255, 255, 0.1)
+    );
+    /* Longhands, not the `mask` shorthand: the shorthand resets
+       `mask-composite` back to `add`, and the build reorders it after the
+       composite declaration — which fills the whole panel with the gradient
+       instead of punching its middle out. Chrome survived that on the -webkit-
+       properties; Firefox would not have. */
+    mask-image:
+      linear-gradient(#000 0 0),
+      linear-gradient(#000 0 0);
+    mask-clip: content-box, border-box;
+    mask-composite: exclude;
+    -webkit-mask-image:
+      linear-gradient(#000 0 0),
+      linear-gradient(#000 0 0);
+    -webkit-mask-clip: content-box, border-box;
+    -webkit-mask-composite: xor;
+  }
+}
+
+/* ---- Grid traces -------------------------------------------------------
+
+   Deliberately declared here rather than in @theme. Tailwind only emits a
+   theme keyframe when a utility references its --animate-* token, and these
+   are driven from an inline animation shorthand — inside the theme block they
+   compiled to nothing at all. */
+/* A charge running along one grid line and then resting. Travel happens in
+   the first third of the cycle and the pulse is dark for the rest, which is
+   what makes a field of them read as occasional rather than as a running
+   animation — with a dozen on random delays, most are unlit at any moment.
+   The distance is per-element so each one covers a different run of cells. */
+@keyframes trace-y {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  28% {
+    opacity: 1;
+  }
+  35% {
+    transform: translateY(var(--travel));
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(var(--travel));
+    opacity: 0;
+  }
+}
+
+@keyframes trace-x {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  28% {
+    opacity: 1;
+  }
+  35% {
+    transform: translateX(var(--travel));
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(var(--travel));
+    opacity: 0;
+  }
+}
+
