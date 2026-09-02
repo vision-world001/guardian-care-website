@@ -1,119 +1,132 @@
-import Counter from '../../../components/Counter';
 import Reveal from '../../../components/Reveal';
-import {BTN, BTN_LINE, DeviceFrame, Eyebrow, Wrap} from '../../../components/ui';
+import {Eyebrow, Wrap} from '../../../components/ui';
+import Glyph from './Glyph';
 import SolarShine from './SolarShine';
-import {DIGEST} from '../../../data/energyDay';
-import {TONE_TEXT} from '../../../data/command';
+import {LABEL, PAD_CARD, PANEL, PANEL_LIFT, R_TILE} from './ui';
+import {CONCERNS} from '../../../data/consumerFlow';
+import type {ConcernKey} from '../../../data/consumerFlow';
 import {cn} from '../../../lib/cn';
 
 /**
- * The opening claim, with the product beside it rather than described.
+ * Their question, first.
  *
- * The handset carries the actual proposition: a solar owner does not open an
- * app, they receive a message from the company that installed their system,
- * and it opens with a sentence in English rather than a chart. Showing that in
- * the first screen settles what Guardian Care *is* before the page has to
- * explain it — and it carries the installer's name, not ours, which is the
- * other thing the page has to establish early.
+ * A homeowner does not arrive wanting to classify an inverter. They arrive
+ * with one nagging question, so that question is already on screen in their
+ * own words, and recognising it is the whole first step.
  *
- * Behind the whole frame is the sun rather than a photograph of one. The page
- * is about what a roof is doing at this moment, and light is the one background
- * that *is* that rather than a picture of it — no licence, no dated frame, and
- * no stranger's house standing in front of a reader looking at their own.
+ * Six choices in two columns rather than three. Three columns made each one a
+ * small box in a grid of small boxes, which is the shape that reads as
+ * generated; at two columns each question gets the width to be *read* rather
+ * than scanned. Each one carries its own mark, because the eye finds a battery
+ * or a bill before it finishes reading either word — and on the one screen
+ * where somebody is hunting for their own problem among six, that is the
+ * difference between scanning and working through a list.
  */
-export default function Hero() {
+export default function Hero({
+  concern,
+  onSelect
+}: {
+  concern: ConcernKey | null;
+  onSelect: (key: ConcernKey) => void;
+}) {
   return (
-    <header className="relative isolate overflow-hidden py-15 min-[760px]:py-[100px]">
+    <header className="slide relative isolate overflow-hidden py-20 min-[760px]:py-24">
       <SolarShine />
 
       <Wrap>
-        <div className="grid grid-cols-1 items-center gap-14 min-[1000px]:grid-cols-[1.15fr_auto] min-[1000px]:gap-16">
-          <div className="max-w-[640px]">
-            <Reveal>
-              <Eyebrow tone="blue" size="hero">
-                For Solar Consumers
-              </Eyebrow>
-            </Reveal>
+        <div className="max-w-[720px]">
+          <Reveal>
+            <Eyebrow tone="blue" size="hero">
+              For solar and battery owners
+            </Eyebrow>
+          </Reveal>
 
-            <Reveal
-              as="h1"
-              delay={0.06}
-              className="mb-[22px] font-display text-[clamp(38px,5.4vw,64px)] font-semibold uppercase leading-[1.02]"
-            >
-              Understand your
-              <br />
-              <span className="text-brand-gradient">home energy.</span>
-            </Reveal>
+          <Reveal
+            as="h1"
+            delay={0.06}
+            className="mb-7 font-display text-[clamp(42px,6.2vw,80px)] font-semibold uppercase leading-[0.94] tracking-[-0.015em]"
+          >
+            Take control of
+            <br />
+            the energy your
+            <br />
+            <span className="text-brand-gradient">home already makes.</span>
+          </Reveal>
 
-            <Reveal
-              as="p"
-              delay={0.12}
-              className="mb-9 text-[17px] font-light leading-[1.65] text-muted min-[760px]:text-[18px]"
-            >
-              You had solar installed. Guardian Care explains what it is actually doing — what you
-              generated, what your home used, what went to the grid, and whether anything needs
-              looking at. In plain language, provided through your solar company.
-            </Reveal>
-
-            <Reveal delay={0.18} className="flex flex-wrap gap-3.5">
-              <a href="#c-today" className={BTN}>
-                See a real day →
-              </a>
-              <a href="#c-watch" className={BTN_LINE}>
-                What happens if something breaks
-              </a>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.24}>
-            <DeviceFrame carrier={DIGEST.installer} time="7:04">
-              <div className="flex items-center justify-between border-b border-line-2 pb-3.5">
-                <div className="text-[12.5px] font-semibold uppercase tracking-[.1em] text-ink">
-                  Your solar yesterday
-                </div>
-                <span className="inline-flex items-center gap-1.5 rounded-pill border border-line px-2.5 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-green">
-                  <span className="animate-blip h-1.5 w-1.5 rounded-full bg-green" />
-                  {DIGEST.status}
-                </span>
-              </div>
-
-              <p className="mt-4 text-[15px] font-light leading-[1.6] text-ink">{DIGEST.greeting}</p>
-              <p className="mt-2 text-[13.5px] font-light leading-[1.6] text-muted">
-                {DIGEST.summary}
-              </p>
-
-              <div className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-tile border border-line-2 bg-line-2">
-                {DIGEST.lines.map((line) => (
-                  <div key={line.label} className="bg-panel-2 px-3 py-2.5">
-                    <div className="text-[9.5px] font-bold uppercase tracking-[.14em] text-faint">
-                      {line.label}
-                    </div>
-                    <Counter
-                      value={line.value}
-                      className={cn(
-                        'mono mt-1 block text-[15px] font-semibold',
-                        TONE_TEXT[line.tone]
-                      )}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-4 rounded-tile border border-line bg-[linear-gradient(150deg,var(--color-green-glow),transparent)] px-3.5 py-3">
-                <div className="text-[9.5px] font-bold uppercase tracking-[.14em] text-green">
-                  {DIGEST.action}
-                </div>
-                <p className="mt-1.5 text-[13px] font-light leading-[1.55] text-muted">
-                  {DIGEST.actionBody}
-                </p>
-              </div>
-
-              <div className="mt-3.5 text-center text-[10px] font-light uppercase tracking-[.14em] text-faint">
-                Powered by Guardian Care
-              </div>
-            </DeviceFrame>
+          <Reveal
+            as="p"
+            delay={0.12}
+            className="max-w-[42ch] text-[clamp(17px,1.8vw,20px)] font-light leading-[1.55] text-muted"
+          >
+            Guardian Care reads your own system and explains it in plain words.
           </Reveal>
         </div>
+
+        <Reveal delay={0.18} className="mt-16">
+          <div className={cn(LABEL, 'mb-6 text-faint')}>Which of these is your question?</div>
+
+          <div className="grid grid-cols-1 gap-3 min-[760px]:grid-cols-2">
+            {CONCERNS.map((option) => {
+              const live = option.key === concern;
+
+              return (
+                <button
+                  key={option.key}
+                  type="button"
+                  onClick={() => onSelect(option.key)}
+                  aria-pressed={live}
+                  className={cn(
+                    PANEL,
+                    'group relative flex items-center gap-5 overflow-hidden text-left transition duration-300 ease-brand hover:-translate-y-1',
+                    PAD_CARD,
+                    live ? 'text-ink ring-2 ring-blue' : 'text-muted hover:text-ink'
+                  )}
+                  style={{boxShadow: live ? PANEL_LIFT : undefined}}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'pointer-events-none absolute inset-0 transition-opacity duration-300',
+                      live ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
+                    )}
+                    style={{
+                      background:
+                        'linear-gradient(150deg, color-mix(in srgb, var(--color-blue) 11%, transparent), transparent 60%)'
+                    }}
+                  />
+
+                  <span
+                    className={cn(
+                      R_TILE,
+                      'relative grid h-14 w-14 shrink-0 place-items-center transition-all duration-300 ease-brand',
+                      live
+                        ? 'bg-blue/12 text-blue'
+                        : 'bg-ink/[0.04] text-faint group-hover:bg-blue/10 group-hover:text-blue'
+                    )}
+                  >
+                    <Glyph name={option.key} className="h-8 w-8" />
+                  </span>
+
+                  <span className="relative flex-1 text-[clamp(17px,1.8vw,21px)] font-normal leading-[1.28] tracking-[-0.01em]">
+                    {option.label}
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'relative shrink-0 text-[17px] transition-all duration-300 ease-brand',
+                      live
+                        ? 'translate-x-0 text-blue opacity-100'
+                        : '-translate-x-2 text-faint opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
+                    )}
+                  >
+                    →
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </Reveal>
       </Wrap>
     </header>
   );

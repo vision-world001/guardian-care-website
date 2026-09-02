@@ -167,22 +167,3 @@ export const SHIFT_OPPORTUNITY = {
   detail:
     'A dishwasher cycle uses roughly 1.2 kWh. Run at 8pm you buy it at 32c; run at 1pm you use electricity you already made and would otherwise have exported for 5c.'
 };
-
-/* ---------- The morning message ---------- */
-
-export type DigestLine = {label: string; value: string; tone: StatusTone};
-
-export const DIGEST = {
-  installer: 'Nordbrook Solar',
-  status: 'Healthy',
-  greeting: 'Good morning, Elena.',
-  summary: 'Yesterday your panels made more than your home used, and your battery covered the evening.',
-  lines: [
-    {label: 'Made', value: '18.4 kWh', tone: 'green'},
-    {label: 'Used', value: '12.8 kWh', tone: 'ink'},
-    {label: 'Battery', value: '71%', tone: 'purple'},
-    {label: 'Bought', value: '3.2 kWh', tone: 'amber'}
-  ] satisfies DigestLine[],
-  action: 'One thing worth doing today',
-  actionBody: 'Run the dishwasher between 1pm and 3pm — that is free electricity you would otherwise export.'
-};

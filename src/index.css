@@ -13,7 +13,7 @@
 
   /* Hairlines */
   --color-line: rgba(61, 220, 151, 0.18);
-  --color-line-2: rgba(255, 255, 255, 0.09);
+  --color-line-2: rgba(255, 255, 255, 0.1);
 
   /* Type */
   --color-ink: #ffffff;
@@ -36,8 +36,8 @@
   /* Surfaces that let the ground through. The site now sits on a luminous
      field rather than flat black, so the panels on top of it are translucent —
      a solid fill would punch a hole in the light behind it. */
-  --color-glass: rgba(10, 27, 48, 0.52);
-  --color-glass-2: rgba(10, 27, 48, 0.72);
+  --color-glass: rgba(10, 27, 48, 0.55);
+  --color-glass-2: rgba(10, 27, 48, 0.75);
 
   /* Corner radii, named by the thing they belong to rather than by size, so a
      card and a tile stay distinguishable if either is retuned later. */
@@ -152,7 +152,7 @@
 
    The accents are darker than the brand's own green and blue because those
    are display colours meant for near-black, and at 3.4:1 they fail as text on
-   white. `#0e8259` clears 4.8:1 as type AND passes every check for a chart
+   white. `#0e8259` clears 4.9:1 as type AND passes every check for a chart
    series (CVD ΔE 20.3, contrast above 3:1), so one token still does both jobs.
    ============================================================ */
 .theme-day {
@@ -162,7 +162,7 @@
   --color-panel-2: #f3f7fb;
 
   --color-line: rgba(14, 130, 89, 0.24);
-  --color-line-2: rgba(10, 30, 54, 0.13);
+  --color-line-2: rgba(5, 25, 47, 0.13);
 
   --color-ink: #07182b;
   --color-muted: #4a6076;
@@ -326,15 +326,15 @@
 .theme-night {
   --btn-glow: rgba(61, 220, 151, 0.4);
   --scroll-track: #020a14;
-  --scroll-thumb: rgba(255, 255, 255, 0.14);
-  --scroll-thumb-hover: rgba(255, 255, 255, 0.28);
+  --scroll-thumb: rgba(255, 255, 255, 0.15);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.3);
   --color-bg: #00060f;
   --color-bg-2: #040d1a;
   --color-panel: #071426;
   --color-panel-2: #0a1b30;
 
   --color-line: rgba(61, 220, 151, 0.18);
-  --color-line-2: rgba(255, 255, 255, 0.09);
+  --color-line-2: rgba(255, 255, 255, 0.1);
 
   --color-ink: #ffffff;
   --color-muted: #93a4b8;
@@ -816,5 +816,20 @@
     transform: translateX(var(--travel));
     opacity: 0;
   }
+}
+
+
+/* ---- Steps -------------------------------------------------------------
+
+   The consumer journey shows one step at a time — the others are not below the
+   fold, they are not rendered — so each one stands its own screen and centres
+   what it holds. `100dvh` rather than `100vh` so a phone's collapsing address
+   bar does not leave a gap under the step. Steps taller than a screen (the
+   result) simply grow past it. */
+@utility slide {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
