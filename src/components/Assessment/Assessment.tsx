@@ -1,0 +1,415 @@
+import {useEffect, useRef, useState} from 'react';
+import Glyph from '../Glyph';
+import {cn} from '../../lib/cn';
+import {visibleSteps, type Answers, type ProfileLine, type Step} from './types';
+
+/**
+ * The guided assessment, shared by all three journeys.
+ *
+ * One question on screen at a time rather than a form. A form is a thing you
+ * fill in; this is a conversation the platform is having, and every document it
+ * was built from makes the same move — ask, then immediately explain why the
+ * answer matters, then show the profile growing. Seven questions laid out at
+ * once would be scrolled past; seven asked one at a time, each with its reason
+ * printed beside it, get answered.
+ *
+ * Answers live with the caller, not here. The frame owns which question is on
+ * screen and nothing else, because the page around it has to derive an entire
+ * result from the same answers — and a component that both owns state and hands
+ * it out is a component two things disagree about.
+ *
+ * Choices advance on their own. There is no Next button on a single-answer
+ * question, because the answer *is* the intent, and asking somebody to confirm
+ * a choice they just made is a click that buys nothing. Multi-select and rate
+ * entry keep an explicit Continue, since neither has a moment where the visitor
+ * is unambiguously finished.
+ */
+
+/** Long enough for the chosen card to register, short enough not to feel slow. */
+const ADVANCE_MS = 260;
+
+type AssessmentProps = {
+  steps: Step[];
+  answers: Answers;
+  onChange: (next: Answers) => void;
+  /** Fired when the last visible step is answered. */
+  onComplete: () => void;
+  /** Whether the caller is already showing a result below. */
+  done: boolean;
+  /** The label on the button that finishes the sequence. */
+  finishLabel: string;
+  profile: {heading: string; lines: ProfileLine[]};
+  /** Reset back to an empty assessment. */
+  onReset: () => void;
+};
+
+export default function Assessment({
+  steps,
+  answers,
+  onChange,
+  onComplete,
+  done,
+  finishLabel,
+  profile,
+  onReset
+}: AssessmentProps) {
+  const [at, setAt] = useState(0);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const visible = visibleSteps(steps, answers);
+  /* Answering can remove a step from the sequence — saying "no battery" takes
+     the capacity question out from under the cursor — so the index is clamped
+     at render rather than trusted. */
+  const index = Math.min(at, visible.length - 1);
+  const step = visible[index];
+  const last = index === visible.length - 1;
+
+  /**
+   * Moves on, re-deriving the sequence from the answers being committed rather
+   * than from the ones on screen: a question that only exists because of the
+   * answer just given has to be in the list before we can land on it.
+   */
+  function advance(next: Answers) {
+    const list = visibleSteps(steps, next);
+    const here = list.findIndex((item) => item.key === step.key);
+    if (here === -1 || here === list.length - 1) {
+      onComplete();
+      return;
+    }
+    setAt(here + 1);
+  }
+
+  function choose(value: string) {
+    if (step.kind !== 'choice') return;
+    const option = step.options.find((item) => item.value === value);
+    const next: Answers = {...answers, choice: {...answers.choice, [step.key]: value}};
+    onChange(next);
+
+    /* "Enter my exact figure" opens an input instead of moving on — advancing
+       would take away the control it just revealed. */
+    if (option?.input) return;
+
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => advance(next), ADVANCE_MS);
+  }
+
+  function toggle(value: string) {
+    if (step.kind !== 'multi') return;
+    const picked = answers.multi[step.key] ?? [];
+    const next = picked.includes(value)
+      ? picked.filter((item) => item !== value)
+      : [...picked, value];
+    onChange({...answers, multi: {...answers.multi, [step.key]: next}});
+  }
+
+  function write(key: string, value: string) {
+    onChange({...answers, field: {...answers.field, [key]: value}});
+  }
+
+  function back() {
+    clearTimeout(timer.current);
+    setAt(Math.max(0, index - 1));
+  }
+
+  function restart() {
+    clearTimeout(timer.current);
+    setAt(0);
+    onReset();
+  }
+
+  const chosen = step?.kind === 'choice' ? answers.choice[step.key] : undefined;
+  const openInput =
+    step?.kind === 'choice'
+      ? step.options.find((item) => item.value === chosen && item.input)
+      : undefined;
+  const multiPicked = step?.kind === 'multi' ? (answers.multi[step.key] ?? []) : [];
+
+  return (
+    <div className="grid gap-px overflow-hidden rounded-[22px] bg-line-2 ring-1 ring-line-2 min-[980px]:grid-cols-[1fr_306px]">
+      {/* ---------- The question ---------- */}
+      <div className="bg-panel p-6 min-[760px]:p-9">
+        {done ? (
+          <Complete count={visible.length} onRestart={restart} />
+        ) : (
+          <>
+            <Progress at={index} total={visible.length} />
+
+            <div className="mt-7 flex items-start gap-4">
+              <span className="mt-0.5 shrink-0 text-green">
+                <Glyph name={step.glyph} className="h-8 w-8" />
+              </span>
+              <div>
+                <h3 className="font-display text-[clamp(24px,3vw,34px)] font-semibold uppercase leading-[1.06] tracking-[-0.01em] text-ink">
+                  {step.title}
+                </h3>
+                {step.lead ? (
+                  <p className="mt-2 text-[15px] font-light leading-[1.55] text-muted">
+                    {step.lead}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="mt-7">
+              {step.kind === 'fields' ? (
+                <div className="grid gap-3 min-[620px]:grid-cols-2">
+                  {step.fields.map((field) => (
+                    <label
+                      key={field.key}
+                      className="block rounded-[14px] bg-bg-2 p-4 ring-1 ring-line-2 transition focus-within:ring-green/60"
+                    >
+                      <span className="block text-[13px] font-medium text-ink">{field.label}</span>
+                      {field.note ? (
+                        <span className="mt-0.5 block text-[12px] font-light text-faint">
+                          {field.note}
+                        </span>
+                      ) : null}
+                      <span className="mt-2.5 flex items-baseline gap-2">
+                        <input
+                          type="text"
+                          inputMode="decimal"
+                          value={answers.field[field.key] ?? ''}
+                          onChange={(event) => write(field.key, event.target.value)}
+                          placeholder={field.placeholder}
+                          className="mono w-full min-w-0 bg-transparent text-[19px] font-semibold text-ink outline-none placeholder:font-normal placeholder:text-faint/60"
+                        />
+                        <span className="mono shrink-0 text-[12px] text-faint">{field.suffix}</span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              ) : (
+                <div
+                  className={cn(
+                    'grid gap-2.5',
+                    step.options.length > 4
+                      ? 'min-[620px]:grid-cols-2 min-[1280px]:grid-cols-3'
+                      : 'min-[620px]:grid-cols-2'
+                  )}
+                >
+                  {step.options.map((option) => {
+                    const picked =
+                      step.kind === 'multi'
+                        ? multiPicked.includes(option.value)
+                        : chosen === option.value;
+
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        aria-pressed={step.kind === 'multi' ? picked : undefined}
+                        onClick={() =>
+                          step.kind === 'multi' ? toggle(option.value) : choose(option.value)
+                        }
+                        className={cn(
+                          'group flex items-center gap-3 rounded-[14px] px-4 py-3.5 text-left transition duration-200 ease-brand',
+                          picked
+                            ? 'bg-green-glow ring-2 ring-green'
+                            : 'bg-bg-2 ring-1 ring-line-2 hover:-translate-y-0.5 hover:ring-green/45'
+                        )}
+                      >
+                        <Tick picked={picked} multi={step.kind === 'multi'} />
+                        <span className="min-w-0">
+                          <span
+                            className={cn(
+                              'block text-[15px] leading-[1.35]',
+                              picked ? 'font-medium text-ink' : 'font-light text-ink'
+                            )}
+                          >
+                            {option.label}
+                          </span>
+                          {option.note ? (
+                            <span className="mt-0.5 block text-[12.5px] font-light leading-[1.45] text-faint">
+                              {option.note}
+                            </span>
+                          ) : null}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* The escape hatch, opened. Its own row rather than nested in the
+                  card above, because an input inside a button is not a control
+                  anybody can reliably operate. */}
+              {openInput ? (
+                <div className="mt-3 flex flex-wrap items-center gap-3 rounded-[14px] bg-bg-2 p-4 ring-1 ring-green/40">
+                  <label className="flex flex-1 items-baseline gap-2">
+                    <span className="sr-only">{step.title}</span>
+                    <input
+                      autoFocus
+                      type="text"
+                      inputMode="decimal"
+                      value={answers.field[step.key] ?? ''}
+                      onChange={(event) => write(step.key, event.target.value)}
+                      placeholder={openInput.input?.placeholder}
+                      className="mono w-full min-w-0 bg-transparent text-[21px] font-semibold text-ink outline-none placeholder:font-normal placeholder:text-faint/60"
+                    />
+                    <span className="mono shrink-0 text-[12.5px] text-faint">
+                      {openInput.input?.suffix}
+                    </span>
+                  </label>
+                </div>
+              ) : null}
+            </div>
+
+            {/* ---------- Why we ask ---------- */}
+            <div className="mt-7 rounded-[14px] border-l-2 border-green/45 bg-bg-2/70 px-5 py-4">
+              <div className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
+                {step.why.heading}
+              </div>
+              <div className="mt-2 text-[14.5px] font-light leading-[1.6] text-muted [&_b]:font-medium [&_b]:text-ink">
+                {step.why.body}
+              </div>
+            </div>
+
+            {/* ---------- Moving on ---------- */}
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              {index > 0 ? (
+                <button
+                  type="button"
+                  onClick={back}
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[13.5px] font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
+                >
+                  ← Back
+                </button>
+              ) : null}
+
+              {step.kind !== 'choice' || openInput ? (
+                <button
+                  type="button"
+                  onClick={() => advance(answers)}
+                  disabled={step.kind === 'multi' && multiPicked.length === 0}
+                  className="inline-flex items-center gap-2.5 rounded-full bg-brand-gradient px-7 py-3 text-[14px] font-semibold tracking-[-0.005em] text-bg shadow-[0_12px_30px_-14px_var(--btn-glow)] transition duration-200 ease-brand hover:-translate-y-0.5 hover:brightness-110 disabled:pointer-events-none disabled:opacity-40"
+                >
+                  {last ? finishLabel : 'Continue'} →
+                </button>
+              ) : (
+                <span className="text-[13px] font-light text-faint">
+                  Choose an answer to continue
+                </span>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* ---------- The profile, filling in ---------- */}
+      <aside className="bg-bg-2 p-6 min-[760px]:p-7">
+        <div className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
+          {profile.heading}
+        </div>
+
+        <dl className="mt-5 space-y-px">
+          {profile.lines.map((line) => (
+            <div key={line.label} className="py-2.5">
+              <dt className="text-[11.5px] font-medium uppercase tracking-[.08em] text-faint">
+                {line.label}
+              </dt>
+              <dd
+                className={cn(
+                  'mono mt-1 text-[16px] font-semibold',
+                  line.value ? 'text-ink' : 'text-faint/70'
+                )}
+              >
+                {line.value ?? line.pending ?? '—'}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        {done ? (
+          <button
+            type="button"
+            onClick={restart}
+            className="mt-5 w-full rounded-full px-4 py-2.5 text-[13px] font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
+          >
+            Start again
+          </button>
+        ) : (
+          <p className="mt-5 border-t border-line-2 pt-4 text-[12.5px] font-light leading-[1.55] text-faint">
+            Everything here is an estimate until Guardian Care receives monitoring and meter data
+            from the property.
+          </p>
+        )}
+      </aside>
+    </div>
+  );
+}
+
+/* ---------- Pieces ---------- */
+
+function Progress({at, total}: {at: number; total: number}) {
+  return (
+    <div>
+      <div className="flex items-baseline justify-between">
+        <span className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
+          Step {at + 1} of {total}
+        </span>
+        <span className="mono text-[11px] text-faint">
+          {String(at + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+        </span>
+      </div>
+
+      {/* One bar per question rather than a single filled track: the visitor can
+          see how many are left, which a percentage never quite says. */}
+      <div className="mt-2.5 flex gap-1.5">
+        {Array.from({length: total}, (_, slot) => (
+          <span
+            key={slot}
+            className={cn(
+              'h-[3px] flex-1 rounded-full transition-colors duration-300',
+              slot < at ? 'bg-green/55' : slot === at ? 'bg-green' : 'bg-line-2'
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Tick({picked, multi}: {picked: boolean; multi: boolean}) {
+  return (
+    <span
+      className={cn(
+        'grid h-5 w-5 shrink-0 place-items-center border transition-colors duration-200',
+        multi ? 'rounded-[6px]' : 'rounded-full',
+        picked ? 'border-green bg-green text-bg' : 'border-line-2 text-transparent'
+      )}
+    >
+      <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M2 6.2 4.8 9 10 3.2" />
+      </svg>
+    </span>
+  );
+}
+
+function Complete({count, onRestart}: {count: number; onRestart: () => void}) {
+  return (
+    <div className="flex min-h-[280px] flex-col justify-center py-4">
+      <span className="text-green">
+        <Glyph name="insight" className="h-10 w-10" />
+      </span>
+      <h3 className="mt-5 font-display text-[clamp(26px,3.2vw,38px)] font-semibold uppercase leading-[1.04] tracking-[-0.01em] text-ink">
+        Your assessment is ready
+      </h3>
+      <p className="mt-3 max-w-[440px] text-[15.5px] font-light leading-[1.6] text-muted">
+        All {count} questions answered. Guardian Care has built your initial position from them —
+        it is set out below, and every figure in it is labelled as an estimate until the system is
+        connected.
+      </p>
+      <div className="mt-6">
+        <button
+          type="button"
+          onClick={onRestart}
+          className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
+        >
+          Start again
+        </button>
+      </div>
+    </div>
+  );
+}

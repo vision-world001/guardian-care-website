@@ -30,7 +30,7 @@ export default function Hero() {
         <div className="grid items-center gap-11 min-[980px]:grid-cols-[1.05fr_1fr] min-[980px]:gap-[70px]">
           <div>
             <Reveal>
-              <Eyebrow size="hero">Energy Intelligence &amp; Customer Concierge</Eyebrow>
+              <Eyebrow size="hero">Guardian Care for Business</Eyebrow>
             </Reveal>
 
             <Reveal
@@ -38,27 +38,28 @@ export default function Hero() {
               delay={0.06}
               className="mb-[22px] font-display text-[clamp(38px,5.4vw,64px)] font-semibold uppercase leading-[1.02]"
             >
-              Don’t lose the customer
+              Keep your customers
               <br />
-              <span className="text-brand-gradient">after installation.</span>
+              <span className="text-brand-gradient">after the installation.</span>
             </Reveal>
 
             <Reveal
               as="p"
               delay={0.12}
-              className="mb-9 max-w-[560px] text-[17px] font-light leading-[1.65] text-muted min-[760px]:text-[18px]"
+              className="mb-9 max-w-[580px] text-[17px] font-light leading-[1.65] text-muted min-[760px]:text-[18px]"
             >
-              You install the system. Guardian Care manages the relationship that follows —
-              analysing each customer’s energy behaviour, identifying what needs attention, and
-              giving your team the words and the reason to make contact.
+              If you already install solar, batteries or energy systems, Guardian Care turns customer
+              and system information into ongoing energy intelligence — so you can see what is
+              happening across your customer base, and know when somebody needs support,
+              optimisation or advice.
             </Reveal>
 
             <Reveal delay={0.18} className="flex flex-wrap items-center gap-x-7 gap-y-2">
-              <a href="#b-lifecycle" className={BTN}>
-                See the lifecycle →
+              <a href="#assess" className={BTN}>
+                Start my business assessment →
               </a>
-              <a href="#b-concierge" className={BTN_LINE}>
-                What the customer receives
+              <a href="#portfolio" className={BTN_LINE}>
+                See the portfolio view
               </a>
             </Reveal>
           </div>

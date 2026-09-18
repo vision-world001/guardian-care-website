@@ -12,11 +12,50 @@ export const BTN =
   'transition duration-200 ease-brand hover:-translate-y-0.5 hover:brightness-110 ' +
   'hover:shadow-[0_18px_44px_-14px_var(--btn-glow)]';
 
+/**
+ * The consumer journeys' action. Sentence case at a comfortable size — the
+ * site-wide uppercase, bold, wide-tracked pill above is right for a dark
+ * console and reads as shouting on a daylight page about somebody's house.
+ */
+export const ACTION =
+  'inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-gradient px-8 py-4 ' +
+  'text-[15.5px] font-medium tracking-[-0.005em] text-bg ' +
+  'shadow-[0_14px_34px_-14px_var(--btn-glow)] transition duration-250 ease-brand ' +
+  'hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_22px_46px_-16px_var(--btn-glow)]';
+
+export const ACTION_QUIET =
+  'inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-4 text-[15px] ' +
+  'font-medium text-muted ring-1 ring-line-2 transition duration-250 ease-brand ' +
+  'hover:-translate-y-0.5 hover:text-ink hover:ring-ink/30';
+
 /** The quieter companion action: an outlined pill rather than an underline. */
 export const BTN_LINE =
   'inline-flex items-center gap-2.5 rounded-pill border border-line-2 px-[24px] py-[15px] text-[13px] ' +
   'font-semibold uppercase tracking-[.08em] text-ink transition duration-200 ease-brand ' +
   'hover:-translate-y-0.5 hover:border-green/50 hover:bg-green-glow hover:text-green';
+
+/* ---------- Journey accents ---------- */
+
+/**
+ * The three doors are lit from three points along the same brand ramp rather
+ * than from three unrelated hues. Green is the system you already have, blue is
+ * the one you are deciding about, purple is the portfolio of both — and because
+ * every gradient starts or ends on a colour its neighbour also uses, the set
+ * reads as one family instead of as a traffic light.
+ */
+export type Accent = 'green' | 'blue' | 'purple';
+
+export const ACCENT_LINE: Record<Accent, string> = {
+  green: 'bg-[linear-gradient(90deg,var(--color-green),var(--color-blue))]',
+  blue: 'bg-[linear-gradient(90deg,var(--color-blue),var(--color-purple))]',
+  purple: 'bg-[linear-gradient(90deg,var(--color-purple),var(--color-blue))]'
+};
+
+export const ACCENT_TEXT: Record<Accent, string> = {
+  green: 'text-green',
+  blue: 'text-blue',
+  purple: 'text-purple'
+};
 
 /* ---------- Layout ---------- */
 
@@ -134,6 +173,37 @@ export function SectionHead({
       <SectionTitle>{title}</SectionTitle>
       {body ? <SectionBody>{body}</SectionBody> : null}
     </div>
+  );
+}
+
+/* ---------- Honesty about figures ---------- */
+
+/**
+ * The mark every unverified figure wears.
+ *
+ * Deliberately hard to miss, and deliberately the same object on all three
+ * journeys. Both consumer pages print money figures derived from a handful of
+ * banded answers, and the platform's entire argument is that those become
+ * readings once something is measuring — which only works if the difference is
+ * visible on the page rather than buried in a footnote.
+ */
+export function Estimated({
+  label = 'Estimated',
+  className
+}: {
+  label?: string;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        'inline-flex shrink-0 items-center gap-1.5 rounded-pill border border-amber/40 bg-amber/10 px-2.5 py-1 text-[9.5px] font-bold uppercase tracking-[.16em] text-amber',
+        className
+      )}
+    >
+      <span className="h-1 w-1 rounded-full bg-amber" />
+      {label}
+    </span>
   );
 }
 

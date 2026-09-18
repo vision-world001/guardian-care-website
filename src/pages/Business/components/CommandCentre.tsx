@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import Glyph from '../../../components/Glyph';
 import Reveal from '../../../components/Reveal';
 import {
   BrowserFrame,
@@ -10,6 +11,7 @@ import {
   StatusGlyphIcon,
   Wrap
 } from '../../../components/ui';
+import {PORTFOLIO} from '../../../data/businessFlow';
 import {CC_KPIS, CC_ROWS, STATUSES, TONE_TEXT} from '../../../data/command';
 import {cn} from '../../../lib/cn';
 
@@ -32,12 +34,12 @@ export default function CommandCentre() {
   const row = CC_ROWS[selected];
 
   return (
-    <Section id="b-command" hairline>
+    <Section id="portfolio" hairline>
       <Wrap>
         <Reveal>
           <SectionHead
-            eyebrow="Command Centre"
-            index=""
+            eyebrow="See your customer base from one place"
+            index="04 / 05"
             title={
               <>
                 Who needs attention.
@@ -45,12 +47,39 @@ export default function CommandCentre() {
                 <span className="text-brand-gradient">And what to do about it.</span>
               </>
             }
-            body="Every customer carries an automatically assigned status. At two thousand customers or twenty thousand, the operator sees only the exceptions — each one arriving with a reason, a recommended conversation and a next action."
+            body="Every customer carries an automatically assigned status. At a thousand customers or twenty thousand, the operator sees only the exceptions — each one arriving with a reason, a recommended conversation and a next action."
           />
         </Reveal>
 
+        {/* What a bird's-eye view actually holds, before the console that
+            renders it. The three groups are the index; the frame below is one
+            screen out of it. */}
+        <div className="mb-4 grid gap-px overflow-hidden rounded-frame bg-line-2 ring-lit min-[900px]:grid-cols-3">
+          {PORTFOLIO.map((group, index) => (
+            <Reveal key={group.name} delay={index * 0.06} className="glass p-6 min-[760px]:p-8">
+              <span className={cn('mb-5 inline-block', TONE_TEXT[group.tone])}>
+                <Glyph name={group.glyph} className="h-7 w-7" />
+              </span>
+              <div className="mb-4 font-display text-[20px] font-semibold uppercase leading-[1.12] text-ink">
+                {group.name}
+              </div>
+              <ul className="space-y-2.5">
+                {group.rows.map((row) => (
+                  <li
+                    key={row}
+                    className="flex items-start gap-2.5 text-[13.5px] font-light leading-[1.45] text-muted"
+                  >
+                    <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-line-2" />
+                    {row}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          ))}
+        </div>
+
         <Reveal>
-          <BrowserFrame url="command.guardiancare.io/attention" badge="2,482 customers">
+          <BrowserFrame url="command.guardiancare.io/attention" badge="1,245 customers">
             {/* The legend, as a console would carry it: one strip of chrome
                 above the data, not a section of the page. */}
             <div className="mb-5 flex flex-wrap gap-x-5 gap-y-2.5 border-b border-line-2 pb-4">

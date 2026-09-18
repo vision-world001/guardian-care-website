@@ -36,13 +36,21 @@ export type StatusGlyph = 'tick' | 'eye' | 'bang' | 'spanner' | 'rise' | 'alert'
 
 export type Kpi = {value: string; label: string; tone: StatusTone};
 
+/**
+ * The portfolio, as the platform specification states it.
+ *
+ * Shared with the home page rather than restated there. The two pages describe
+ * the same company on the same day, and a site whose landing page and product
+ * page disagree about how many customers exist has told the reader something
+ * about how carefully the rest of it was assembled.
+ */
 export const CC_KPIS: Kpi[] = [
-  {value: '2,482', label: 'Customers', tone: 'ink'},
-  {value: '47', label: 'Need attention', tone: 'amber'},
-  {value: '23', label: 'Opportunities', tone: 'green'},
-  {value: '12', label: 'Engineer reviews', tone: 'orange'},
-  {value: '31', label: 'Follow-ups', tone: 'blue'},
-  {value: '8', label: 'Unassigned', tone: 'purple'}
+  {value: '1,245', label: 'Customers', tone: 'ink'},
+  {value: '1,036', label: 'Monitored', tone: 'green'},
+  {value: '61', label: 'Offline', tone: 'amber'},
+  {value: '42', label: 'Fault alerts', tone: 'red'},
+  {value: '21', label: 'Engineer reviews', tone: 'orange'},
+  {value: '34', label: 'Installation jobs', tone: 'blue'}
 ];
 
 export type AttentionRow = {

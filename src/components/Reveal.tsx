@@ -1,12 +1,22 @@
 import {useEffect, useRef, useState} from 'react';
-import type {ElementType, ReactNode} from 'react';
+import type {CSSProperties, ElementType, ReactNode} from 'react';
 import {cn} from '../lib/cn';
 
 type RevealProps = {
   as?: ElementType;
   /** Stagger, in seconds, matching the original animation-delay values. */
   delay?: number;
+  /**
+   * The entrance this uses. Defaults to the site-wide fade-up, which is tuned
+   * for type; a large surface can ask for a longer one — see
+   * `--animate-card-in`. Passed as the utility name rather than through
+   * `className`, because the two would otherwise both apply and the later
+   * declaration in the stylesheet, not the later class in the string, would
+   * decide which one ran.
+   */
+  animation?: string;
   className?: string;
+  style?: CSSProperties;
   children?: ReactNode;
   [key: string]: unknown;
 };
@@ -19,7 +29,9 @@ type RevealProps = {
 export default function Reveal({
   as: Tag = 'div',
   delay = 0,
+  animation = 'animate-fadeup',
   className,
+  style,
   children,
   ...rest
 }: RevealProps) {
@@ -46,11 +58,18 @@ export default function Reveal({
     return () => observer.disconnect();
   }, [shown]);
 
+  /* The caller's style and the stagger are merged, not raced. `style` used to
+     arrive inside `rest`, spread after this component's own — so passing any
+     style at all (a height, a border colour) silently discarded the delay, and
+     a staggered list would arrive all at once with nothing to say why. */
+  const merged: CSSProperties | undefined =
+    shown && delay ? {...style, animationDelay: `${delay}s`} : style;
+
   return (
     <Tag
       ref={ref}
-      className={cn(shown ? 'animate-fadeup' : 'opacity-0', className)}
-      style={shown && delay ? {animationDelay: `${delay}s`} : undefined}
+      className={cn(shown ? animation : 'opacity-0', className)}
+      style={merged}
       {...rest}
     >
       {children}

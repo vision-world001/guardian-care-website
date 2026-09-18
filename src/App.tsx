@@ -1,19 +1,26 @@
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router';
 import Layout from './context/layouts';
 import Business from './pages/Business/Business';
-import Consumer from './pages/Consumer/Consumer';
-import Entry from './pages/Entry/Entry';
+import Existing from './pages/Existing/Existing';
+import Home from './pages/Home/Home';
+import Plan from './pages/Plan/Plan';
 
+/**
+ * Three journeys and the door they open from.
+ *
+ * The home page shares the chrome now rather than standing alone: it is no
+ * longer only a splitter, and a page that explains the platform without a way
+ * back into it is a dead end.
+ */
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* The splitter stands alone — no nav, no footer. */}
-        <Route path="/" element={<Entry />} />
-
         <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/existing" element={<Existing />} />
+          <Route path="/plan" element={<Plan />} />
           <Route path="/business" element={<Business />} />
-          <Route path="/consumers" element={<Consumer />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

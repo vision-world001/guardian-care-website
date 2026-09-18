@@ -53,8 +53,30 @@
 
   /* Motion */
   --ease-brand: cubic-bezier(0.19, 1, 0.22, 1);
-  --animate-fadeup: fadeup 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  /* `both`, not `forwards`.
+     ------------------------------------------------------------
+     Anything given an `animation-delay` renders in its *natural* state while
+     that delay runs — so a staggered element appears at full opacity, then
+     snaps to invisible the instant its animation starts, then fades in. The
+     flash is brief and looks exactly like a rendering fault. `both` adds the
+     backwards fill, holding the `from` keyframe through the delay, which is
+     what every staggered reveal on this site has always meant. */
+  --animate-fadeup: fadeup 0.7s cubic-bezier(0.19, 1, 0.22, 1) both;
   --animate-blip: blip 1.6s ease-in-out infinite;
+
+  /* A card arriving, as opposed to a paragraph arriving.
+     ------------------------------------------------------------
+     The site-wide fadeup is tuned for type: short, and a lift small enough
+     that a line of copy does not appear to jump. A 470px card needs longer
+     travel and longer duration or the movement reads as a flicker rather than
+     as an entrance — and the barely-there scale is what makes it feel like the
+     card is settling into place instead of sliding up a track. */
+  --animate-card-in: card-in 0.9s cubic-bezier(0.19, 1, 0.22, 1) both;
+
+  /* The footer wordmark surfacing. Long and heavily eased so it reads as
+     buoyancy — the word coming up out of the water and slowing as it clears
+     it — rather than as another element sliding into place. */
+  --animate-rise: rise 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 
   /* Entry-page solar field. Everything here is slow on purpose: a background
      that resolves in under a few seconds reads as a loading state. */
@@ -81,6 +103,28 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(38%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes card-in {
+    from {
+      opacity: 0;
+      transform: translateY(38px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
   }
 
@@ -309,6 +353,153 @@
 }
 
 /* ============================================================
+   Command theme — the platform's own surface
+   ------------------------------------------------------------
+   The home page is not a journey. It is the product introducing itself, and it
+   should read as an instrument rather than as a brochure about one — so it runs
+   on its own ground: near-black charcoal rather than the site's blue-black,
+   warm white type rather than pure white, and amber rather than the green-blue
+   ramp.
+
+   The accent change is the substantive one. Green-to-blue is the brand's
+   signature and it stays everywhere a journey is being told; here the subject
+   is energy itself, and energy is amber. Green survives in exactly one role on
+   this surface — a system that is fine — which is more useful than green as
+   decoration.
+
+   Radii collapse to near-square. A 18px corner is friendly; this page is meant
+   to look measured, and the difference between a card and an instrument panel
+   is mostly the corner.
+
+   Scoped rather than global, so the three journey pages keep the system they
+   were designed in. Tailwind compiles every colour utility to `var(--color-…)`,
+   so a class on <html> flips the whole route.
+   ============================================================ */
+/* ---- Sampled off the mark ----------------------------------------------
+
+   Not chosen to go with the logo — taken out of it. Every hex below was
+   pulled from the artwork itself:
+
+     #001126  deep navy      the "G", and 52% of every opaque pixel
+     #0074d3  panel blue     the array stripes at the top right
+     #9acc08  lime           the "C" sweep, hue 75 and fully saturated
+     #ffc662  gold           the glint where the two marks cross
+
+   Worth stating because the first instinct is wrong: the brand's green is a
+   *warm lime* at hue 75, not the mint at hue 155 the rest of the site is told
+   in. They are different colours, and using the site's mint here would have
+   been "roughly the logo" rather than the logo.
+
+   Declared on :root rather than inside `.theme-command`. These are brand
+   constants, not theme values — they are the same on every route — and the
+   footer, which renders under all four pages, draws with them. Scoped to the
+   command theme they resolved to nothing on the three journey pages. */
+:root {
+  --logo-navy: #001126;
+  --logo-blue: #0074d3;
+  --logo-lime: #9acc08;
+  --logo-gold: #ffc662;
+}
+
+.theme-command {
+  --color-bg: #0a0b0d;
+  --color-bg-2: #0f1013;
+  --color-panel: #131519;
+  --color-panel-2: #181a1f;
+
+  --color-line: rgba(154, 204, 8, 0.18);
+  --color-line-2: rgba(255, 255, 255, 0.07);
+
+  /* Warm white against warm grey. A pure #fff on charcoal reads as a screen;
+     this reads as paper under a lamp. */
+  --color-ink: #f5f2ec;
+  --color-muted: #a5a199;
+  --color-faint: #706c65;
+
+  /* The mark's own colours, lifted only where they have to carry small type on
+     near-black. Raw #0074d3 clears 3.8:1 — fine behind a button, not fine as a
+     12px label — so the token type uses is the brightened one and the raw blue
+     stays for fills. Lime and gold are already bright enough to keep as found. */
+  --color-amber: #ffc662;
+  --color-orange: #ff9d4d;
+  --color-green: #a8d91a;
+  --color-blue: #3d9ae8;
+  --color-red: #ff6b5a;
+  /* Storage is the one quantity with no colour in the mark, so it is derived
+     rather than sampled: a violet carrying the navy's blue cast, which keeps it
+     in the family. Held at hue 250 rather than any closer to the panel blue —
+     battery and grid are read side by side in the flow diagram, and 25° of hue
+     between two adjacent readouts is not a difference anybody can rely on. */
+  --color-purple: #9d8cff;
+
+  --color-green-glow: rgba(154, 204, 8, 0.1);
+  --color-blue-glow: rgba(0, 116, 211, 0.12);
+
+  --color-glass: rgba(19, 21, 25, 0.62);
+  --color-glass-2: rgba(19, 21, 25, 0.84);
+
+  --radius-tile: 3px;
+  --radius-card: 4px;
+  --radius-frame: 6px;
+
+  --btn-glow: rgba(154, 204, 8, 0.3);
+  --scroll-track: #08090b;
+  --scroll-thumb: rgba(255, 255, 255, 0.13);
+  --scroll-thumb-hover: rgba(255, 255, 255, 0.26);
+
+  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(255, 198, 98, 0.16), transparent 62%),
+    linear-gradient(160deg, #181a1f, #0a0b0d);
+}
+
+/* The signature gradient, restated in the mark's own pairing.
+   ------------------------------------------------------------
+   Gold into lime, because that is what the wordmark already does — GUARDIAN
+   set in the warm tone, CARE in the green — and because the hue arc between
+   them is short (38° → 75°) and runs through yellow, so it stays saturated the
+   whole way.
+
+   Lime straight into the panel blue was the obvious alternative and it is the
+   wrong one: a 130° sweep through cyan in sRGB goes grey-olive in the middle,
+   and a muddy button is worse than a less literal one. The blue is not wasted
+   — it carries the data and grid readouts everywhere on the page, which is the
+   job it does in the logo too.
+
+   Outside `@layer`, so it wins over the `utilities` layer without
+   `!important`. */
+.theme-command .text-brand-gradient {
+  background: linear-gradient(100deg, var(--logo-gold), var(--logo-lime));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.theme-command .bg-brand-gradient {
+  background: linear-gradient(100deg, var(--logo-gold), var(--logo-lime));
+}
+
+.theme-command .glass {
+  background: var(--color-glass);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.theme-command .glass-solid {
+  background: var(--color-glass-2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.theme-command .shadow-lift {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 24px 60px -30px rgba(0, 0, 0, 0.95);
+}
+
+.theme-command .shadow-lift-hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 36px 80px -34px rgba(0, 0, 0, 1);
+}
+
+/* ============================================================
    Night scope — one dark band inside the day
    ------------------------------------------------------------
    A section that opts back out of the day theme. Restating the dark values
@@ -480,11 +671,24 @@
       scroll-behavior: auto;
     }
 
+    /* Delays go too, not only durations. Collapsing the duration alone leaves
+       every staggered reveal waiting out its delay invisible — the entrance
+       tokens fill backwards, so a delayed element holds its `from` frame — and
+       the page then assembles itself piece by piece, up to half a second late.
+       That staggered popping is motion of its own, delivered to exactly the
+       reader who asked for none. */
+    /* And one iteration, not infinity. An endless loop squeezed to 0.01ms does
+       not stop — it lands on an arbitrary phase every frame, so a crawling dot
+       or a drifting wave flickers instead of holding still. Run once, each
+       looping animation settles and stays put. */
     *,
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0s !important;
+      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
     }
   }
 }
@@ -762,6 +966,127 @@
       linear-gradient(#000 0 0);
     -webkit-mask-clip: content-box, border-box;
     -webkit-mask-composite: xor;
+  }
+}
+
+/* ---- Command surface ---------------------------------------------------
+
+   The home page's ground. A finer lattice than the business console's, held
+   even further back, because this page carries large type and one bright object
+   at a time — anything more assertive underneath turns the hero into a poster
+   pinned to graph paper. */
+@utility bg-command-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ---- Conduits ----------------------------------------------------------
+
+   A charge travelling down a line between two nodes.
+
+   This is the page's one motion rule made concrete: the animation is the
+   energy moving, not decoration applied to a static diagram. The pulse is a
+   short segment of a tall track, so the same two elements work at any length —
+   a 40px gap in the hero card and a 700px spine in the record diagram.
+
+   Declared here rather than in @theme: Tailwind only emits a theme keyframe
+   when a utility references its --animate-* token, and this is driven from an
+   inline animation shorthand so it would compile to nothing inside the block. */
+@keyframes conduit {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(420%);
+    opacity: 0;
+  }
+}
+
+@keyframes conduit-x {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  72% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(420%);
+    opacity: 0;
+  }
+}
+
+/* ---- Dotted flow -------------------------------------------------------
+
+   Dots marching along a curve.
+
+   The hero's whole diagram is drawn in dotted line — objects and parabolas
+   alike — so the energy travelling through it cannot be a solid pulse sliding
+   over a dotted track without breaking the one rule the drawing has. Instead
+   the dots themselves crawl: same dash pattern, offset animating, which reads
+   as current moving and leaves the line dotted at every frame.
+
+   The offset lands on a whole number of dash periods so the loop has no seam.
+   Every path using this must carry `stroke-dasharray: 2 8` (period 10) or the
+   -200 below stops being a multiple and the dots visibly jump on repeat. */
+@keyframes crawl {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+
+/* ---- Dotted rail -------------------------------------------------------
+
+   The same crawling dots as the hero, but for a DOM element rather than an SVG
+   path. A CSS `dotted` border cannot be animated, so the dots are a tiled
+   gradient and what moves is the background position. The offset is a whole
+   number of tiles so the loop has no seam; the tile is 10px, matching the
+   `background-size` the rail sets. */
+/* A slow turn, for the rings around the customer record. Slow enough that it
+   reads as a system idling rather than as a loading spinner — anything under
+   about twenty seconds a revolution starts to look like the page is waiting
+   for something. */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rail-crawl {
+  to {
+    background-position-x: -60px;
+  }
+}
+
+@keyframes rail-crawl-y {
+  to {
+    background-position-y: 60px;
+  }
+}
+
+/* The slow breath under a live readout. Deliberately not `animate-blip`, which
+   is a warning rhythm — this one says "reading" rather than "attention". */
+@keyframes live {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
   }
 }
 
