@@ -82,7 +82,7 @@ export default function Hero() {
           <Reveal delay={0.18} className="mt-11">
             <a
               href="#journeys"
-              className="inline-flex items-center gap-3 rounded-pill bg-brand-gradient px-9 py-[18px] text-[13px] font-bold uppercase tracking-[.1em] text-bg shadow-[0_16px_40px_-16px_var(--btn-glow)] transition duration-250 ease-brand hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_24px_54px_-18px_var(--btn-glow)]"
+              className="inline-flex items-center gap-3 rounded-pill bg-[var(--cta)] px-9 py-[18px] text-[13px] font-bold uppercase tracking-[.1em] text-[var(--cta-ink)] shadow-[0_16px_40px_-16px_var(--btn-glow)] transition duration-250 ease-brand hover:-translate-y-0.5 hover:bg-[var(--cta-hover)] hover:shadow-[0_24px_54px_-18px_var(--btn-glow)]"
             >
               Explore Guardian Care →
             </a>

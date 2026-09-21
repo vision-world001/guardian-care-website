@@ -1,0 +1,159 @@
+import Glyph from '../../../../components/Glyph';
+import {TONE_TEXT, TONE_VAR} from '../../../../data/command';
+import {OPPORTUNITIES, type Opportunity} from '../../../../data/consumer';
+import {cn} from '../../../../lib/cn';
+import {LABEL, LABEL_BASE, Tile, tint} from '../../../../components/kit';
+
+/**
+ * Steps 06 and 07: what Guardian Care notices, and how it says so.
+ *
+ * Two halves of one idea, split across two steps because the brief splits them
+ * — and joined by state, so the split does not lose the connection. Choosing a
+ * card in step 06 changes the explanation in step 07, which shows the thing
+ * the page most needs a household to believe: an alert never arrives as a bare
+ * label. "High export" is where Guardian Care starts, not what it sends.
+ */
+
+/* ---------- Step 06 ---------- */
+
+export function OpportunityPicker({at, onPick}: {at: number; onPick: (index: number) => void}) {
+  return (
+    <div className="grid gap-3 min-[620px]:grid-cols-2">
+      {OPPORTUNITIES.map((item, index) => {
+        const selected = index === at;
+        const colour = TONE_VAR[item.tone];
+
+        return (
+          <button
+            key={item.key}
+            type="button"
+            aria-pressed={selected}
+            onClick={() => onPick(index)}
+            className={cn(
+              'glass relative flex flex-col rounded-frame border p-5 text-left transition duration-250 ease-brand',
+              selected ? 'shadow-lift' : 'border-line-2 hover:-translate-y-0.5 hover:border-line'
+            )}
+            style={
+              selected
+                ? {
+                    borderColor: tint(colour, 55),
+                    background: `color-mix(in srgb, ${colour} 9%, var(--color-panel))`
+                  }
+                : undefined
+            }
+          >
+            <span className="flex items-center justify-between gap-3">
+              <Tile tone={item.tone} size="sm">
+                <Glyph name={item.glyph} bold className="h-5 w-5" />
+              </Tile>
+              <span
+                className={cn(
+                  'mono text-[9.5px] font-semibold uppercase tracking-[.16em]',
+                  selected ? TONE_TEXT[item.tone] : 'text-faint'
+                )}
+              >
+                {selected ? 'Explained below' : 'See explanation'}
+              </span>
+            </span>
+
+            <span className="mt-4 block font-display text-[20px] font-semibold uppercase leading-none text-ink">
+              {item.name}
+            </span>
+            <span className="mt-2 block text-[13.5px] font-light leading-[1.5] text-muted">
+              {item.seen}
+            </span>
+
+            <span className="mt-auto block pt-4">
+              <span className={cn(LABEL_BASE, 'block text-[9.5px] tracking-[.16em] text-faint')}>
+                Guardian Care may suggest
+              </span>
+              <span className={cn('mt-1.5 block text-[13.5px] leading-[1.45]', TONE_TEXT[item.tone])}>
+                → {item.suggest}
+              </span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---------- Step 07 ---------- */
+
+/** The three parts every insight carries, and what each one is for. */
+const PARTS: Array<{key: 'identified' | 'matters' | 'recommend'; name: string; purpose: string}> = [
+  {key: 'identified', name: 'What we identified', purpose: 'What the data is showing'},
+  {key: 'matters', name: 'Why it matters', purpose: 'What the impact could be'},
+  {key: 'recommend', name: 'What we recommend', purpose: 'What should be reviewed next'}
+];
+
+export function Explanation({opportunity}: {opportunity: Opportunity}) {
+  return (
+    <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line-2 px-5 py-4 min-[520px]:px-6">
+        <span className={cn(LABEL, 'text-amber')}>◇ Guardian AI · Insight</span>
+        <span
+          className={cn(
+            'mono inline-flex items-center gap-2 rounded-pill border px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[.14em]',
+            TONE_TEXT[opportunity.tone]
+          )}
+          style={{borderColor: tint(TONE_VAR[opportunity.tone], 40)}}
+        >
+          <span
+            aria-hidden="true"
+            className="h-1.5 w-1.5 rounded-full"
+            style={{background: TONE_VAR[opportunity.tone]}}
+          />
+          {opportunity.name}
+        </span>
+      </div>
+
+      {/* Keyed on the opportunity so a change re-mounts it and plays the
+          entrance again — the reader sees that something new arrived, not
+          three paragraphs silently swapping underneath them. */}
+      <div key={opportunity.key} className="animate-fadeup" aria-live="polite">
+        {PARTS.map((part) => {
+          const recommend = part.key === 'recommend';
+
+          return (
+            <div
+              key={part.key}
+              className="grid gap-2 border-b border-line-2 px-5 py-5 last:border-b-0 min-[520px]:px-6 min-[620px]:grid-cols-[168px_minmax(0,1fr)] min-[620px]:gap-6"
+            >
+              <div>
+                <div
+                  className={cn(
+                    LABEL_BASE,
+                    'text-[10px] tracking-[.16em]',
+                    recommend ? 'text-amber' : TONE_TEXT[opportunity.tone]
+                  )}
+                >
+                  {part.name}
+                </div>
+                <div className="mt-1 text-[12px] font-light text-faint">{part.purpose}</div>
+              </div>
+              <p
+                className={cn(
+                  'leading-[1.55]',
+                  part.key === 'identified' && 'text-[16px] text-ink',
+                  part.key === 'matters' && 'text-[15px] font-light text-muted',
+                  recommend && 'border-l-2 border-amber/50 pl-4 text-[15.5px] font-light text-ink/90'
+                )}
+              >
+                {recommend ? '→ ' : null}
+                {opportunity[part.key]}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="border-t border-line-2 bg-bg/40 px-5 py-4 min-[520px]:px-6">
+        <p className="text-[13px] font-light leading-[1.6] text-faint">
+          Every insight arrives like this. Never just “{opportunity.name}” — always what it means for
+          you, and what to do about it.
+        </p>
+      </div>
+    </div>
+  );
+}

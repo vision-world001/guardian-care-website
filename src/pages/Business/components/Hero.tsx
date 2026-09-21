@@ -1,103 +1,124 @@
+import Counter from '../../../components/Counter';
+import Glyph from '../../../components/Glyph';
+import {Caption, LABEL, LABEL_BASE, PRIMARY, SECONDARY} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
-import {BTN, BTN_LINE, BrowserFrame, Eyebrow, Wrap} from '../../../components/ui';
-import {CC_KPIS, TONE_TEXT, type StatusTone} from '../../../data/command';
+import {Wrap} from '../../../components/ui';
+import {CC_ATTENTION, CC_CUSTOMERS} from '../../../data/command';
+import {cn} from '../../../lib/cn';
+import {LiveDot} from '../../Home/components/Conduit';
+import {Portfolio, PortfolioKey} from './parts';
 
 /**
- * The hero shows the first four of the Command Centre's own counters rather
- * than its own copy of them. They used to be duplicated literally — two arrays
- * holding the same figures two sections apart, either of which could be edited
- * without the other.
+ * The opening.
+ *
+ * The reader installs solar for a living. They do not need solar explained,
+ * they need one question answered — what happens to a customer after the
+ * handover — and they have about a second to decide whether this page is going
+ * to answer it.
+ *
+ * So the page does not open with a claim. It opens with their portfolio drawn
+ * out in full: 1,245 dots, one per customer, mostly steady, forty-two of them
+ * blipping. Nothing on the page has to argue that visibility is worth having
+ * after somebody has looked at that for two seconds, which is the only reason
+ * the headline can afford to be four words and the paragraph one sentence.
  */
-const KPIS = CC_KPIS.slice(0, 4);
-
-const ROWS: Array<{tone: StatusTone; title: string; sub: string}> = [
-  {
-    tone: 'green',
-    title: 'High export detected — 8 customers',
-    sub: 'Storage opportunity, modelled per property'
-  },
-  {
-    tone: 'amber',
-    title: 'Battery underutilised — 14 customers',
-    sub: 'Configuration review, no site visit required'
-  }
-];
 
 export default function Hero() {
   return (
-    <header className="bg-business-glow py-15 min-[760px]:py-[100px]">
+    <header className="relative isolate overflow-hidden">
       <Wrap>
-        <div className="grid items-center gap-11 min-[980px]:grid-cols-[1.05fr_1fr] min-[980px]:gap-[70px]">
+        <div className="grid items-center gap-14 py-20 min-[760px]:py-24 min-[1000px]:min-h-[86vh] min-[1000px]:grid-cols-[0.92fr_1.08fr] min-[1000px]:gap-12 min-[1180px]:gap-16">
+          {/* ---------- The words ---------- */}
           <div>
-            <Reveal>
-              <Eyebrow size="hero">Guardian Care for Business</Eyebrow>
+            <Reveal
+              className={cn(
+                LABEL_BASE,
+                'inline-flex items-center gap-3 text-[12px] tracking-[.22em] text-green'
+              )}
+            >
+              <Glyph name="business" className="h-5 w-5" />
+              For solar and energy companies
             </Reveal>
 
             <Reveal
               as="h1"
-              delay={0.06}
-              className="mb-[22px] font-display text-[clamp(38px,5.4vw,64px)] font-semibold uppercase leading-[1.02]"
+              delay={0.05}
+              className="mt-7 font-display text-[clamp(40px,5.4vw,70px)] font-semibold uppercase leading-[0.9] tracking-[-0.02em] text-ink"
             >
-              Keep your customers
+              You install it.
               <br />
-              <span className="text-brand-gradient">after the installation.</span>
+              We keep it
+              <br />
+              <span className="text-brand-gradient">on your screen.</span>
             </Reveal>
 
             <Reveal
               as="p"
-              delay={0.12}
-              className="mb-9 max-w-[580px] text-[17px] font-light leading-[1.65] text-muted min-[760px]:text-[18px]"
+              delay={0.1}
+              className="mt-7 max-w-[500px] text-[17px] font-light leading-[1.65] text-muted min-[760px]:text-[18.5px]"
             >
-              If you already install solar, batteries or energy systems, Guardian Care turns customer
-              and system information into ongoing energy intelligence — so you can see what is
-              happening across your customer base, and know when somebody needs support,
-              optimisation or advice.
+              Every system you have ever installed, live on one console — and the day one of them
+              needs you, it says so first.
             </Reveal>
 
-            <Reveal delay={0.18} className="flex flex-wrap items-center gap-x-7 gap-y-2">
-              <a href="#assess" className={BTN}>
-                Start my business assessment →
+            <Reveal delay={0.16} className="mt-10 flex flex-wrap items-center gap-3">
+              <a href="#console" className={PRIMARY}>
+                See the console →
               </a>
-              <a href="#portfolio" className={BTN_LINE}>
-                See the portfolio view
+              <a href="#join" className={SECONDARY}>
+                How you join
               </a>
+            </Reveal>
+
+            <Reveal
+              delay={0.22}
+              className="mono mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10.5px] uppercase tracking-[.16em] text-faint"
+            >
+              <span>Works with your monitoring</span>
+              <span aria-hidden="true" className="text-faint/50">
+                &#9671;
+              </span>
+              <span>Your branding</span>
+              <span aria-hidden="true" className="text-faint/50">
+                &#9671;
+              </span>
+              <span>No rebuild</span>
             </Reveal>
           </div>
 
-          <Reveal delay={0.16}>
-            <BrowserFrame url="command.guardiancare.io" badge="Live" bodyClassName="p-5">
-              <div className="mb-3.5 grid grid-cols-2 gap-px overflow-hidden rounded-tile border border-line-2 bg-line-2">
-                {KPIS.map((kpi) => (
-                  <div key={kpi.label} className="bg-bg/70 px-4 py-3.5">
-                    <div className={`mono text-2xl font-semibold ${TONE_TEXT[kpi.tone]}`}>
-                      {kpi.value}
-                    </div>
-                    <div className="mt-1 text-[11px] uppercase tracking-[.14em] text-faint">
-                      {kpi.label}
-                    </div>
-                  </div>
-                ))}
+          {/* ---------- The portfolio ---------- */}
+          <Reveal animation="animate-card-in" delay={0.2} className="w-full">
+            <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
+              <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-3.5 min-[520px]:px-6">
+                <span className="flex items-center gap-2.5">
+                  <LiveDot />
+                  <span className={cn(LABEL, 'text-green')}>Portfolio</span>
+                </span>
+                <Caption>One dot, one customer</Caption>
               </div>
 
-              {ROWS.map((row, i) => (
-                <div
-                  key={row.title}
-                  className={`glass flex items-start gap-3.5 rounded-tile border border-line-2 px-4 py-3.5 ${
-                    i === ROWS.length - 1 ? '' : 'mb-2.5'
-                  }`}
-                >
-                  <span
-                    className={`mt-[7px] h-2 w-2 shrink-0 rounded-full ${
-                      row.tone === 'green' ? 'bg-green' : 'bg-amber'
-                    }`}
-                  />
+              <div className="px-5 py-6 min-[520px]:px-6">
+                <div className="flex items-end justify-between gap-4">
                   <div>
-                    <div className="text-sm font-medium">{row.title}</div>
-                    <div className="mt-1 text-[12.5px] font-light text-muted">{row.sub}</div>
+                    <div className={cn(LABEL, 'text-faint')}>Customers monitored</div>
+                    <div className="mono mt-3 text-[clamp(38px,6.5vw,56px)] font-semibold leading-none text-ink">
+                      <Counter value={CC_CUSTOMERS.toLocaleString('en-GB')} />
+                    </div>
+                  </div>
+
+                  {/* The one number the console exists to produce. */}
+                  <div className="text-right">
+                    <div className={cn(LABEL, 'text-faint')}>Need you today</div>
+                    <div className="mono mt-3 text-[clamp(28px,4.4vw,38px)] font-semibold leading-none text-amber">
+                      <Counter value={String(CC_ATTENTION)} />
+                    </div>
                   </div>
                 </div>
-              ))}
-            </BrowserFrame>
+
+                <Portfolio className="mt-7" />
+                <PortfolioKey className="mt-6 border-t border-line-2 pt-5" />
+              </div>
+            </div>
           </Reveal>
         </div>
       </Wrap>

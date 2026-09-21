@@ -25,14 +25,14 @@ export default function CommandField() {
           directly on top of it is the sun arriving at somebody's roof. */}
       <div
         className="absolute -top-[22%] left-1/2 h-[80vw] w-[80vw] -translate-x-1/2 rounded-full blur-[140px]"
-        style={{background: 'radial-gradient(circle, rgba(255,198,98,0.09), transparent 66%)'}}
+        style={{background: 'radial-gradient(circle, rgba(255,210,97,0.09), transparent 66%)'}}
       />
 
       {/* A lime wash where the journeys sit, so the middle of the page is lit
           by the other half of the wordmark. */}
       <div
         className="absolute top-[26%] -left-[18%] h-[56vw] w-[56vw] rounded-full blur-[150px]"
-        style={{background: 'radial-gradient(circle, rgba(154,204,8,0.055), transparent 68%)'}}
+        style={{background: 'radial-gradient(circle, rgba(113,190,19,0.055), transparent 68%)'}}
       />
 
       {/* And the panel blue, far enough down to light the operations half. */}
@@ -48,7 +48,7 @@ export default function CommandField() {
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(90deg, rgba(10,11,13,0.85), transparent 18%, transparent 82%, rgba(10,11,13,0.85)), linear-gradient(180deg, transparent 0%, transparent 96%, rgba(10,11,13,0.9))'
+            'linear-gradient(90deg, color-mix(in srgb, var(--color-bg) 85%, transparent), transparent 18%, transparent 82%, color-mix(in srgb, var(--color-bg) 85%, transparent)), linear-gradient(180deg, transparent 0%, transparent 96%, color-mix(in srgb, var(--color-bg) 90%, transparent))'
         }}
       />
     </div>

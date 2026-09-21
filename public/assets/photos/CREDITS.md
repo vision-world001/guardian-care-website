@@ -10,7 +10,7 @@ licence you can ship.
 
 | File | Used by | Photographer | Source |
 |------|---------|--------------|--------|
-| `home.jpg` | `/existing` — "Now connect Guardian Care" | Joohyun (`thisisjooh`) | https://www.pexels.com/photo/charming-brazilian-house-with-solar-panels-at-sunset-38651938/ |
+| `home.jpg` | `/consumer` — "Should not be left unseen" | Joohyun (`thisisjooh`) | https://www.pexels.com/photo/charming-brazilian-house-with-solar-panels-at-sunset-38651938/ |
 | `evening.jpg` | `/plan` — storage section | Tamás Molnár | https://www.pexels.com/photo/wooden-house-with-solar-panels-at-sunset-33757669/ |
 | `asking.jpg` | `/plan` — "Ask Guardian Care" | Anete Lusina | https://www.pexels.com/photo/woman-using-smart-phone-by-window-9832140/ |
 

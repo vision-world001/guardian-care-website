@@ -6,7 +6,7 @@ import {cn} from '../lib/cn';
  *
  * The page is about somebody's house and needs to look like it — a homeowner
  * recognises a roof long before they recognise a chart. But a daylight
- * photograph dropped straight onto #00060f glares, and instantly reads as
+ * photograph dropped straight onto #050e1a glares, and instantly reads as
  * stock art pasted onto a product. So every image is pulled down in
  * brightness, cooled slightly, and married to the ground beneath it with a
  * gradient veil, which is also what keeps overlaid type legible.

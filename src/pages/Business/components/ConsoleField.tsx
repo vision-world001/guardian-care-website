@@ -8,7 +8,7 @@ import GridPulses from './GridPulses';
  * rather than a document — so the ground is a measured grid with slow glows
  * behind it, and the edges fall away so nothing competes with a readout.
  *
- * The grid is the whole idea. Six sections of flat #00060f read as an empty
+ * The grid is the whole idea. Six sections of flat #050e1a read as an empty
  * page no matter how good the content on top of it is; a faint 56px rule gives
  * every readout something to sit on and quietly says *this is a system*. It is
  * held at under 3% white — visible as texture, never as lines you could count.
@@ -72,7 +72,7 @@ export default function ConsoleField() {
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(90deg, rgba(0,6,15,0.9), transparent 20%, transparent 80%, rgba(0,6,15,0.9)), linear-gradient(180deg, transparent 0%, transparent 95%, rgba(0,6,15,0.85))'
+            'linear-gradient(90deg, color-mix(in srgb, var(--color-bg) 90%, transparent), transparent 20%, transparent 80%, color-mix(in srgb, var(--color-bg) 90%, transparent)), linear-gradient(180deg, transparent 0%, transparent 95%, color-mix(in srgb, var(--color-bg) 85%, transparent))'
         }}
       />
     </div>

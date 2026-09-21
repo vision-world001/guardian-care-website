@@ -5,11 +5,12 @@ import {TONE_BG, TONE_TEXT, type StatusGlyph, type StatusTone} from '../data/com
 
 /* ---------- Buttons ---------- */
 
-/** Solid gradient button. Apply to <a>, <button> or <Link>. */
+/** Solid brand-green button. Apply to <a>, <button> or <Link>. */
 export const BTN =
-  'inline-flex items-center justify-center gap-2.5 rounded-pill bg-brand-gradient px-[30px] py-[16px] ' +
-  'text-[13px] font-bold uppercase tracking-[.08em] text-bg shadow-[0_10px_30px_-12px_var(--btn-glow)] ' +
-  'transition duration-200 ease-brand hover:-translate-y-0.5 hover:brightness-110 ' +
+  'inline-flex items-center justify-center gap-2.5 rounded-pill bg-[var(--cta)] px-[30px] py-[16px] ' +
+  'text-[13px] font-bold uppercase tracking-[.08em] text-[var(--cta-ink)] ' +
+  'shadow-[0_10px_30px_-12px_var(--btn-glow)] ' +
+  'transition duration-200 ease-brand hover:-translate-y-0.5 hover:bg-[var(--cta-hover)] ' +
   'hover:shadow-[0_18px_44px_-14px_var(--btn-glow)]';
 
 /**
@@ -18,10 +19,10 @@ export const BTN =
  * console and reads as shouting on a daylight page about somebody's house.
  */
 export const ACTION =
-  'inline-flex items-center justify-center gap-2.5 rounded-full bg-brand-gradient px-8 py-4 ' +
-  'text-[15.5px] font-medium tracking-[-0.005em] text-bg ' +
+  'inline-flex items-center justify-center gap-2.5 rounded-full bg-[var(--cta)] px-8 py-4 ' +
+  'text-[15.5px] font-medium tracking-[-0.005em] text-[var(--cta-ink)] ' +
   'shadow-[0_14px_34px_-14px_var(--btn-glow)] transition duration-250 ease-brand ' +
-  'hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_22px_46px_-16px_var(--btn-glow)]';
+  'hover:-translate-y-0.5 hover:bg-[var(--cta-hover)] hover:shadow-[0_22px_46px_-16px_var(--btn-glow)]';
 
 export const ACTION_QUIET =
   'inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-4 text-[15px] ' +
@@ -79,8 +80,8 @@ export function Section({
   alt?: boolean;
   /**
    * Divides with a rule instead of a ground. Used wherever a page sits on a
-   * light field: an opaque block would punch a hole in it, and #00060f against
-   * #040d1a is too small a step to divide anything on its own anyway.
+   * light field: an opaque block would punch a hole in it, and #050e1a against
+   * #081321 is too small a step to divide anything on its own anyway.
    */
   hairline?: boolean;
   className?: string;
@@ -454,9 +455,9 @@ export function BrowserFrame({
     >
       <div className="glass-solid flex items-center gap-[11px] border-b border-line-2 px-5 py-[13px]">
         <div className="flex gap-1.5">
-          <i className="h-[9px] w-[9px] rounded-full bg-white/15" />
-          <i className="h-[9px] w-[9px] rounded-full bg-white/15" />
-          <i className="h-[9px] w-[9px] rounded-full bg-white/15" />
+          <i className="h-[9px] w-[9px] rounded-full bg-ink/15" />
+          <i className="h-[9px] w-[9px] rounded-full bg-ink/15" />
+          <i className="h-[9px] w-[9px] rounded-full bg-ink/15" />
         </div>
         <span className="mono ml-2 truncate text-[11.5px] text-faint">{url}</span>
         <span className="ml-auto shrink-0 rounded-pill border border-line px-3 py-1 text-[10px] font-bold uppercase tracking-[.14em] text-green">

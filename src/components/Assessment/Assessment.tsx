@@ -127,7 +127,7 @@ export default function Assessment({
   const multiPicked = step?.kind === 'multi' ? (answers.multi[step.key] ?? []) : [];
 
   return (
-    <div className="grid gap-px overflow-hidden rounded-[22px] bg-line-2 ring-1 ring-line-2 min-[980px]:grid-cols-[1fr_306px]">
+    <div className="grid gap-px overflow-hidden rounded-panel bg-line-2 ring-1 ring-line-2 min-[980px]:grid-cols-[1fr_306px]">
       {/* ---------- The question ---------- */}
       <div className="bg-panel p-6 min-[760px]:p-9">
         {done ? (
@@ -158,7 +158,7 @@ export default function Assessment({
                   {step.fields.map((field) => (
                     <label
                       key={field.key}
-                      className="block rounded-[14px] bg-bg-2 p-4 ring-1 ring-line-2 transition focus-within:ring-green/60"
+                      className="block rounded-card bg-bg-2 p-4 ring-1 ring-line-2 transition focus-within:ring-green/60"
                     >
                       <span className="block text-[13px] font-medium text-ink">{field.label}</span>
                       {field.note ? (
@@ -204,7 +204,7 @@ export default function Assessment({
                           step.kind === 'multi' ? toggle(option.value) : choose(option.value)
                         }
                         className={cn(
-                          'group flex items-center gap-3 rounded-[14px] px-4 py-3.5 text-left transition duration-200 ease-brand',
+                          'group flex items-center gap-3 rounded-card px-4 py-3.5 text-left transition duration-200 ease-brand',
                           picked
                             ? 'bg-green-glow ring-2 ring-green'
                             : 'bg-bg-2 ring-1 ring-line-2 hover:-translate-y-0.5 hover:ring-green/45'
@@ -236,7 +236,7 @@ export default function Assessment({
                   card above, because an input inside a button is not a control
                   anybody can reliably operate. */}
               {openInput ? (
-                <div className="mt-3 flex flex-wrap items-center gap-3 rounded-[14px] bg-bg-2 p-4 ring-1 ring-green/40">
+                <div className="mt-3 flex flex-wrap items-center gap-3 rounded-card bg-bg-2 p-4 ring-1 ring-green/40">
                   <label className="flex flex-1 items-baseline gap-2">
                     <span className="sr-only">{step.title}</span>
                     <input
@@ -257,7 +257,7 @@ export default function Assessment({
             </div>
 
             {/* ---------- Why we ask ---------- */}
-            <div className="mt-7 rounded-[14px] border-l-2 border-green/45 bg-bg-2/70 px-5 py-4">
+            <div className="mt-7 rounded-card border-l-2 border-green/45 bg-bg-2/70 px-5 py-4">
               <div className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
                 {step.why.heading}
               </div>
@@ -283,7 +283,7 @@ export default function Assessment({
                   type="button"
                   onClick={() => advance(answers)}
                   disabled={step.kind === 'multi' && multiPicked.length === 0}
-                  className="inline-flex items-center gap-2.5 rounded-full bg-brand-gradient px-7 py-3 text-[14px] font-semibold tracking-[-0.005em] text-bg shadow-[0_12px_30px_-14px_var(--btn-glow)] transition duration-200 ease-brand hover:-translate-y-0.5 hover:brightness-110 disabled:pointer-events-none disabled:opacity-40"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-[var(--cta)] px-7 py-3 text-[14px] font-semibold tracking-[-0.005em] text-[var(--cta-ink)] shadow-[0_12px_30px_-14px_var(--btn-glow)] transition duration-200 ease-brand hover:-translate-y-0.5 hover:brightness-110 disabled:pointer-events-none disabled:opacity-40"
                 >
                   {last ? finishLabel : 'Continue'} →
                 </button>

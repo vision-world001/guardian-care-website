@@ -228,305 +228,272 @@ export function readBusiness(answers: Answers): BusinessPosition {
     customerTypes: answers.multi.customers ?? []
   };
 }
+/* ============================================================
+   What the page says, in as few words as it can say it.
 
-/* ---------- Acquire · Capture · Retain ---------- */
+   The reader here runs an installation company. They are not reading; they
+   are deciding whether to keep scrolling, and every section below therefore
+   carries one idea, drawn, with a line of text under it rather than a
+   paragraph beside it. Where a sentence could be a diagram it is a diagram.
+   ============================================================ */
 
-export type Pillar = {
-  key: string;
-  glyph: GlyphName;
-  name: string;
-  headline: string;
-  lead: string;
-  tone: StatusTone;
-  columns: Array<{heading: string; items: string[]}>;
-  close: string;
-};
+/* ---------- Where the relationship stops today ---------- */
 
-export const PILLARS: Pillar[] = [
-  {
-    key: 'acquire',
-    glyph: 'acquire',
-    name: 'Acquire',
-    headline: 'Bring new and existing customers into one intelligent journey',
-    lead: 'The customer is not filling in a lead form. They are beginning an energy assessment — and what they tell you is the start of their profile rather than the end of a capture.',
-    tone: 'green',
-    columns: [
-      {
-        heading: 'From an existing solar customer',
-        items: [
-          'Current solar system',
-          'Battery storage',
-          'Inverter',
-          'Installation age',
-          'Monitoring',
-          'Import and export position',
-          'Electricity tariff',
-          'Current system concerns'
-        ]
-      },
-      {
-        heading: 'From a new customer',
-        items: [
-          'What they currently pay for electricity',
-          'Whether they are considering solar',
-          'Whether they are interested in battery storage',
-          'What they want to reduce or improve',
-          'What questions they have before they buy'
-        ]
-      }
-    ],
-    close: 'Both routes arrive in the same place, with source attached, so nothing is worked twice or lost between systems.'
-  },
-  {
-    key: 'capture',
-    glyph: 'capture',
-    name: 'Capture',
-    headline: 'Give your team a better understanding of every system',
-    lead: 'Your engineers and advisors capture the important information around each customer through one structured onsite process — and what they record today becomes tomorrow’s customer intelligence.',
-    tone: 'blue',
-    columns: [
-      {
-        heading: 'One structured profile',
-        items: [
-          'Solar',
-          'Battery',
-          'Inverter',
-          'Generation',
-          'Grid import',
-          'Grid export',
-          'Electricity rates',
-          'Monitoring',
-          'System condition',
-          'Customer objectives'
-        ]
-      }
-    ],
-    close: 'Instead of valuable system information sitting inside engineer notes, spreadsheets and separate apps, it becomes a usable customer profile the platform can measure against.'
-  },
-  {
-    key: 'retain',
-    glyph: 'retain',
-    name: 'Retain',
-    headline: 'Make installation the start of the relationship, not the end',
-    lead: 'Once a customer is connected, your business can keep understanding what is happening across their system — and contact them when there is something real to say.',
-    tone: 'purple',
-    columns: [
-      {
-        heading: 'What keeps surfacing',
-        items: [
-          'Performance changes',
-          'Battery behaviour',
-          'High grid usage',
-          'High export',
-          'Monitoring issues',
-          'Review opportunities',
-          'Future upgrade requirements'
-        ]
-      }
-    ],
-    close: 'Reports, service scheduling, reviews and renewal prompts run on a cadence, so contact continues without depending on anyone remembering.'
-  }
-];
+/**
+ * The two chains the page opens on.
+ *
+ * `TODAY_CHAIN` is four stages and then nothing, which is the whole argument:
+ * every company reading this already runs it, and already knows what follows
+ * the last box. `GUARDIAN_CHAIN` is drawn on the same rail so the eye reads it
+ * as the same line continuing rather than as a different product.
+ *
+ * None of the seven is a sales stage. That is deliberate, and it is the part
+ * an installer will check for.
+ */
+export const TODAY_CHAIN = ['Lead', 'Sale', 'Install', 'Handover'];
 
-/** The shape of the relationship, with and without the platform. */
-export const WITHOUT_CHAIN = ['Lead', 'Sale', 'Installation', 'Handover'];
-export const WITH_CHAIN = [
-  'Acquire',
+export const GUARDIAN_CHAIN = [
   'Capture',
-  'Install',
+  'Connect',
   'Monitor',
-  'Understand',
-  'Engage',
+  'Detect',
+  'Advise',
+  'Resolve',
   'Retain'
 ];
 
-/* ---------- Signals ---------- */
+/* ---------- The three products ---------- */
 
-export type Signal = {
+export type Product = {
   key: string;
   glyph: GlyphName;
-  name: string;
   tone: StatusTone;
-  observed: string;
-  review: string;
+  name: string;
+  /** Two words. What this product does, as an instruction. */
+  verb: string;
+  who: string;
+  line: string;
+  /** Three capabilities, four words each. Scanned, never read. */
+  points: string[];
 };
 
-export const SIGNALS: Signal[] = [
+export const PRODUCTS: Product[] = [
   {
-    key: 'import',
-    glyph: 'import',
-    name: 'High grid import',
+    key: 'onsite',
+    glyph: 'capture',
     tone: 'amber',
-    observed: 'Your customer has solar but continues to purchase significant electricity.',
-    review: 'Generation, storage or tariff position.'
+    name: 'Onsite',
+    verb: 'Capture it',
+    who: 'Your engineers',
+    line: 'One visit turns an unknown installation into a digital record.',
+    points: ['System profile', 'Electrical condition', 'Findings raised automatically']
   },
   {
-    key: 'export',
-    glyph: 'export',
-    name: 'High solar export',
+    key: 'operations',
+    glyph: 'portfolio',
+    tone: 'green',
+    name: 'Operations',
+    verb: 'Run it',
+    who: 'Your team',
+    line: 'One screen for every system you have ever installed.',
+    points: ['Portfolio at a glance', 'Alerts by priority', 'Tasks that assign themselves']
+  },
+  {
+    key: 'customer',
+    glyph: 'insight',
     tone: 'blue',
-    observed: 'Your customer regularly sends surplus energy back to the grid.',
-    review: 'Battery storage or self-consumption opportunity.'
+    name: 'My Guardian Care',
+    verb: 'Show them',
+    who: 'Your customer',
+    line: 'The customer sees their own energy, in their own words.',
+    points: ['Today at a glance', 'Plain-English advice', 'A monthly report']
+  }
+];
+
+/* ---------- What it watches, so nobody has to ---------- */
+
+export type Watch = {
+  key: string;
+  glyph: GlyphName;
+  tone: StatusTone;
+  /** The condition, in four or five words. */
+  trigger: string;
+  /** What the platform does about it, in five or six. */
+  action: string;
+};
+
+/**
+ * The rules engine as six lines.
+ *
+ * The specification lists nine or ten conditions and a paragraph for each.
+ * Six, at five words, make the same point faster: this is already running, and
+ * none of it needs a person to notice first. The `action` column is the half
+ * that matters — a platform that only detects things has moved the work rather
+ * than removed it.
+ */
+export const WATCH: Watch[] = [
+  {
+    key: 'offline',
+    glyph: 'connect',
+    tone: 'amber',
+    trigger: 'Monitoring goes quiet',
+    action: 'Raised before the customer notices'
+  },
+  {
+    key: 'generation',
+    glyph: 'health',
+    tone: 'orange',
+    trigger: 'Generation drifts below baseline',
+    action: 'Weather-adjusted first, then escalated'
+  },
+  {
+    key: 'fault',
+    glyph: 'inverter',
+    tone: 'red',
+    trigger: 'An inverter reports a fault',
+    action: 'Engineer task, same day'
   },
   {
     key: 'battery',
     glyph: 'storage',
-    name: 'Battery underutilised',
     tone: 'purple',
-    observed: 'Available storage does not appear to be used effectively.',
-    review: 'Battery configuration or tariff strategy.'
+    trigger: 'A battery never empties',
+    action: 'Schedule reviewed remotely, no visit'
   },
   {
-    key: 'performance',
-    glyph: 'health',
-    name: 'System performance change',
-    tone: 'orange',
-    observed: 'Generation has changed from the expected or recent baseline.',
-    review: 'System performance.'
-  }
-];
-
-/** Every insight answers the same three questions, in the same order. */
-export const INSIGHT_QUESTIONS = [
-  {q: 'What happened?', a: 'Guardian Care identifies the change or opportunity.'},
-  {q: 'Why does it matter?', a: 'We explain the impact in simple terms.'},
-  {q: 'What should your team do?', a: 'Guardian Care suggests the next action.'}
-];
-
-/** The worked example the whole Retain argument rests on. */
-export const EXAMPLE_INSIGHT = {
-  title: 'High export detected',
-  tone: 'blue' as StatusTone,
-  sees: 'Your customer is exporting a significant amount of surplus solar energy during the day.',
-  matters: 'The customer is also purchasing electricity from the grid later, at several times what those exported units earned.',
-  action:
-    'Review whether battery storage, additional capacity or configuration could help the customer use more of their own generated electricity.',
-  options: ['Contact customer', 'Send energy review', 'Book assessment', 'Create quote', 'Monitor further']
-};
-
-/** What a conversation sounds like before and after the platform. */
-export const CONVERSATION = {
-  before: 'Would you like another product?',
-  after: 'We have reviewed your energy position and noticed that your system is exporting a high amount of solar while you are still purchasing electricity from the grid later in the day.'
-};
-
-/* ---------- The portfolio view ---------- */
-
-export type PortfolioGroup = {
-  name: string;
-  glyph: GlyphName;
-  tone: StatusTone;
-  rows: string[];
-};
-
-export const PORTFOLIO: PortfolioGroup[] = [
-  {
-    name: 'Your portfolio',
-    glyph: 'portfolio',
-    tone: 'green',
-    rows: [
-      'Customers connected',
-      'Systems healthy',
-      'Customers requiring attention',
-      'Monitoring active',
-      'Reviews due'
-    ]
-  },
-  {
-    name: 'Energy intelligence',
-    glyph: 'insight',
+    key: 'export',
+    glyph: 'export',
     tone: 'blue',
-    rows: [
-      'High export',
-      'High grid import',
-      'Battery opportunities',
-      'Performance reviews',
-      'Monitoring issues'
-    ]
+    trigger: 'Exports high, imports higher',
+    action: 'Storage opportunity, with the evidence'
   },
   {
-    name: 'Customer engagement',
-    glyph: 'retain',
-    tone: 'purple',
-    rows: ['Customers to contact', 'Assessments due', 'Open recommendations', 'Quotes', 'Follow-ups']
+    key: 'tariff',
+    glyph: 'tariff',
+    tone: 'green',
+    trigger: 'A tariff stops matching use',
+    action: 'Advice sent, in plain English'
   }
 ];
 
-/* ---------- Markets ---------- */
+/* ---------- One event, two readings ---------- */
 
-export type BusinessMarket = {
+/**
+ * The same fault, written twice.
+ *
+ * This is the shortest possible statement of what the platform is for, and it
+ * is why the page can carry both a consumer product and an operations console
+ * without contradicting itself. The customer is protected from the detail; the
+ * team is given all of it. Neither is a simplification of the other — they are
+ * two renderings of one record.
+ */
+export const EVENT = {
+  raw: 'Inverter fault 205',
+  customer: {
+    who: 'What your customer sees',
+    tone: 'blue' as StatusTone,
+    glyph: 'insight' as GlyphName,
+    line: 'We have spotted something on your solar system. Guardian Care is looking into it.'
+  },
+  operator: {
+    who: 'What your team sees',
+    tone: 'orange' as StatusTone,
+    glyph: 'tool' as GlyphName,
+    line: 'Fault 205 — fourth occurrence in 72 hours. Engineering review triggered.',
+    fields: [
+      ['Customer', 'R. Delgado'],
+      ['System', '6.4 kWp hybrid'],
+      ['Last visit', '14 months ago']
+    ] as Array<[string, string]>
+  }
+};
+
+/* ---------- Revenue that argues for itself ---------- */
+
+/**
+ * The upgrade conversation, before and after.
+ *
+ * Both sentences sell the same battery. The first is the one every installer
+ * in the market is already sending, and it is ignored because it could have
+ * been sent to anybody. The second could only have been sent to this customer,
+ * and that is the entire difference the platform makes to a sales team.
+ */
+export const OPPORTUNITY = {
+  exported: 2200,
+  imported: 1800,
+  window: 'the last 12 months',
+  weak: 'Have you considered adding a battery?',
+  strong:
+    'Your system sold 2,200 kWh to the grid this year and bought 1,800 kWh back after dark. Storage would keep most of it.'
+};
+
+/* ---------- Joining ---------- */
+
+export type JoinStep = {
   key: string;
+  glyph: GlyphName;
   name: string;
   line: string;
-  fields: Array<[string, string]>;
+  /** The objection this step answers, in two words. */
+  note: string;
 };
 
-export const BUSINESS_MARKETS: BusinessMarket[] = [
+/**
+ * Four steps, because the honest answer is four steps.
+ *
+ * Each one carries the objection it exists to remove — no rebuild, your
+ * branding, day one — because an installer's first three questions about a
+ * platform are always how long, how much work, and whose name is on it.
+ */
+export const JOIN: JoinStep[] = [
   {
-    key: 'us',
-    name: 'United States',
-    line: 'Understand utility rates, solar generation, storage and customer grid dependency.',
-    fields: [
-      ['Currency', 'USD ($)'],
-      ['Export scheme', 'Net metering, state-level'],
-      ['Typical driver', 'NEM transition, storage retrofit']
-    ]
+    key: 'talk',
+    glyph: 'question',
+    name: 'Talk',
+    line: 'Tell us the shape of your installed base.',
+    note: 'One call'
   },
   {
-    key: 'au',
-    name: 'Australia',
-    line: 'Understand feed-in tariffs, solar export, battery opportunities and self-consumption.',
-    fields: [
-      ['Currency', 'AUD (A$)'],
-      ['Export scheme', 'State FiT, retailer-set'],
-      ['Typical driver', 'High export without storage']
-    ]
+    key: 'connect',
+    glyph: 'connect',
+    name: 'Connect',
+    line: 'We link your monitoring and your existing records.',
+    note: 'No rebuild'
   },
   {
-    key: 'sea',
-    name: 'Southeast Asia',
-    line: 'Understand solar usage, grid cost, storage requirements and energy resilience.',
-    fields: [
-      ['Currency', 'Local (฿, RM, ₱)'],
-      ['Export scheme', 'Net billing / VSPP'],
-      ['Typical driver', 'Self-consumption, resilience']
-    ]
+    key: 'onboard',
+    glyph: 'retain',
+    name: 'Onboard',
+    line: 'Your customers get a dashboard with your name on it.',
+    note: 'Your branding'
   },
   {
-    key: 'uae',
-    name: 'Dubai / UAE',
-    line: 'Understand high-consumption properties, solar opportunity, monitoring and optimisation.',
-    fields: [
-      ['Currency', 'AED (د.إ)'],
-      ['Export scheme', 'Shams / net metering'],
-      ['Typical driver', 'Cooling load, performance']
-    ]
-  },
-  {
-    key: 'uk',
-    name: 'United Kingdom',
-    line: 'Understand legacy FIT positions, export arrangements and grid-cost exposure.',
-    fields: [
-      ['Currency', 'GBP (£)'],
-      ['Export scheme', 'SEG, legacy FIT'],
-      ['Typical driver', 'Legacy tariff protection']
-    ]
+    key: 'operate',
+    glyph: 'portfolio',
+    name: 'Operate',
+    line: 'You open the console and it is already running.',
+    note: 'Day one'
   }
 ];
 
-/* ---------- What changes ---------- */
+/* ---------- Where it runs ---------- */
 
-export const SHIFTS: Array<[string, string]> = [
-  ['Knowing who your customers are', 'Understanding what is happening across their systems'],
-  ['Waiting for customers to contact you', 'Knowing when there is a reason to engage'],
-  ['Completed installations', 'An actively managed customer portfolio']
+/** Compact enough to be a strip rather than a section of its own. */
+export const MARKETS: Array<{name: string; currency: string; driver: string}> = [
+  {name: 'United Kingdom', currency: 'GBP', driver: 'Legacy FIT positions'},
+  {name: 'United States', currency: 'USD', driver: 'NEM transition'},
+  {name: 'Australia', currency: 'AUD', driver: 'High export, no storage'},
+  {name: 'Dubai / UAE', currency: 'AED', driver: 'Cooling load'},
+  {name: 'Southeast Asia', currency: 'THB', driver: 'Self-consumption'}
 ];
+
+/* ---------- What the assessment suggests first ---------- */
 
 /** The rollout Guardian Care suggests to a business with a dormant database. */
 export const ROLLOUT = [
-  'Recapturing customer system information',
-  'Building digital system profiles',
-  'Connecting suitable monitoring',
-  'Identifying energy and support opportunities',
-  'Creating structured customer follow-up'
+  'Recapture customer system information',
+  'Build digital system profiles',
+  'Connect suitable monitoring',
+  'Identify energy and support opportunities',
+  'Create structured customer follow-up'
 ];

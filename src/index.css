@@ -5,45 +5,76 @@
    Ported 1:1 from the original brand stylesheet.
    ============================================================ */
 @theme {
-  /* Surfaces */
-  --color-bg: #00060f;
-  --color-bg-2: #040d1a;
-  --color-panel: #071426;
-  --color-panel-2: #0a1b30;
+  /* The ground, and the mark's own navy.
+     ------------------------------------------------------------
+     The site is dark, as it has always been. What changed is that the dark is
+     no longer a charcoal or a blue-black chosen to sit near the logo — it is
+     #011227, the brand navy itself.
 
-  /* Hairlines */
-  --color-line: rgba(61, 220, 151, 0.18);
+     Stated here rather than under a class so that no-class means the site, and
+     the ground never shifts between first paint and React mounting. */
+
+  /* Surfaces: navy on the floor, slate at the top.
+     ------------------------------------------------------------
+     The four steps used to be one hue — #011227 lifted toward a brighter navy
+     — which made a panel read as a lit patch of the page rather than as an
+     object on it. Stepping toward #17222d instead drops the saturation from
+     95% to 32% on the way up, so a card separates from the ground by going
+     quieter rather than bluer, and the two colours at the ends of the ramp are
+     both brand colours rather than one brand colour and three tints of it. */
+  --color-bg: #011227;
+  --color-bg-2: #081729;
+  --color-panel: #101d2b;
+  --color-panel-2: #17222d;
+
+  /* Hairlines: the green at low strength where a rule is brand, white where
+     it is only structure. */
+  --color-line: rgba(112, 169, 20, 0.22);
   --color-line-2: rgba(255, 255, 255, 0.1);
 
-  /* Type */
+  /* Type, straight off the brand sheet: white headings and the supporting
+     grey it names. `faint` is derived — the sheet gives no third step — and
+     held at 5.6:1 on the panel so the mono captions this site leans on stay
+     readable. */
   --color-ink: #ffffff;
-  --color-muted: #93a4b8;
-  --color-faint: #63768c;
+  --color-muted: #d5dee5;
+  --color-faint: #7e97a9;
 
-  /* Accents */
-  --color-green: #3ddc97;
-  --color-green-bright: #5df0b0;
-  --color-green-deep: #22b478;
-  --color-green-glow: rgba(61, 220, 151, 0.13);
-  --color-blue: #2e9bff;
-  --color-blue-bright: #5cb4ff;
-  --color-blue-glow: rgba(46, 155, 255, 0.13);
-  --color-amber: #ffb340;
-  --color-orange: #ff8a5c;
+  /* Accents.
+     ------------------------------------------------------------
+     `--color-green` is not the CTA green. #589009 is a midtone: on this navy
+     it is 4.84:1, which passes as type but only just, and it is the wrong
+     colour to set a 10px tracked label in. So the token type uses is the
+     brand's own hover green at 6.6:1, and the fill stays #589009 — see
+     `--cta`. Same split the blue has always had here, for the same reason.
+
+     The other four are the status tones, which have no colour in the mark and
+     are held at the brightness this ground needs. */
+  --color-green: #70a914;
+  --color-green-bright: #8cc72a;
+  --color-green-deep: #589009;
+  --color-green-glow: rgba(112, 169, 20, 0.14);
+  --color-blue: #3d9ae8;
+  --color-blue-bright: #64b2f0;
+  --color-blue-glow: rgba(0, 116, 211, 0.13);
+  --color-amber: #ffd261;
+  --color-orange: #ff9d4d;
   --color-red: #ff6b5a;
-  --color-purple: #a78bfa;
+  --color-purple: #9d8cff;
 
-  /* Surfaces that let the ground through. The site now sits on a luminous
-     field rather than flat black, so the panels on top of it are translucent —
-     a solid fill would punch a hole in the light behind it. */
-  --color-glass: rgba(10, 27, 48, 0.55);
-  --color-glass-2: rgba(10, 27, 48, 0.75);
+  /* Panels let the ground through: a solid fill would punch a hole in the
+     light behind it. */
+  --color-glass: rgba(23, 34, 45, 0.60);
+  --color-glass-2: rgba(23, 34, 45, 0.82);
 
   /* Corner radii, named by the thing they belong to rather than by size, so a
      card and a tile stay distinguishable if either is retuned later. */
   --radius-tile: 10px;
   --radius-card: 14px;
   --radius-frame: 18px;
+  /* The assessment's outer shell — larger than a frame on the journeys, where
+     it is the one soft object on the page. */
+  --radius-panel: 22px;
   --radius-pill: 999px;
 
   /* Typefaces */
@@ -180,53 +211,6 @@
 
 }
 
-/* ============================================================
-   Day theme — the consumer journey
-   ------------------------------------------------------------
-   The two journeys are lit differently on purpose. The business page is a
-   console: dark, because an operator reads it all day in a room with screens
-   in it. The consumer page is about somebody's house at midday, and a
-   homeowner opening it once a month should walk into daylight, not into an
-   operations centre.
-
-   Every token below is the same hue as its dark counterpart, restepped for a
-   white ground. Nothing else in the codebase changes: Tailwind compiles each
-   colour utility to `var(--color-…)`, so redefining the variables on <html>
-   flips the entire route — page, chrome, charts and all.
-
-   The accents are darker than the brand's own green and blue because those
-   are display colours meant for near-black, and at 3.4:1 they fail as text on
-   white. `#0e8259` clears 4.9:1 as type AND passes every check for a chart
-   series (CVD ΔE 20.3, contrast above 3:1), so one token still does both jobs.
-   ============================================================ */
-.theme-day {
-  --color-bg: #f7f9fb;
-  --color-bg-2: #eaf0f7;
-  --color-panel: #ffffff;
-  --color-panel-2: #f3f7fb;
-
-  --color-line: rgba(14, 130, 89, 0.24);
-  --color-line-2: rgba(5, 25, 47, 0.13);
-
-  --color-ink: #07182b;
-  --color-muted: #4a6076;
-  --color-faint: #5f7386;
-
-  --color-green: #0e8259;
-  --color-green-bright: #12a06e;
-  --color-green-deep: #0a6644;
-  --color-green-glow: rgba(14, 130, 89, 0.11);
-  --color-blue: #1668c9;
-  --color-blue-bright: #2e86e8;
-  --color-blue-glow: rgba(22, 104, 201, 0.1);
-  --color-amber: #9a5c00;
-  --color-orange: #b4531c;
-  --color-red: #c0392b;
-  --color-purple: #6d4bd6;
-
-  --color-glass: rgba(255, 255, 255, 0.74);
-  --color-glass-2: rgba(255, 255, 255, 0.88);
-}
 
 /* Handset chrome. A phone is a dark object in both themes — that is what makes
    it read as hardware rather than as another panel — but its rail has to
@@ -237,9 +221,9 @@
      that one is tuned for washes behind panels, and at 13% it disappears
      entirely under a button on a white page. This is sized for a cast shadow
      and restepped per theme, so the lift reads the same in both. */
-  --btn-glow: rgba(61, 220, 151, 0.4);
+  --btn-glow: rgba(88, 144, 9, 0.4);
 
-  --scroll-track: #020a14;
+  --scroll-track: #010d1e;
   --scroll-thumb: rgba(255, 255, 255, 0.14);
   --scroll-thumb-hover: rgba(255, 255, 255, 0.28);
 
@@ -270,86 +254,9 @@
 
   /* Stands in for a photograph that failed to load. It has to belong to the
      page it fails on, or a missing file leaves a hole of the opposite theme. */
-  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(61, 220, 151, 0.18), transparent 62%),
-    radial-gradient(ellipse at 78% 74%, rgba(46, 155, 255, 0.2), transparent 64%),
-    linear-gradient(160deg, #0a1b30, #00060f);
-}
-
-.theme-day {
-  --btn-glow: rgba(14, 130, 89, 0.34);
-  --scroll-track: #e7eef6;
-  --scroll-thumb: rgba(10, 30, 54, 0.22);
-  --scroll-thumb-hover: rgba(10, 30, 54, 0.38);
-  --device-body: #10161d;
-  --device-rail: linear-gradient(155deg, #9aa7b5, #46525f 26%, #333e4a 62%, #8a97a5);
-  --device-button: linear-gradient(180deg, #8d9aa8, #47525e 40%, #7e8b99);
-  --device-glare: linear-gradient(
-    118deg,
-    transparent 34%,
-    rgba(10, 30, 54, 0.035) 44%,
-    rgba(10, 30, 54, 0.06) 48%,
-    transparent 58%
-  );
-
-  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(255, 205, 130, 0.5), transparent 62%),
-    radial-gradient(ellipse at 78% 74%, rgba(150, 205, 255, 0.45), transparent 64%),
-    linear-gradient(160deg, #ffffff, #eaf0f7);
-}
-
-/* Utilities whose values are literal rather than tokenised have to be restated
-   for the day theme. These sit outside `@layer`, so they win over the
-   `utilities` layer without needing `!important`. */
-.theme-day .glass {
-  background: var(--color-glass);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 0 0 1px rgba(10, 30, 54, 0.05);
-}
-
-.theme-day .glass-solid {
-  background: var(--color-glass-2);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 0 0 1px rgba(10, 30, 54, 0.05);
-}
-
-/* Elevation on a light ground is a soft, cool, wide shadow — the near-opaque
-   black used on the dark theme reads as a smudge here. */
-.theme-day .shadow-lift {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 18px 44px -22px rgba(12, 38, 68, 0.28),
-    0 2px 8px -4px rgba(12, 38, 68, 0.12);
-}
-
-.theme-day .shadow-lift-hover {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 30px 66px -28px rgba(12, 38, 68, 0.34),
-    0 4px 12px -6px rgba(12, 38, 68, 0.16);
-}
-
-/* Both veils change sign: on the dark theme they darken toward black, here
-   they wash toward the page's own white. */
-.theme-day .bg-home-veil {
-  background:
-    radial-gradient(ellipse 900px 520px at 50% 34%, rgba(247, 249, 251, 0.46), transparent 76%),
-    radial-gradient(ellipse 1000px 560px at 50% 82%, rgba(247, 249, 251, 0.38), transparent 78%);
-}
-
-.theme-day .bg-photo-veil {
-  background: linear-gradient(
-    180deg,
-    rgba(247, 249, 251, 0.1) 0%,
-    rgba(247, 249, 251, 0.42) 62%,
-    var(--color-bg) 100%
-  );
-}
-
-/* Photographs no longer have to be pulled down to survive a black page; they
-   only need their contrast held back so they do not shout past the type. */
-.theme-day .img-graded {
-  filter: brightness(1.02) contrast(0.96) saturate(0.94);
+  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(88, 144, 9, 0.20), transparent 62%),
+    radial-gradient(ellipse at 78% 74%, rgba(0, 116, 211, 0.2), transparent 64%),
+    linear-gradient(160deg, var(--color-panel-2), var(--color-bg));
 }
 
 /* ============================================================
@@ -375,234 +282,63 @@
    were designed in. Tailwind compiles every colour utility to `var(--color-…)`,
    so a class on <html> flips the whole route.
    ============================================================ */
-/* ---- Sampled off the mark ----------------------------------------------
+/* ---- The brand palette -------------------------------------------------
 
-   Not chosen to go with the logo — taken out of it. Every hex below was
-   pulled from the artwork itself:
+   Four colours, and the whole site is built out of them:
 
-     #001126  deep navy      the "G", and 52% of every opaque pixel
-     #0074d3  panel blue     the array stripes at the top right
-     #9acc08  lime           the "C" sweep, hue 75 and fully saturated
-     #ffc662  gold           the glint where the two marks cross
+     #011227  navy     the "G" — the ground everything sits on
+     #17222d  slate    the panel the ground steps up into
+     #589009  green    the "C" — the one accent
+     #dcebbe  pale     the type, and the light end of every ramp
 
-   Worth stating because the first instinct is wrong: the brand's green is a
-   *warm lime* at hue 75, not the mint at hue 155 the rest of the site is told
-   in. They are different colours, and using the site's mint here would have
-   been "roughly the logo" rather than the logo.
+   Two of them do a second job, and the reason is contrast rather than taste.
 
-   Declared on :root rather than inside `.theme-command`. These are brand
+   The green is hue 85 at 30% lightness, which clears 4.84:1 on the navy but
+   only 4.39:1 on the panel — so it carries a heading and fails a 12px label,
+   which is precisely the size it is most often needed at. `--color-green`
+   below is therefore the same hue lifted to 44%, and #589009 itself stays for
+   fills, buttons and anything set large. This is the same split the blue has
+   always had here, for the same reason.
+
+   The pale is the ink. Stepping it down toward the navy to make the muted and
+   faint greys does not work — hue 80 into hue 213 crosses through neutral and
+   lands on a grey-green mush at hue 116 — so those two are the pale's own hue
+   held at lower saturation and lightness instead. A side effect worth having:
+   `--color-faint` clears 5.1:1 for the first time. It has failed at around
+   3.5:1 through every previous palette this site has had.
+
+   Declared on :root rather than inside the theme block. These are brand
    constants, not theme values — they are the same on every route — and the
-   footer, which renders under all four pages, draws with them. Scoped to the
-   command theme they resolved to nothing on the three journey pages. */
+   footer, which renders under every page, draws with them. */
 :root {
-  --logo-navy: #001126;
-  --logo-blue: #0074d3;
-  --logo-lime: #9acc08;
-  --logo-gold: #ffc662;
-}
+  --logo-navy: #011227;
+  --logo-slate: #17222d;
+  --logo-green: #589009;
+  --logo-pale: #dcebbe;
 
-.theme-command {
-  --color-bg: #0a0b0d;
-  --color-bg-2: #0f1013;
-  --color-panel: #131519;
-  --color-panel-2: #181a1f;
+  /* The pale is also the light end of every ramp on the site — the diagrams
+     that run a sequence of stages, the brand gradient, the lit end of a rule.
+     That job used to belong to the gold glint at the centre of the mark, which
+     is not one of the four and now appears only as `--color-amber`, a status
+     tone. A ramp reading pale → green → blue is the palette; one reading gold
+     → green → blue was the palette plus a fifth colour nobody asked for. */
 
-  --color-line: rgba(154, 204, 8, 0.18);
-  --color-line-2: rgba(255, 255, 255, 0.07);
+  /* The call to action, which is one colour on both grounds.
+     ------------------------------------------------------------
+     Declared here rather than per theme on purpose: a button that changes
+     colour between the navy hero and the white page below it stops reading as
+     the same control. #589009 is the brand's CTA green and #70a914 its hover,
+     exactly as specified.
 
-  /* Warm white against warm grey. A pure #fff on charcoal reads as a screen;
-     this reads as paper under a lamp. */
-  --color-ink: #f5f2ec;
-  --color-muted: #a5a199;
-  --color-faint: #706c65;
-
-  /* The mark's own colours, lifted only where they have to carry small type on
-     near-black. Raw #0074d3 clears 3.8:1 — fine behind a button, not fine as a
-     12px label — so the token type uses is the brightened one and the raw blue
-     stays for fills. Lime and gold are already bright enough to keep as found. */
-  --color-amber: #ffc662;
-  --color-orange: #ff9d4d;
-  --color-green: #a8d91a;
-  --color-blue: #3d9ae8;
-  --color-red: #ff6b5a;
-  /* Storage is the one quantity with no colour in the mark, so it is derived
-     rather than sampled: a violet carrying the navy's blue cast, which keeps it
-     in the family. Held at hue 250 rather than any closer to the panel blue —
-     battery and grid are read side by side in the flow diagram, and 25° of hue
-     between two adjacent readouts is not a difference anybody can rely on. */
-  --color-purple: #9d8cff;
-
-  --color-green-glow: rgba(154, 204, 8, 0.1);
-  --color-blue-glow: rgba(0, 116, 211, 0.12);
-
-  --color-glass: rgba(19, 21, 25, 0.62);
-  --color-glass-2: rgba(19, 21, 25, 0.84);
-
-  --radius-tile: 3px;
-  --radius-card: 4px;
-  --radius-frame: 6px;
-
-  --btn-glow: rgba(154, 204, 8, 0.3);
-  --scroll-track: #08090b;
-  --scroll-thumb: rgba(255, 255, 255, 0.13);
-  --scroll-thumb-hover: rgba(255, 255, 255, 0.26);
-
-  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(255, 198, 98, 0.16), transparent 62%),
-    linear-gradient(160deg, #181a1f, #0a0b0d);
-}
-
-/* The signature gradient, restated in the mark's own pairing.
-   ------------------------------------------------------------
-   Gold into lime, because that is what the wordmark already does — GUARDIAN
-   set in the warm tone, CARE in the green — and because the hue arc between
-   them is short (38° → 75°) and runs through yellow, so it stays saturated the
-   whole way.
-
-   Lime straight into the panel blue was the obvious alternative and it is the
-   wrong one: a 130° sweep through cyan in sRGB goes grey-olive in the middle,
-   and a muddy button is worse than a less literal one. The blue is not wasted
-   — it carries the data and grid readouts everywhere on the page, which is the
-   job it does in the logo too.
-
-   Outside `@layer`, so it wins over the `utilities` layer without
-   `!important`. */
-.theme-command .text-brand-gradient {
-  background: linear-gradient(100deg, var(--logo-gold), var(--logo-lime));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.theme-command .bg-brand-gradient {
-  background: linear-gradient(100deg, var(--logo-gold), var(--logo-lime));
-}
-
-.theme-command .glass {
-  background: var(--color-glass);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.theme-command .glass-solid {
-  background: var(--color-glass-2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.theme-command .shadow-lift {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 24px 60px -30px rgba(0, 0, 0, 0.95);
-}
-
-.theme-command .shadow-lift-hover {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    0 36px 80px -34px rgba(0, 0, 0, 1);
-}
-
-/* ============================================================
-   Night scope — one dark band inside the day
-   ------------------------------------------------------------
-   A section that opts back out of the day theme. Restating the dark values
-   rather than "unsetting" them is the only thing that works: the day tokens
-   live on <html>, so a descendant cannot inherit its way back past them.
-
-   Kept below the `.theme-day` rules on purpose. The two override blocks match
-   on specificity, so the later one wins, and a night section inside a day page
-   gets its glass, elevation, veils and photo grading back.
-
-   Used for the one section that is about somebody else — the reader's own
-   installer — where dropping the lights says *this part is not yours to do*
-   faster than a paragraph can.
-   ============================================================ */
-.theme-night {
-  --btn-glow: rgba(61, 220, 151, 0.4);
-  --scroll-track: #020a14;
-  --scroll-thumb: rgba(255, 255, 255, 0.15);
-  --scroll-thumb-hover: rgba(255, 255, 255, 0.3);
-  --color-bg: #00060f;
-  --color-bg-2: #040d1a;
-  --color-panel: #071426;
-  --color-panel-2: #0a1b30;
-
-  --color-line: rgba(61, 220, 151, 0.18);
-  --color-line-2: rgba(255, 255, 255, 0.1);
-
-  --color-ink: #ffffff;
-  --color-muted: #93a4b8;
-  --color-faint: #63768c;
-
-  --color-green: #3ddc97;
-  --color-green-bright: #5df0b0;
-  --color-green-deep: #22b478;
-  --color-green-glow: rgba(61, 220, 151, 0.13);
-  --color-blue: #2e9bff;
-  --color-blue-bright: #5cb4ff;
-  --color-blue-glow: rgba(46, 155, 255, 0.13);
-  --color-amber: #ffb340;
-  --color-orange: #ff8a5c;
-  --color-red: #ff6b5a;
-  --color-purple: #a78bfa;
-
-  --color-glass: rgba(10, 27, 48, 0.52);
-  --color-glass-2: rgba(10, 27, 48, 0.72);
-
-  --device-body: #02070e;
-  --device-rail: linear-gradient(
-    155deg,
-    rgba(255, 255, 255, 0.28),
-    rgba(255, 255, 255, 0.05) 26%,
-    rgba(255, 255, 255, 0.02) 62%,
-    rgba(255, 255, 255, 0.2)
-  );
-
-  /* `color` inherits as a computed value, so it arrives already resolved
-     against the day palette. The scope has to re-set it. */
-  color: var(--color-ink);
-}
-
-.theme-night .glass {
-  background: var(--color-glass);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
-}
-
-.theme-night .glass-solid {
-  background: var(--color-glass-2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.theme-night .shadow-lift {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    0 18px 48px -24px rgba(0, 0, 0, 0.9);
-}
-
-.theme-night .shadow-lift-hover {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.11),
-    0 30px 70px -30px rgba(0, 0, 0, 0.95);
-}
-
-.theme-night .bg-photo-veil {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 6, 15, 0.15) 0%,
-    rgba(0, 6, 15, 0.55) 62%,
-    var(--color-bg) 100%
-  );
-}
-
-.theme-night .img-graded {
-  filter: brightness(0.82) contrast(1.06) saturate(0.92);
-}
-
-/* The ground a night section stands on. Flat black would read as a hole cut in
-   the page; the two glows give it the same depth the dark journey has, and the
-   top and bottom edges fade so the band is lit rather than pasted on. */
-@utility bg-night-band {
-  background:
-    radial-gradient(ellipse 760px 420px at 18% 12%, rgba(61, 220, 151, 0.1), transparent 62%),
-    radial-gradient(ellipse 820px 480px at 84% 78%, rgba(46, 155, 255, 0.13), transparent 64%),
-    linear-gradient(180deg, #00060f, #040d1a 52%, #00060f);
+     Worth knowing before anyone reuses these as text colours: #589009 is a
+     midtone, so white on it is 3.88:1. That clears AA for large text and does
+     not clear it for a small label — see `--cta-strong`, which is the same
+     hue dark enough to carry white at 4.95:1, for buttons whose label is
+     genuinely small. */
+  --cta: #589009;
+  --cta-hover: #70a914;
+  --cta-strong: #4c7d08;
+  --cta-ink: #ffffff;
 }
 
 /* ============================================================
@@ -705,7 +441,7 @@
 
 /* The signature green-to-blue gradient, clipped to text. */
 @utility text-brand-gradient {
-  background: linear-gradient(100deg, var(--color-green), var(--color-blue));
+  background: linear-gradient(100deg, var(--color-green), var(--logo-pale));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -713,28 +449,21 @@
 
 /* The same gradient as a fill, for buttons and rules. */
 @utility bg-brand-gradient {
-  background: linear-gradient(100deg, var(--color-green), var(--color-blue));
+  background: linear-gradient(100deg, var(--color-green), var(--logo-pale));
 }
 
 /* Layered radial glows behind the entry splitter and the two journey heroes.
    Kept as utilities because the multi-stop values are unreadable inline. */
 @utility bg-entry-glow {
   background:
-    radial-gradient(ellipse 800px 560px at 22% 20%, rgba(61, 220, 151, 0.11), transparent 60%),
-    radial-gradient(ellipse 860px 600px at 80% 60%, rgba(46, 155, 255, 0.13), transparent 62%),
-    linear-gradient(180deg, #00060f, #040d1a);
+    radial-gradient(ellipse 800px 560px at 22% 20%, rgba(88, 144, 9, 0.12), transparent 60%),
+    radial-gradient(ellipse 860px 600px at 80% 60%, rgba(0, 116, 211, 0.13), transparent 62%),
+    linear-gradient(180deg, var(--color-bg), var(--color-bg-2));
 }
 
-/* Radials only, deliberately. This used to close with an opaque
-   `linear-gradient(180deg,#00060f,#040d1a)`, which painted straight over the
-   console field behind it — so the journey opened on a blank ground and only
-   picked up its grid at the second section. The hero is a brighter part of the
-   same page now, not a lid on it. */
-@utility bg-business-glow {
-  background:
-    radial-gradient(ellipse 780px 520px at 12% 18%, rgba(61, 220, 151, 0.12), transparent 60%),
-    radial-gradient(ellipse 820px 560px at 88% 42%, rgba(46, 155, 255, 0.14), transparent 62%);
-}
+/* `bg-business-glow` stood here. The business hero draws its own light now —
+   the console field runs the length of that page and the hero is simply its
+   brightest band — so a second glow layered over it had nothing left to do. */
 
 /* A translucent surface with a lit top edge. The inset highlight is what makes
    a flat panel read as a pane of glass catching light from above rather than as
@@ -779,13 +508,13 @@
    has to leave charts and readouts legible for the length of a page. */
 @utility bg-home-veil {
   background:
-    radial-gradient(ellipse 900px 520px at 50% 34%, rgba(0, 6, 15, 0.42), transparent 76%),
-    radial-gradient(ellipse 1000px 560px at 50% 82%, rgba(0, 6, 15, 0.34), transparent 78%);
+    radial-gradient(ellipse 900px 520px at 50% 34%, rgba(1, 18, 39, 0.42), transparent 76%),
+    radial-gradient(ellipse 1000px 560px at 50% 82%, rgba(1, 18, 39, 0.34), transparent 78%);
 }
 
-/* Photographs sit on a near-black page, so every one of them is graded down
-   and cooled slightly before it lands — an untreated daylight photo dropped
-   into this palette glares, and reads as stock art pasted onto a product. */
+/* Photographs sit on a dark page, so every one of them is graded down and
+   cooled slightly before it lands — an untreated daylight photo dropped into
+   this palette glares, and reads as stock art pasted onto a product. */
 @utility img-graded {
   filter: brightness(0.82) contrast(1.06) saturate(0.92);
 }
@@ -865,14 +594,14 @@
 
 /* The fade that marries a photograph to the page underneath it. */
 @utility bg-photo-veil {
-  background: linear-gradient(180deg, rgba(0, 6, 15, 0.15) 0%, rgba(0, 6, 15, 0.55) 62%, var(--color-bg) 100%);
+  background: linear-gradient(180deg, rgba(1, 18, 39, 0.15) 0%, rgba(1, 18, 39, 0.55) 62%, var(--color-bg) 100%);
 }
 
 /* ---- Business journey: the console field -------------------------------
 
    A faint measured grid with two slow glows behind it. The consumer page is
    lit like a house at midday; this one is lit like an instrument — the grid
-   is the difference, and it is what stops six sections of #00060f reading as
+   is the difference, and it is what stops six sections of #050e1a reading as
    an empty document. Held far enough back that no readout ever competes with
    it. */
 @utility bg-console-grid {

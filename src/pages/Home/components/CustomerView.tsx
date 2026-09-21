@@ -100,8 +100,8 @@ export default function CustomerView() {
 
           <Reveal delay={0.08} className="mt-8 flex flex-col items-center gap-4">
             <Link
-              to="/existing"
-              className="inline-flex items-center gap-2.5 rounded-pill bg-brand-gradient px-8 py-4 text-[12px] font-bold uppercase tracking-[.1em] text-bg shadow-[0_14px_36px_-16px_var(--btn-glow)] transition duration-250 ease-brand hover:-translate-y-0.5 hover:brightness-110"
+              to="/consumer"
+              className="inline-flex items-center gap-2.5 rounded-pill bg-[var(--cta)] px-8 py-4 text-[12px] font-bold uppercase tracking-[.1em] text-[var(--cta-ink)] shadow-[0_14px_36px_-16px_var(--btn-glow)] transition duration-250 ease-brand hover:-translate-y-0.5 hover:bg-[var(--cta-hover)]"
             >
               Explore my energy →
             </Link>

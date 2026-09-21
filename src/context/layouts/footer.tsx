@@ -1,14 +1,13 @@
-import {Link, useLocation} from 'react-router';
+import {Link} from 'react-router';
 import Lockup from '../../components/Lockup';
 import {Wrap} from '../../components/ui';
 import {cn} from '../../lib/cn';
-import {DAY_ROUTES} from './index';
 
 const COLUMNS: Array<{heading: string; links: Array<{href: string; label: string}>}> = [
   {
     heading: 'Journeys',
     links: [
-      {href: '/existing', label: 'I already have solar'},
+      {href: '/consumer', label: 'I already have solar'},
       {href: '/plan', label: 'I’m looking for solar'},
       {href: '/business', label: 'Guardian Care for business'}
     ]
@@ -34,20 +33,11 @@ const COLUMNS: Array<{heading: string; links: Array<{href: string; label: string
 ];
 
 export default function Footer() {
-  const {pathname} = useLocation();
-
-  /* The footer is the site speaking rather than the page — the same block of
-     legal, navigation and company lines under every route — so it is always
-     dark. On the two daylight journeys that means forcing the night scope back
-     on; on the home page it does not, because that route is already dark and
-     re-lighting it here would drop a blue-black band under a charcoal page. */
-  const needsNightScope = DAY_ROUTES.has(pathname);
 
   return (
     <footer
       className={cn(
-        'border-t border-line-2 bg-bg pb-9 pt-[50px]',
-        needsNightScope && 'theme-night'
+        'border-t border-line-2 bg-bg pb-9 pt-[50px]'
       )}
     >
       <Wrap>

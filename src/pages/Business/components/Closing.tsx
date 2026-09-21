@@ -1,79 +1,98 @@
+import {LABEL, PRIMARY, SECONDARY, ramp} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
-import {BTN, BTN_LINE, ClosingSection, Section, Wrap} from '../../../components/ui';
-import {SHIFTS} from '../../../data/businessFlow';
+import {Section, Wrap} from '../../../components/ui';
+import {cn} from '../../../lib/cn';
 
 /**
- * What actually changes, and then the ask.
+ * The sign-off.
  *
- * The three shifts are the page's argument compressed to three lines, set as
- * movements rather than as claims — each one has a left side the reader
- * recognises as their current situation, which is what makes the right side
- * land as a destination instead of as a feature.
+ * Five questions, because every one of them is a question a customer asks
+ * their installer and the installer currently cannot answer. Kept in the
+ * customer's own voice rather than translated into operator language — an
+ * installation company recognises these as the calls they take, and the
+ * recognition is the argument.
+ *
+ * Inline rather than in `data/`, because unlike the products or the rules
+ * engine nothing else on the site reads them. A constant exported for one
+ * consumer is indirection, not structure.
  */
+const ASKED = [
+  'Is my system working?',
+  'What is it producing?',
+  'Where is my energy going?',
+  'Am I using it well?',
+  'Who is looking after it?'
+];
+
 export default function Closing() {
   return (
-    <>
-      <Section hairline>
-        <Wrap>
-          <Reveal className="mb-10 max-w-[620px]">
-            <div className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
-              What could Guardian Care change?
-            </div>
-            <h2 className="mt-3 font-display text-[clamp(26px,3.6vw,42px)] font-semibold uppercase leading-[1.04]">
-              Three shifts
-            </h2>
-          </Reveal>
+    <Section id="close" hairline className="py-20 min-[760px]:py-28">
+      <Wrap>
+        <Reveal className="mx-auto max-w-[820px] text-center">
+          <div className={cn(LABEL, 'text-green')}>&#9671; What it is all for</div>
 
-          <div className="grid gap-px overflow-hidden rounded-frame bg-line-2 ring-lit">
-            {SHIFTS.map(([from, to], index) => (
+          <h2 className="mt-6 font-display text-[clamp(32px,5.4vw,62px)] font-semibold uppercase leading-[0.96] tracking-[-0.02em] text-ink">
+            Installations end.
+            <br />
+            <span className="text-brand-gradient">Relationships don&rsquo;t have to.</span>
+          </h2>
+
+          <p className="mx-auto mt-7 max-w-[540px] text-[16.5px] font-light leading-[1.65] text-muted">
+            Five questions your customers are already asking. Guardian Care answers all of them, for
+            every system you have ever installed.
+          </p>
+        </Reveal>
+
+        {/* ---------- The five ---------- */}
+        <ol className="mx-auto mt-14 max-w-[820px]">
+          {ASKED.map((question, index) => {
+            const colour = ramp(index, ASKED.length);
+
+            return (
               <Reveal
-                key={from}
+                key={question}
+                as="li"
                 delay={index * 0.06}
-                className="glass grid items-center gap-4 p-6 min-[760px]:grid-cols-[1fr_auto_1fr] min-[760px]:gap-8 min-[760px]:px-9 min-[760px]:py-8"
+                className="flex items-center gap-5 border-b border-line-2 py-5 last:border-b-0 min-[760px]:gap-8 min-[760px]:py-6"
               >
-                <span className="text-[16px] font-light leading-[1.4] text-faint min-[760px]:text-right">
-                  {from}
+                {/* The ramp resolves to a color-mix() at render rather than to
+                    one of the palette's named tones, so it is carried inline —
+                    there is no utility class that could hold it. */}
+                <span
+                  className="mono shrink-0 text-[11px] tracking-[.16em]"
+                  style={{color: colour}}
+                >
+                  {String(index + 1).padStart(2, '0')}
                 </span>
 
                 <span
-                  aria-hidden="true"
-                  className="text-green min-[760px]:flex min-[760px]:justify-center"
+                  className="font-display text-[clamp(22px,4.2vw,44px)] font-semibold uppercase leading-[0.96] tracking-[-0.015em]"
+                  style={{color: colour}}
                 >
-                  <svg viewBox="0 0 24 24" className="h-5 w-5 rotate-90 min-[760px]:rotate-0" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 12h15M13 6l6 6-6 6" />
-                  </svg>
+                  {question}
                 </span>
 
-                <span className="text-[17px] font-normal leading-[1.35] text-ink min-[760px]:text-[19px]">
-                  {to}
+                <span className="mono ml-auto hidden shrink-0 text-[10.5px] uppercase tracking-[.14em] text-faint min-[900px]:block">
+                  Answered
                 </span>
               </Reveal>
-            ))}
-          </div>
-        </Wrap>
-      </Section>
+            );
+          })}
+        </ol>
 
-      <ClosingSection
-        title={
-          <>
-            Acquire. Capture.
-            <br />
-            <span className="text-brand-gradient">Retain.</span>
-          </>
-        }
-        body="Tell us a little about your company and we will help you understand where Guardian Care could fit into your existing customer process — your market, your business type, your approximate customer base and the main thing you would like to improve."
-        bodyClassName="max-w-[640px]"
-        action={
-          <Reveal className="flex flex-wrap justify-center gap-3">
-            <a href="#assess" className={BTN}>
-              Build my business profile
-            </a>
-            <a href="#portfolio" className={BTN_LINE}>
-              See the portfolio view
-            </a>
-          </Reveal>
-        }
-      />
-    </>
+        {/* ---------- And the three ways out ---------- */}
+        <Reveal delay={0.2} className="mt-14 flex flex-wrap justify-center gap-3">
+          <a href="#join" className={PRIMARY}>
+            Join Guardian Care &#8594;
+          </a>
+          <a href="#console" className={SECONDARY}>
+            See the console
+          </a>
+          <a href="#assess" className={SECONDARY}>
+            Start my assessment
+          </a>
+        </Reveal>
+      </Wrap>
+    </Section>
   );
 }

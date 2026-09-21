@@ -1,0 +1,219 @@
+import Counter from '../../../components/Counter';
+import Glyph from '../../../components/Glyph';
+import Reveal from '../../../components/Reveal';
+import {Wrap} from '../../../components/ui';
+import {TONE_TEXT, TONE_VAR, type StatusTone} from '../../../data/command';
+import {DAY, GRID_COST, HOME, pounds} from '../../../data/consumer';
+import {cn} from '../../../lib/cn';
+import {LiveDot} from '../../Home/components/Conduit';
+import {LABEL, LABEL_BASE, PRIMARY, SECONDARY} from '../../../components/kit';
+
+/**
+ * "Already have solar?"
+ *
+ * The reader here already owns the thing being discussed, and usually arrives
+ * with a quiet suspicion — that it is not doing what they were told it would,
+ * or that nobody could tell them if it wasn't. So the page does not open by
+ * selling anything. It opens by showing the answer to that suspicion.
+ *
+ * The brief's own list — generating, using, storing, exporting, buying, what it
+ * costs, whether anything is worth reviewing — is not printed as a list here.
+ * It is the card beside the headline, filled in for one real-looking day. Seven
+ * bullet points ask to be believed; seven readings on one card are the thing
+ * itself, and a visitor understands the product before they have finished the
+ * paragraph next to it.
+ */
+
+/** Where the day's generation went, in the order the eye reads the bar. */
+const SPLIT: Array<{label: string; value: number; tone: StatusTone}> = [
+  {label: 'Used yourself', value: DAY.used, tone: 'green'},
+  {label: 'Stored', value: DAY.stored, tone: 'purple'},
+  {label: 'Exported', value: DAY.exported, tone: 'blue'}
+];
+
+export default function Hero() {
+  return (
+    <header className="relative isolate overflow-hidden">
+      {/* The sun, somewhere behind the card. Warm, because the card is about
+          what the roof made today. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-[12%] -top-[18%] -z-10 h-[70vw] w-[70vw] rounded-full blur-[140px] min-[1000px]:h-[52vw] min-[1000px]:w-[52vw]"
+        style={{background: 'radial-gradient(circle, rgba(255,210,97,0.12), transparent 64%)'}}
+      />
+
+      <Wrap>
+        <div className="grid items-center gap-14 py-20 min-[760px]:py-24 min-[1000px]:min-h-[86vh] min-[1000px]:grid-cols-[1.02fr_0.98fr] min-[1000px]:gap-12 min-[1180px]:gap-20">
+          {/* ---------- The words ---------- */}
+          <div>
+            <Reveal
+              className={cn(LABEL_BASE, 'inline-flex items-center gap-3 text-[12px] tracking-[.22em] text-amber')}
+            >
+              <Glyph name="solarRoof" className="h-5 w-5" />
+              Already have solar?
+            </Reveal>
+
+            <Reveal
+              as="h1"
+              delay={0.05}
+              className="mt-7 font-display text-[clamp(40px,5.4vw,70px)] font-semibold uppercase leading-[0.9] tracking-[-0.02em] text-ink"
+            >
+              Understand how
+              <br />
+              your solar system
+              <br />
+              is performing <span className="text-brand-gradient">today.</span>
+            </Reveal>
+
+            <Reveal
+              as="p"
+              delay={0.1}
+              className="mt-7 max-w-[540px] text-[17px] font-light leading-[1.65] text-muted min-[760px]:text-[18.5px]"
+            >
+              Your system may have been installed years ago. Since then your energy use, electricity
+              prices, equipment and household needs have probably all changed. Guardian Care shows
+              you what your system is doing <em className="not-italic text-ink">now</em> — clearly,
+              and in plain English.
+            </Reveal>
+
+            <Reveal delay={0.16} className="mt-10 flex flex-wrap items-center gap-3">
+              <a href="#check" className={PRIMARY}>
+                Check my existing solar system →
+              </a>
+              <a href="#how" className={SECONDARY}>
+                How it works
+              </a>
+            </Reveal>
+
+            {/* What the check costs the visitor, answered before they ask. */}
+            <Reveal
+              delay={0.22}
+              className="mono mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10.5px] uppercase tracking-[.16em] text-faint"
+            >
+              <span>A few simple questions</span>
+              <span aria-hidden="true" className="text-faint/50">
+                ◇
+              </span>
+              <span>No meter readings</span>
+              <span aria-hidden="true" className="text-faint/50">
+                ◇
+              </span>
+              <span>No documents</span>
+            </Reveal>
+          </div>
+
+          {/* ---------- The answer ---------- */}
+          <Reveal animation="animate-card-in" delay={0.2} className="mx-auto w-full max-w-[520px]">
+            <TodayCard />
+          </Reveal>
+        </div>
+      </Wrap>
+    </header>
+  );
+}
+
+/**
+ * One day at one house, as Guardian Care would show it.
+ *
+ * Laid out in the order a household asks the questions: how much did it make,
+ * where did that go, what did I still have to buy, and is anything wrong.
+ */
+function TodayCard() {
+  return (
+    <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
+      {/* ---------- Status ---------- */}
+      <div className="flex items-center justify-between gap-4 border-b border-line-2 px-6 py-4 min-[520px]:px-7">
+        <span className="flex items-center gap-2.5">
+          <LiveDot />
+          <span className={cn(LABEL_BASE, 'text-[10.5px] tracking-[.16em] text-green')}>
+            Your system today
+          </span>
+        </span>
+        <span className="mono text-[10px] uppercase tracking-[.16em] text-faint">Example home</span>
+      </div>
+
+      {/* ---------- What it made ---------- */}
+      <div className="px-6 pb-6 pt-7 min-[520px]:px-7">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <div className={cn(LABEL, 'text-faint')}>Solar generated</div>
+            <div className="mono mt-3 text-[clamp(44px,8vw,64px)] font-semibold leading-none text-amber">
+              <Counter value={DAY.generated.toFixed(1)} />
+              <span className="mono ml-2 text-[14px] font-normal text-faint">kWh</span>
+            </div>
+          </div>
+          <Glyph name="generation" className="mb-1 h-10 w-10 text-amber/70" />
+        </div>
+
+        {/* ---------- And where it went ----------
+
+            One bar rather than three: the three parts are shares of a single
+            whole, and a household reads "most of it I used or kept" faster from
+            proportion than from arithmetic. */}
+        <div
+          className="mt-7 flex h-2.5 gap-[3px] overflow-hidden rounded-pill"
+          role="img"
+          aria-label={`${DAY.used} kWh used, ${DAY.stored} kWh stored, ${DAY.exported} kWh exported`}
+        >
+          {SPLIT.map((part) => (
+            <span
+              key={part.label}
+              className="h-full"
+              style={{width: `${(part.value / DAY.generated) * 100}%`, background: TONE_VAR[part.tone]}}
+            />
+          ))}
+        </div>
+
+        <dl className="mt-5 grid grid-cols-3 gap-3">
+          {SPLIT.map((part) => (
+            <div key={part.label}>
+              <dt className="flex items-center gap-2 text-[12.5px] font-light leading-tight text-muted">
+                <span
+                  aria-hidden="true"
+                  className="h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{background: TONE_VAR[part.tone]}}
+                />
+                {part.label}
+              </dt>
+              <dd className={cn('mono mt-1.5 text-[17px] font-semibold', TONE_TEXT[part.tone])}>
+                {part.value.toFixed(1)}
+                <span className="mono ml-1 text-[10.5px] font-normal text-faint">kWh</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      {/* ---------- What still had to be bought ---------- */}
+      <dl className="grid grid-cols-2 gap-px border-t border-line-2 bg-line-2">
+        <div className="bg-panel px-6 py-5 min-[520px]:px-7">
+          <dt className="text-[12.5px] font-light leading-tight text-muted">Bought from the grid</dt>
+          <dd className="mono mt-2 text-[20px] font-semibold text-orange">
+            {DAY.imported.toFixed(1)}
+            <span className="mono ml-1 text-[10.5px] font-normal text-faint">kWh</span>
+          </dd>
+          <dd className="mono mt-1 text-[10.5px] text-faint">Mostly after dark</dd>
+        </div>
+        <div className="bg-panel px-6 py-5 min-[520px]:px-7">
+          <dt className="text-[12.5px] font-light leading-tight text-muted">What that cost</dt>
+          <dd className="mono mt-2 text-[20px] font-semibold text-ink">{pounds(GRID_COST)}</dd>
+          <dd className="mono mt-1 text-[10.5px] text-faint">At {HOME.importRate}p/kWh</dd>
+        </div>
+      </dl>
+
+      {/* ---------- And whether anything is worth a look ---------- */}
+      <div className="border-t border-line-2 bg-bg/40 px-6 py-5 min-[520px]:px-7">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <span className={cn(LABEL, 'text-amber')}>◇ Guardian AI</span>
+          <span className="mono inline-flex items-center gap-2 rounded-pill border border-amber/35 bg-amber/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[.14em] text-amber">
+            1 worth reviewing
+          </span>
+        </div>
+        <p className="mt-3 text-[15px] font-light leading-[1.55] text-ink/90">
+          “{DAY.exported} kWh left your home at midday while {DAY.imported} kWh was bought back this
+          evening. Your battery settings may be worth a look.”
+        </p>
+      </div>
+    </div>
+  );
+}

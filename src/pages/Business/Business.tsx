@@ -1,31 +1,55 @@
+import ConsoleField from './components/ConsoleField';
 import {useCallback, useMemo, useState} from 'react';
 import {NO_ANSWERS, type Answers} from '../../components/Assessment/types';
+import WaveSign from '../../context/layouts/WaveSign';
 import {readBusiness} from '../../data/businessFlow';
-import BusinessCheck from './components/BusinessCheck';
+import Assess from './components/Assess';
 import Closing from './components/Closing';
-import CommandCentre from './components/CommandCentre';
-import ConsoleField from './components/ConsoleField';
+import Console from './components/Console';
+import Handover from './components/Handover';
 import Hero from './components/Hero';
-import Markets from './components/Markets';
-import Pillars from './components/Pillars';
-import Profile from './components/Profile';
-import Signals from './components/Signals';
-import SmartNote from './components/SmartNote';
+import Join from './components/Join';
+import Model from './components/Model';
+import Products from './components/Products';
+import Revenue from './components/Revenue';
+import Views from './components/Views';
+import Watch from './components/Watch';
 
 /**
- * The operator's journey.
+ * "I'm a solar or energy company."
  *
- * Same structure as the two consumer pages — assessment, derived position, then
- * the explanation that makes the position mean something — lit differently
- * because it is read differently. A homeowner opens their page once a month
- * standing in daylight; an operator has this one open all day in a room full of
- * screens.
+ * The third journey, and the only one whose reader is buying rather than being
+ * looked after. They install for a living, they do not need solar explained,
+ * and they are deciding in about a second whether this page answers the one
+ * question they have: what happens to a customer after the handover.
  *
- * Every section is transparent and divided by a rule rather than by an
- * alternating ground: #00060f against #040d1a is a 2% step that divides nothing
- * on its own, and an opaque band would punch a hole in the field behind it.
- * `isolate` keeps that field's negative z-index inside the page instead of
- * letting it slide under the site chrome.
+ * So the page is built to be felt rather than read. One idea carries it and it
+ * is drawn, not argued — one dot is one customer — and every section is a
+ * single picture with a line under it:
+ *
+ *   1. Here is your whole portfolio.             — 1,245 dots, 42 of them blipping
+ *   2. Here is where you lose them.              — a chain that stops at handover
+ *   3. Here is what we are.                      — three products, one record
+ *   4. Here it is, working.                      — the console, operable
+ *   5. It is already watching.                   — six rules, five words each
+ *   6. Your customer never sees a fault code.    — one event, two readings
+ *   7. Here is the revenue in it.                — the same battery, sold twice
+ *   8. Here is how you join.                     — four steps, four objections
+ *   9. Now your business.                        — the assessment
+ *  10. Here is where you start.                  — their own first five moves
+ *  11. What it is all for.                       — five questions, answered
+ *
+ * …and then the name rising out of the water, as on the other three pages.
+ *
+ * Runs on the brand navy with the console grid behind it. The other three
+ * pages are lit the same way, which is the point: an operator who has just
+ * been shown the customer's dashboard should recognise it as the same product
+ * rather than as a different company's.
+ *
+ * The assessment sits after the console rather than before it. Six questions
+ * asked of somebody who has not yet seen what they are for is a form; the same
+ * six asked of somebody who has just operated the thing are the obvious next
+ * click.
  */
 export default function Business() {
   const [answers, setAnswers] = useState<Answers>(NO_ANSWERS);
@@ -39,11 +63,19 @@ export default function Business() {
   }, []);
 
   return (
-    <main className="relative isolate">
+    <main className="relative isolate overflow-hidden">
       <ConsoleField />
-      <Hero />
 
-      <BusinessCheck
+      <Hero />
+      <Handover />
+      <Products />
+      <Console />
+      <Watch />
+      <Views />
+      <Revenue />
+      <Join />
+
+      <Assess
         answers={answers}
         position={position}
         done={generated}
@@ -52,14 +84,12 @@ export default function Business() {
         onReset={reset}
       />
 
-      {generated ? <Profile position={position} /> : null}
+      {/* Only once the visitor has asked for it. */}
+      {generated ? <Model position={position} /> : null}
 
-      <Pillars />
-      <Signals />
-      <CommandCentre />
-      <Markets />
-      <SmartNote />
       <Closing />
+
+      <WaveSign />
     </main>
   );
 }

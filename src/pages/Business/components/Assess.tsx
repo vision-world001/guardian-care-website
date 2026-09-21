@@ -1,7 +1,8 @@
 import Assessment from '../../../components/Assessment/Assessment';
 import type {Answers, ProfileLine} from '../../../components/Assessment/types';
+import {Heading} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
-import {Section, SectionHead, Wrap} from '../../../components/ui';
+import {Section, Wrap} from '../../../components/ui';
 import {
   AFTERCARE_LABEL,
   BUSINESS_STEPS,
@@ -11,14 +12,19 @@ import {
 } from '../../../data/businessFlow';
 
 /**
- * The same assessment the consumer journeys run, pointed at a company.
+ * The same assessment the two consumer journeys run, pointed at a company.
  *
  * That is not a saving in code so much as a statement about the product: a
  * business is profiled the way a property is, and the answers feed the same
- * intelligence loop. The questions here are about a portfolio and a process
- * rather than a roof and a tariff, and nothing else about the mechanism changes.
+ * intelligence loop. The questions are about a portfolio and a process rather
+ * than a roof and a tariff, and nothing else about the mechanism changes.
+ *
+ * It sits here, after the console rather than before it, because the order is
+ * the argument. Six questions asked of somebody who has not yet seen what they
+ * are for is a form; the same six asked of somebody who has just operated the
+ * thing are the obvious next click.
  */
-export default function BusinessCheck({
+export default function Assess({
   answers,
   position,
   done,
@@ -34,13 +40,13 @@ export default function BusinessCheck({
   onReset: () => void;
 }) {
   return (
-    <Section id="assess" hairline>
+    <Section id="assess" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
-        <SectionHead
-          eyebrow="Tell us about your business"
-          index="01 / 05"
-          title="Where would Guardian Care fit?"
-          body="Six questions about your market, your installed base and what happens after you hand a system over. Guardian Care is deployed in stages, and the answers decide which stage is worth running first."
+        <Heading
+          eyebrow="Your business"
+          title="Six questions."
+          accent="Then where to start."
+          body="Guardian Care is deployed in stages. Your answers decide which stage is worth running first."
         />
 
         <Reveal>
@@ -51,7 +57,7 @@ export default function BusinessCheck({
             onComplete={onComplete}
             onReset={onReset}
             done={done}
-            finishLabel="Build my Guardian Care model"
+            finishLabel="Show me where to start"
             profile={{heading: 'Your business profile', lines: profileLines(position)}}
           />
         </Reveal>

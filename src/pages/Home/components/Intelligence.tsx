@@ -168,7 +168,7 @@ export default function Intelligence() {
                   className={cn(
                     'mono rounded-pill px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[.12em]',
                     index === 0
-                      ? 'bg-brand-gradient text-bg'
+                      ? 'bg-[var(--cta)] text-[var(--cta-ink)]'
                       : 'border border-line-2 text-muted'
                   )}
                 >

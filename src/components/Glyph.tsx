@@ -29,6 +29,8 @@ export type GlyphName =
   | 'cost'
   /* The thing on the other side of the meter. */
   | 'grid'
+  /* The box between the roof and the house. */
+  | 'inverter'
   /* The three doors. */
   | 'solarRoof'
   | 'savings'
@@ -120,6 +122,19 @@ const PATHS: Record<GlyphName, ReactNode> = {
       <path d="M7.5 15.5h25M5.5 24h29" />
       <path d="M7.5 15.5v3M32.5 15.5v3M5.5 24v3M34.5 24v3" strokeWidth="1.3" />
       <path d="M13.5 26.5h13M13.5 26.5 25 34M26.5 26.5 15 34" strokeWidth="1.2" />
+    </>
+  ),
+
+  /* The electrician's symbol for an inverter: a box split on the diagonal,
+     direct current in the upper corner and a sine wave in the lower. The two
+     marks sit either side of the diagonal without touching it. */
+  inverter: (
+    <>
+      <rect x="8" y="6" width="24" height="28" rx="3" />
+      <path d="M10.5 31.5 29.5 8.5" strokeWidth="1.3" />
+      <path d="M12.5 13h7" strokeWidth="1.4" />
+      <path d="M12.5 16.5h2.5M17 16.5h2.5" strokeWidth="1.4" />
+      <path d="M20.5 26c1.2-2.4 2.8-2.4 4 0s2.8 2.4 4 0" strokeWidth="1.4" />
     </>
   ),
 

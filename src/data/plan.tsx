@@ -12,6 +12,96 @@ import type {StatusTone} from './command';
    that position or a consequence of it.
    ============================================================ */
 
+/* ---------- What the visitor is here for ---------- */
+
+/**
+ * The seven outcomes somebody arrives with.
+ *
+ * Declared above the assessment because the assessment's goal question is
+ * built from this list rather than repeating it — the same seven appear in the
+ * picker near the top of the page and in question three, and a reader who
+ * chose one at the top should find it already chosen further down. Two lists
+ * that have to agree eventually stop agreeing.
+ *
+ * `answer` is what the platform says back. One line — never two — and specific
+ * enough to be worth the click: a picker that responds to every choice with
+ * the same reassurance has not listened to any of them.
+ */
+export type Goal = {
+  key: string;
+  glyph: GlyphName;
+  label: string;
+  /** The picked state's headline — two or three words, set large. */
+  short: string;
+  tone: StatusTone;
+  answer: string;
+};
+
+export const GOALS: Goal[] = [
+  {
+    key: 'bill',
+    glyph: 'cost',
+    label: 'Reduce my electricity bill',
+    short: 'Pay the grid less',
+    tone: 'green',
+    answer:
+      'Then the figure that matters is not system size. It is how many of the units you already buy could be made here instead.'
+  },
+  {
+    key: 'generate',
+    glyph: 'generation',
+    label: 'Generate my own electricity',
+    short: 'Make your own',
+    tone: 'amber',
+    answer: 'Generation is the easy half. We size the array to what your property actually uses.'
+  },
+  {
+    key: 'battery',
+    glyph: 'storage',
+    label: 'Add battery storage',
+    short: 'Keep the surplus',
+    tone: 'purple',
+    answer: 'Storage is worth what it stops you buying back. We size it to your evening import.'
+  },
+  {
+    key: 'independent',
+    glyph: 'grid',
+    label: 'Reduce my reliance on the grid',
+    short: 'Need less grid',
+    tone: 'blue',
+    answer: 'Full independence rarely pays. Importing less at your worst hours does.'
+  },
+  {
+    key: 'ev',
+    glyph: 'connect',
+    label: 'Prepare for an EV',
+    short: 'Charge at home',
+    tone: 'orange',
+    answer: 'A car changes the shape of your day. We plan for it before it arrives.'
+  },
+  {
+    key: 'tariff',
+    glyph: 'tariff',
+    label: 'Use cheaper electricity tariffs',
+    short: 'Buy at the right hour',
+    tone: 'green',
+    answer: 'Rates, storage and generation are one decision, not three.'
+  },
+  {
+    key: 'guide',
+    glyph: 'question',
+    label: 'I’m not sure — help me understand my options',
+    short: 'Show me where I stand',
+    tone: 'ink',
+    answer: 'The most common answer here. Start from your bill and see what is on the table.'
+  }
+];
+
+export const GOAL_BY_KEY = Object.fromEntries(GOALS.map((goal) => [goal.key, goal])) as Record<
+  string,
+  Goal
+>;
+
 /* ---------- The energy assessment ---------- */
 
 export const PLAN_STEPS: Step[] = [
@@ -30,7 +120,7 @@ export const PLAN_STEPS: Step[] = [
     ],
     why: {
       heading: 'Why we ask',
-      body: 'Your monthly bill is the starting point for understanding your current electricity cost. From it, Guardian Care builds an estimated annual grid-cost position — the figure everything else on this page is measured against.'
+      body: 'Your bill is the figure everything else on this page is measured against.'
     }
   },
   {
@@ -38,7 +128,7 @@ export const PLAN_STEPS: Step[] = [
     kind: 'fields',
     glyph: 'tariff',
     title: 'What do you pay for electricity?',
-    lead: 'Anything you leave blank uses a national average until the real figure arrives.',
+    lead: 'Leave anything blank and we use a national average.',
     fields: [
       {key: 'importRate', label: 'Import rate', suffix: 'p/kWh', placeholder: '29'},
       {key: 'offPeakRate', label: 'Off-peak rate', note: 'if applicable', suffix: 'p/kWh', placeholder: '—'},
@@ -48,10 +138,8 @@ export const PLAN_STEPS: Step[] = [
       heading: 'Why this matters',
       body: (
         <>
-          Solar does not reduce a bill simply because panels are installed. The opportunity comes
-          from reducing how much electricity you need to <b>purchase at your normal grid rate</b>.
-          Guardian Care uses your actual tariff so the assessment is about your property rather than
-          about an average one.
+          Panels do not reduce a bill. Not having to <b>buy at your grid rate</b> does — so the
+          estimate runs on your tariff rather than an average one.
         </>
       )
     }
@@ -61,19 +149,11 @@ export const PLAN_STEPS: Step[] = [
     kind: 'choice',
     glyph: 'goal',
     title: 'What are you looking to achieve?',
-    lead: 'Choose the option that best describes you. It shapes the rest of the journey.',
-    options: [
-      {value: 'bill', label: 'Reduce my electricity bill'},
-      {value: 'renewable', label: 'Use more renewable electricity'},
-      {value: 'independent', label: 'Become less dependent on the grid'},
-      {value: 'battery', label: 'Add battery storage'},
-      {value: 'ev', label: 'Prepare for an electric vehicle'},
-      {value: 'worth-it', label: 'Understand whether solar is worth it'},
-      {value: 'guide', label: 'I’m not sure — guide me'}
-    ],
+    lead: 'It shapes the rest of the journey.',
+    options: GOALS.map((goal) => ({value: goal.key, label: goal.label})),
     why: {
       heading: 'Why we ask',
-      body: 'The same property can be assessed for different outcomes. Somebody reducing a bill and somebody preparing for an electric vehicle need different system shapes, and Guardian Care would rather ask than assume.'
+      body: 'Reducing a bill and preparing for an electric vehicle need different system shapes. We would rather ask than assume.'
     }
   },
   {
@@ -92,7 +172,7 @@ export const PLAN_STEPS: Step[] = [
     ],
     why: {
       heading: 'Why we ask',
-      body: 'This tells Guardian Care whether a new system has to work alongside equipment that is already there. A heat pump or an EV charger changes both the size of the opportunity and the shape of the day it has to cover.'
+      body: 'A heat pump or an EV charger changes both the size of the opportunity and the shape of the day it has to cover.'
     }
   },
   {
@@ -109,7 +189,7 @@ export const PLAN_STEPS: Step[] = [
     ],
     why: {
       heading: 'Why we ask',
-      body: 'Property type is a first indication of available roof area and typical household consumption. It is not the final word — the usable capacity is confirmed during assessment — but it keeps the initial estimate realistic.'
+      body: 'A first indication of roof area and typical consumption. The usable capacity is confirmed at assessment.'
     }
   },
   {
@@ -126,7 +206,7 @@ export const PLAN_STEPS: Step[] = [
     ],
     why: {
       heading: 'Not sure? That is fine.',
-      body: 'Guardian Care can begin from your energy position alone and size the system to it. The final solar capacity is confirmed during the property assessment, when the roof is actually measured.'
+      body: 'We can size the system from your energy position alone. The roof is measured at assessment.'
     }
   },
   {
@@ -143,9 +223,8 @@ export const PLAN_STEPS: Step[] = [
       heading: 'What storage actually does',
       body: (
         <>
-          Battery storage lets suitable surplus solar generated during the day be retained and used
-          later, when production has dropped away. That matters most where the property keeps using
-          electricity into the evening — which is <b>most</b> properties.
+          A battery holds the daytime surplus until production drops away. That matters most where
+          the property keeps using electricity into the evening — which is <b>most</b> properties.
         </>
       )
     }
@@ -189,6 +268,17 @@ export const SELF_USE = {without: 0.42, with: 0.68};
 
 export const DEFAULT_RATES = {importRate: 29, exportRate: 15, standingCharge: 58};
 
+/**
+ * A whole-pound figure, grouped.
+ *
+ * `toFixed(0)` alone prints £1180, which is the only number on the page not
+ * wearing a separator — and a money figure typeset differently from the
+ * kilowatt-hour figures beside it reads as a different kind of quantity.
+ */
+export function money(value: number | null): string {
+  return value === null ? '—' : `£${Math.round(value).toLocaleString('en-GB')}`;
+}
+
 export type PlanPosition = {
   monthlyBill: number | null;
   annualSpend: number | null;
@@ -215,15 +305,10 @@ export type PlanPosition = {
   equipment: string[];
 };
 
-export const GOAL_LABEL: Record<string, string> = {
-  bill: 'Reduce electricity bills',
-  renewable: 'Use more renewable electricity',
-  independent: 'Less dependent on the grid',
-  battery: 'Add battery storage',
-  ev: 'Prepare for an electric vehicle',
-  'worth-it': 'Understand whether solar is worth it',
-  guide: 'Guide me'
-};
+/** The profile's short form of a goal — the picker's headline, not its label. */
+export const GOAL_LABEL: Record<string, string> = Object.fromEntries(
+  GOALS.map((goal) => [goal.key, goal.short])
+);
 
 export function readPlan(answers: Answers): PlanPosition {
   const billChoice = answers.choice.bill ?? null;
@@ -315,90 +400,146 @@ export function readPlan(answers: Answers): PlanPosition {
  * the mechanism is what has to land, and an annual figure hides it.
  */
 export const SWAP = {
-  usage: 12,
-  solarSupplies: 7,
-  gridWithSolar: 5,
+  usage: 10,
+  solarSupplies: 6,
+  gridWithSolar: 4,
   rate: DEFAULT_RATES.importRate
 };
 
-/** Ten kilowatt-hours, and where they can go. */
-export const DIRECT_USE_EXAMPLE = {generated: 10, usedDirectly: 6, surplus: 4};
+/**
+ * The same day with and without a battery — the document's central comparison.
+ *
+ * Fifteen kilowatt-hours generated on both sides, because the single most
+ * common misunderstanding this page has to clear is that a battery makes a
+ * system produce more. It does not. Everything that differs below is where the
+ * same fifteen ended up, and the row that matters is the last one.
+ *
+ * Every `where` splits the generation exactly, so the two can be drawn as the
+ * same fifteen squares redistributed rather than as two unrelated charts.
+ */
+export type StorageDay = {
+  key: string;
+  name: string;
+  where: Array<{label: string; value: number; tone: StatusTone}>;
+  /** What the property still has to buy back that evening. */
+  later: number;
+  line: string;
+};
 
-/** The same day with and without a battery — the doc's central comparison. */
-export const STORAGE_COMPARISON = [
+export const STORAGE_COMPARISON: StorageDay[] = [
   {
     key: 'without',
-    name: 'Solar without battery',
-    tone: 'amber' as StatusTone,
-    rows: [
-      {label: 'Solar generated', value: 15},
-      {label: 'Used directly', value: 8},
-      {label: 'Exported', value: 7},
-      {label: 'Later grid import', value: 5}
+    name: 'Without a battery',
+    where: [
+      {label: 'Used as it was made', value: 8, tone: 'green'},
+      {label: 'Exported', value: 7, tone: 'blue'}
     ],
-    line: 'Surplus is produced during the day, but some of it leaves the property before you need it in the evening.'
+    later: 5,
+    line: 'Seven leave at midday. Five come back that evening — at the price the grid charges, not the price export paid.'
   },
   {
     key: 'with',
-    name: 'Solar with battery',
-    tone: 'green' as StatusTone,
-    rows: [
-      {label: 'Solar generated', value: 15},
-      {label: 'Used directly', value: 8},
-      {label: 'Stored', value: 5},
-      {label: 'Exported', value: 2},
-      {label: 'Later grid import', value: 1}
+    name: 'With a battery',
+    where: [
+      {label: 'Used as it was made', value: 8, tone: 'green'},
+      {label: 'Stored for later', value: 5, tone: 'purple'},
+      {label: 'Exported', value: 2, tone: 'blue'}
     ],
-    line: 'The same generation, held back for the hours the property actually uses it. An estimated energy-flow opportunity, not a guaranteed saving.'
+    later: 1,
+    line: 'The same fifteen. Most of the surplus simply waits until somebody is home.'
   }
 ];
 
-/* ---------- What the customer would be recommended ---------- */
+/** What the day generated — the same on both sides of the comparison. */
+export const STORAGE_GENERATED = STORAGE_COMPARISON[0].where.reduce(
+  (total, part) => total + part.value,
+  0
+);
 
-export type Recommendation = {
+/* ---------- What the proposal contains ---------- */
+
+/**
+ * The six things a Guardian Care quotation is made of.
+ *
+ * `does` is one line, because a reader scanning six tiles will read six short
+ * lines and none of six paragraphs. `why` is the part almost no quotation
+ * carries: every item states the reason it is on the list, so the document
+ * argues for itself rather than presenting a priced bill of materials and
+ * hoping.
+ *
+ * The last two are not hardware, and that is the point. A system installed and
+ * then never looked at again is the failure this whole platform exists to
+ * prevent, so monitoring and intelligence appear on the same list as the
+ * panels rather than in an appendix about aftercare.
+ */
+export type QuoteItem = {
   key: string;
   glyph: GlyphName;
   name: string;
+  /** Three or four words, set large — what this thing is for. */
+  does: string;
   tone: StatusTone;
   /** Filled from the visitor's own position where one exists. */
   value: (position: PlanPosition) => string;
   why: string;
 };
 
-export const RECOMMENDATIONS: Recommendation[] = [
+export const QUOTE: QuoteItem[] = [
   {
     key: 'solar',
     glyph: 'generation',
-    name: 'Solar',
-    tone: 'green',
+    name: 'Solar panels',
+    does: 'Generate it',
+    tone: 'amber',
     value: (position) =>
-      position.systemKw ? `${position.systemKw} kWp for assessment` : 'Sized during assessment',
-    why: 'Your current grid consumption and electricity cost suggest a meaningful proportion of your own electricity could be generated at the property.'
+      position.systemKw ? `${position.systemKw} kWp` : 'Sized at assessment',
+    why: 'Your bill says a meaningful share of what you buy could be made where you use it.'
+  },
+  {
+    key: 'inverter',
+    glyph: 'inverter',
+    name: 'Inverter',
+    does: 'Make it usable',
+    tone: 'green',
+    value: (position) => (position.systemKw ? 'Matched to the array' : 'Matched at design'),
+    why: 'Panels make DC; a house runs on AC. It is also the part that reports.'
   },
   {
     key: 'battery',
     glyph: 'storage',
     name: 'Battery storage',
+    does: 'Keep it',
     tone: 'purple',
     value: (position) =>
-      position.batteryKwh ? `${position.batteryKwh} kWh for review` : 'Recommended for review',
-    why: 'Storage may allow more daytime generation to be retained for use later, instead of purchasing as much electricity from the grid in the evening.'
+      position.batteryKwh ? `${position.batteryKwh} kWh for review` : 'For review',
+    why: 'You will generate surplus at hours you do not need it. This is what keeps it.'
+  },
+  {
+    key: 'protection',
+    glyph: 'health',
+    name: 'System protection',
+    does: 'Protect it',
+    tone: 'orange',
+    value: () => 'Included in design',
+    why: 'Specified with the system, rather than sold to you after a fault.'
   },
   {
     key: 'monitoring',
     glyph: 'monitoring',
     name: 'Energy monitoring',
+    does: 'See it',
     tone: 'blue',
-    value: () => 'Recommended',
-    why: 'Monitoring is what lets Guardian Care tell generated, used, stored, exported and purchased apart after the system is installed.'
+    value: () => 'Included',
+    why: 'Without it, every figure on this page stays an estimate forever.'
   },
   {
     key: 'intelligence',
     glyph: 'insight',
     name: 'Guardian Care intelligence',
-    tone: 'amber',
-    value: () => 'Recommended',
-    why: 'A system should not simply be installed and forgotten. Guardian Care keeps analysing the energy position so you can see whether it is being used effectively over time.'
+    does: 'Improve it',
+    tone: 'green',
+    value: () => 'Included',
+    why: 'So you find out whether the system did what this page estimated — and what to change if it did not.'
   }
 ];
 
@@ -406,46 +547,116 @@ export const RECOMMENDATIONS: Recommendation[] = [
 
 export type Question = {q: string; a: string};
 
+/**
+ * Answers, not essays.
+ *
+ * Two sentences each at the outside. Somebody opening one of these wants the
+ * answer, not the reasoning behind the answer — and a panel that unfolds into
+ * a paragraph is the wall of prose the accordion existed to avoid.
+ */
 export const QUESTIONS: Question[] = [
   {
     q: 'How much could solar reduce my electricity bill?',
-    a: 'Guardian Care answers this from your own figures rather than a brochure: your estimated annual consumption, the generation the proposed system would produce, how much of it you could realistically use yourself, and the rate you currently pay for every unit that displaces.'
+    a: 'By whatever it stops you buying: the generation you could realistically use yourself, times the rate you pay. Both come from your figures, not from a brochure.'
   },
   {
     q: 'How many panels might I need?',
-    a: 'An indicative range now, from your energy position and what your roof can carry. The final capacity depends on the property assessment — roof pitch, orientation, shading and structure are measured before anything is specified.'
+    a: 'An indicative range now, from your energy position and what your roof can carry. Pitch, orientation and shading are measured before anything is specified.'
   },
   {
     q: 'Do I need a battery?',
-    a: 'It depends on the relationship between your surplus and your evening usage. If you generate well beyond what the house uses at midday and then buy electricity back after dark, storage has something to do. If your consumption already sits in daylight hours, it has less.'
+    a: 'Only if you generate well past what the house uses at midday and then buy it back after dark. If your usage already sits in daylight hours, it has less to do.'
   },
   {
-    q: 'How much battery storage could I need?',
-    a: 'Enough to absorb a typical day’s surplus without sitting half-empty. Guardian Care gives an indicative range from the proposed system size and your estimated evening import, then confirms it during assessment.'
+    q: 'How much storage could I need?',
+    a: 'Enough to absorb a typical day’s surplus without sitting half-empty — sized from your evening import, then confirmed at assessment.'
   },
   {
     q: 'What happens when I generate more than I use?',
-    a: 'It goes to the nearest place that will take it: first your home, then a battery if you have one, then the grid. Anything exported earns the export rate, which is normally well below what the same unit costs to buy back.'
+    a: 'It goes to the nearest place that will take it: your home, then a battery, then the grid. Exported units earn well under what the same unit costs to buy back.'
   },
   {
     q: 'Will I still need electricity from the grid?',
-    a: 'Almost certainly. Most grid-connected homes still import at some points in the year, and complete independence is not the objective — reducing unnecessary dependence is.'
+    a: 'Almost certainly. Complete independence is not the objective — reducing unnecessary dependence is.'
   },
   {
     q: 'What happens after installation?',
-    a: 'Guardian Care connects monitoring and keeps building the picture: what the system produces, how much you use directly, what the battery stores, what you export, what you still purchase and what that grid electricity costs.'
+    a: 'Monitoring is connected, and the estimates on this page become readings: what you generate, use, store, export and still buy.'
   }
 ];
 
-/* ---------- From estimate to installation ---------- */
+/* ---------- The complete energy journey ---------- */
 
-export const INSTALL_STEPS = [
-  {index: '01', name: 'Energy assessment', line: 'Confirm property and electricity information.'},
-  {index: '02', name: 'Solar & storage design', line: 'Create the appropriate system specification.'},
-  {index: '03', name: 'Installation', line: 'Install and commission the selected equipment.'},
-  {index: '04', name: 'Connect monitoring', line: 'Connect compatible system and energy monitoring.'},
-  {index: '05', name: 'Activate Guardian Care', line: 'Create the customer’s energy intelligence profile.'}
+/**
+ * Seven stages, from a bill to a system that keeps being improved.
+ *
+ * The split at stage five is the one that carries the argument. Everything
+ * before it is estimated — the page says so on every figure it prints — and
+ * everything after it is measured. Most solar journeys end at four.
+ */
+export type Stage = {
+  index: string;
+  name: string;
+  line: string;
+  glyph: GlyphName;
+  /** Before monitoring exists, or after. The rail changes at the boundary. */
+  measured: boolean;
+};
+
+export const JOURNEY: Stage[] = [
+  {
+    index: '1',
+    name: 'Tell us what you pay',
+    line: 'We establish your current grid-cost position.',
+    glyph: 'cost',
+    measured: false
+  },
+  {
+    index: '2',
+    name: 'Tell us what you want',
+    line: 'Lower bills, storage, your own generation, less grid.',
+    glyph: 'goal',
+    measured: false
+  },
+  {
+    index: '3',
+    name: 'We build an estimate',
+    line: 'An indicative solar and storage position, with its arithmetic shown.',
+    glyph: 'insight',
+    measured: false
+  },
+  {
+    index: '4',
+    name: 'Receive your quote',
+    line: 'Solar, battery, monitoring and Guardian Care as one energy solution.',
+    glyph: 'plan',
+    measured: false
+  },
+  {
+    index: '5',
+    name: 'Install & connect',
+    line: 'The system is installed and monitoring is activated.',
+    glyph: 'connect',
+    measured: true
+  },
+  {
+    index: '6',
+    name: 'See your energy',
+    line: 'Generation, storage, export and what you still buy — every day.',
+    glyph: 'monitoring',
+    measured: true
+  },
+  {
+    index: '7',
+    name: 'Guardian Care optimises',
+    line: 'The platform keeps looking for meaningful changes and opportunities.',
+    glyph: 'retain',
+    measured: true
+  }
 ];
+
+/** The line the rail crosses — estimates on one side, readings on the other. */
+export const JOURNEY_HINGE = JOURNEY.findIndex((stage) => stage.measured);
 
 /* ---------- The dashboard that arrives afterwards ---------- */
 
@@ -472,45 +683,99 @@ export const DASHBOARD: DashReading[] = [
   {key: 'cost', glyph: 'cost', label: 'Grid energy cost', value: '£0.52', unit: 'at 29p/kWh', tone: 'orange'}
 ];
 
-export const CONTINUES = [
-  {name: 'High grid import', line: 'Could more solar or stored energy be used?', tone: 'amber' as StatusTone},
-  {name: 'High export', line: 'Could additional surplus be retained?', tone: 'blue' as StatusTone},
-  {name: 'Battery underutilisation', line: 'Are the current battery settings appropriate?', tone: 'purple' as StatusTone},
-  {name: 'Tariff opportunity', line: 'Could lower-cost periods work better with the battery?', tone: 'green' as StatusTone},
-  {name: 'System performance change', line: 'Is generation moving away from the expected position?', tone: 'orange' as StatusTone}
-];
+/* ---------- What Guardian Care notices afterwards ---------- */
 
-/* ---------- The ladder ---------- */
+/**
+ * The auto-suggestions, in the platform's own two-part voice: what was seen,
+ * then what should be looked at. Never a conclusion, and never a product —
+ * the whole credibility of this section rests on it reading as an observation
+ * somebody would make about your system rather than as a reason to call you.
+ */
+export type Suggestion = {
+  key: string;
+  name: string;
+  glyph: GlyphName;
+  tone: StatusTone;
+  /** What the data showed. */
+  says: string;
+  /** What Guardian Care would look at because of it. */
+  review: string;
+};
 
-export const STAGES = [
+export const SUGGESTIONS: Suggestion[] = [
   {
-    name: 'Before solar',
-    line: 'You depend heavily on electricity purchased from the grid. Your bill tells you what you owe.',
-    tone: 'amber' as StatusTone
+    key: 'import',
+    name: 'High grid import',
+    glyph: 'import',
+    tone: 'orange',
+    says: 'Your property is purchasing more electricity than expected.',
+    review: 'Solar performance, battery usage or tariff configuration.'
   },
   {
-    name: 'With solar',
-    line: 'You begin generating electricity at the property. Your grid dependency may reduce.',
-    tone: 'green' as StatusTone
+    key: 'export',
+    name: 'High export',
+    glyph: 'export',
+    tone: 'blue',
+    says: 'A significant amount of solar energy is being sent back to the grid.',
+    review: 'Battery utilisation or storage capacity.'
   },
   {
-    name: 'With solar + battery',
-    line: 'You may be able to retain more of the electricity you generate for later use.',
-    tone: 'purple' as StatusTone
+    key: 'battery',
+    name: 'Battery underutilised',
+    glyph: 'storage',
+    tone: 'purple',
+    says: 'Available battery capacity may not be being used effectively.',
+    review: 'Battery and tariff settings.'
   },
   {
-    name: 'With Guardian Care',
-    line: 'You understand what is happening, what it is costing, what you are saving, what you are exporting, what could be improved and what should happen next.',
-    tone: 'blue' as StatusTone
+    key: 'performance',
+    name: 'Performance change',
+    glyph: 'health',
+    tone: 'amber',
+    says: 'Generation has moved away from its expected position.',
+    review: 'System performance, weather-adjusted.'
   }
 ];
 
-/** The point of the whole journey, as a sequence rather than a paragraph. */
-export const GOAL_STEPS = [
-  'Generate more of your own electricity.',
-  'Use more of it yourself.',
-  'Store suitable surplus electricity.',
-  'Reduce unnecessary grid purchases.',
-  'Understand what your energy system is doing.',
-  'Continue improving it after installation.'
+/* ---------- The example household ---------- */
+
+/**
+ * One property, carried through the hero and the comparison.
+ *
+ * The same device the consumer journey uses: a reader who meets £165 four
+ * times is being shown one house rather than four unrelated claims. Every
+ * figure here is derived from the two the visitor would actually know — the
+ * monthly bill and the unit rate — so nothing in the card is a number somebody
+ * chose because it looked good.
+ */
+const EXAMPLE_BILL = 165;
+
+export const EXAMPLE = {
+  monthlyBill: EXAMPLE_BILL,
+  annualSpend: EXAMPLE_BILL * 12,
+  importRate: DEFAULT_RATES.importRate,
+  /* The bill less its standing charge, converted at the unit rate. Solar can
+     never touch a standing charge, so it is taken off before the division. */
+  annualKwh: Math.round(
+    ((EXAMPLE_BILL * 12 - (DEFAULT_RATES.standingCharge * 365) / 100) /
+      DEFAULT_RATES.importRate) *
+      100
+  )
+};
+
+/* ---------- Where it leaves you ---------- */
+
+/**
+ * The closing sequence — the page's whole argument as five verbs.
+ *
+ * Deliberately not sentences. By the time a reader reaches the bottom they
+ * have seen each of these demonstrated, and the line is there to name what
+ * they were just shown rather than to explain it again.
+ */
+export const OUTCOME: Array<{verb: string; line: string; glyph: GlyphName}> = [
+  {verb: 'Generate it.', line: 'Electricity made at the property', glyph: 'generation'},
+  {verb: 'Use it.', line: 'Used as it is made, at no grid cost', glyph: 'consumption'},
+  {verb: 'Store it.', line: 'Surplus held back for the evening', glyph: 'storage'},
+  {verb: 'Understand it.', line: 'Measured, not assumed', glyph: 'monitoring'},
+  {verb: 'Pay the grid less.', line: 'Which was the point', glyph: 'savings'}
 ];

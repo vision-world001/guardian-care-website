@@ -1,5 +1,5 @@
-import WaveSign from '../../context/layouts/WaveSign';
 import CommandField from './components/CommandField';
+import WaveSign from '../../context/layouts/WaveSign';
 import CustomerView from './components/CustomerView';
 import Hero from './components/Hero';
 import Intelligence from './components/Intelligence';
@@ -30,10 +30,11 @@ import Record from './components/Record';
  * record and hands straight to the footer's wordmark, and the journeys stay one
  * click away in the header and the footer's own links.
  *
- * Runs on its own surface: `.theme-command`, set by the layout. Near-black
- * charcoal, warm white type and amber rather than the green-to-blue ramp the
- * three journey pages are told in. The accent shift is the substantive part —
- * on those pages the subject is an audience, and here it is energy.
+ * Runs on the one ground the whole site now shares — the mark's own navy, set
+ * in `@theme` rather than under a class, with the brand green as the accent.
+ * There is no longer a per-page surface to opt into: four pages telling one
+ * product in one set of colours is the point, and the difference between them
+ * is what they say rather than what they are lit with.
  */
 export default function Home() {
   return (

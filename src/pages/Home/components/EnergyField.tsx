@@ -188,9 +188,9 @@ export default function EnergyField() {
       >
         <defs>
           <radialGradient id="ef-sun">
-            <stop offset="0%" stopColor="var(--logo-gold)" stopOpacity="0.36" />
-            <stop offset="42%" stopColor="var(--logo-gold)" stopOpacity="0.11" />
-            <stop offset="100%" stopColor="var(--logo-gold)" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--logo-pale)" stopOpacity="0.36" />
+            <stop offset="42%" stopColor="var(--logo-pale)" stopOpacity="0.11" />
+            <stop offset="100%" stopColor="var(--logo-pale)" stopOpacity="0" />
           </radialGradient>
         </defs>
 
@@ -200,13 +200,13 @@ export default function EnergyField() {
           cx={SUN.x}
           cy={SUN.y}
           r={SUN.r}
-          stroke="var(--logo-gold)"
+          stroke="var(--logo-pale)"
           strokeWidth="2.6"
           opacity="0.62"
           {...DOTS}
         />
         {SUN_SPOKES.map((d) => (
-          <path key={d} d={d} stroke="var(--logo-gold)" strokeWidth="2.6" opacity="0.44" {...DOTS} />
+          <path key={d} d={d} stroke="var(--logo-pale)" strokeWidth="2.6" opacity="0.44" {...DOTS} />
         ))}
 
         {/* ---- Sunlight arriving ---- */}
@@ -214,7 +214,7 @@ export default function EnergyField() {
           <path
             key={d}
             d={d}
-            stroke="var(--logo-gold)"
+            stroke="var(--logo-pale)"
             strokeWidth="2.4"
             opacity="0.42"
             style={{animation: `crawl ${2.4 + index * 0.18}s linear infinite`}}
@@ -237,7 +237,7 @@ export default function EnergyField() {
 
         {/* ---- The objects ---- */}
         {ARRAY_ART.map((d) => (
-          <path key={d} d={d} stroke="var(--logo-gold)" strokeWidth="2.6" opacity="0.58" {...DOTS} />
+          <path key={d} d={d} stroke="var(--logo-pale)" strokeWidth="2.6" opacity="0.58" {...DOTS} />
         ))}
         {/* Carried a little brighter than its neighbours. It is drawn in the ink
             colour rather than an accent, and a warm white at the same opacity as
@@ -256,19 +256,26 @@ export default function EnergyField() {
 
       {/* The veil. Weighted to the centre where the headline lands, but softer
           than it wants to be — the drawing has to stay a drawing. It closes to
-          the page's own ground at the bottom edge so the hero has no seam. */}
+          the page's own ground at the bottom edge so the hero has no seam.
+
+          Mixed from `--color-bg` rather than written as a literal rgba().
+          These stops were charcoal, which is what the ground used to be; once
+          the site moved to the brand navy the hero was fading to a grey that
+          no longer existed anywhere else on the page, and the seam this
+          comment promises there would not be was plainly visible. Against the
+          token it cannot happen again. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 52% 40% at 50% 38%, rgba(10,11,13,0.9), rgba(10,11,13,0.48) 62%, rgba(10,11,13,0.1) 100%)'
+            'radial-gradient(ellipse 52% 40% at 50% 38%, color-mix(in srgb, var(--color-bg) 90%, transparent), color-mix(in srgb, var(--color-bg) 48%, transparent) 62%, color-mix(in srgb, var(--color-bg) 10%, transparent) 100%)'
         }}
       />
       <div
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(180deg, rgba(10,11,13,0.6) 0%, transparent 24%, transparent 78%, rgba(10,11,13,0.9) 100%)'
+            'linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 60%, transparent) 0%, transparent 24%, transparent 78%, color-mix(in srgb, var(--color-bg) 90%, transparent) 100%)'
         }}
       />
     </div>

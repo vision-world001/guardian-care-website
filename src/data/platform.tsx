@@ -87,7 +87,7 @@ export const JOURNEYS: Journey[] = [
       ]
     },
     cta: 'Check my existing solar system',
-    to: '/existing',
+    to: '/consumer',
     tone: 'amber',
     glyph: 'solarRoof'
   },

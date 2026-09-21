@@ -1,8 +1,6 @@
 import {useEffect, useRef} from 'react';
-import {useLocation} from 'react-router';
 import Reveal from '../../components/Reveal';
 import {cn} from '../../lib/cn';
-import {DAY_ROUTES} from './index';
 
 /**
  * The site's sign-off, just before the footer: the name rising out of a
@@ -28,8 +26,8 @@ import {DAY_ROUTES} from './index';
 
 /** The mark's three colours, left to right across the surface. */
 const RAMP: Array<[number, number, number]> = [
-  [255, 198, 98],
-  [154, 204, 8],
+  [255, 210, 97],
+  [113, 190, 19],
   [61, 154, 232]
 ];
 
@@ -51,7 +49,6 @@ const SPARE_ROWS = 4;
 const clamp = (v: number, lo: number, hi: number) => (v < lo ? lo : v > hi ? hi : v);
 
 export default function WaveSign() {
-  const {pathname} = useLocation();
   const sectionRef = useRef<HTMLElement>(null);
   const backRef = useRef<HTMLCanvasElement>(null);
   const frontRef = useRef<HTMLCanvasElement>(null);
@@ -225,9 +222,7 @@ export default function WaveSign() {
       ref={sectionRef}
       aria-hidden="true"
       className={cn(
-        'relative isolate h-[clamp(320px,42vw,640px)] overflow-hidden bg-bg',
-        /* Dark on every route, like the footer it leads into. */
-        DAY_ROUTES.has(pathname) && 'theme-night'
+        'relative isolate h-[clamp(320px,42vw,640px)] overflow-hidden bg-bg'
       )}
     >
       <canvas ref={backRef} className="pointer-events-none absolute inset-0 h-full w-full" />
@@ -237,18 +232,18 @@ export default function WaveSign() {
         className="pointer-events-none absolute left-1/2 top-[56%] h-[60%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px]"
         style={{
           background:
-            'radial-gradient(ellipse, rgba(154,204,8,0.13), rgba(255,198,98,0.05) 45%, transparent 72%)'
+            'radial-gradient(ellipse, rgba(113,190,19,0.13), rgba(255,210,97,0.05) 45%, transparent 72%)'
         }}
       />
 
       <div ref={wordRef} className="absolute inset-x-0 bottom-[36%] z-10 flex justify-center">
         <Reveal animation="animate-rise">
-          <div style={{filter: 'drop-shadow(0 0 44px rgba(154,204,8,0.22))'}}>
+          <div style={{filter: 'drop-shadow(0 0 44px rgba(113,190,19,0.22))'}}>
             <span
               className="block whitespace-nowrap font-display font-semibold uppercase leading-[0.78] tracking-[0.005em]"
               style={{
                 fontSize: 'clamp(50px, 13vw, 250px)',
-                background: 'linear-gradient(100deg, var(--logo-gold), var(--logo-lime))',
+                background: 'linear-gradient(100deg, var(--logo-pale), var(--logo-green))',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',

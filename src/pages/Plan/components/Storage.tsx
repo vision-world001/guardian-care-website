@@ -1,141 +1,198 @@
+import Glyph from '../../../components/Glyph';
+import {Heading, LABEL, Tile} from '../../../components/kit';
 import Photo from '../../../components/Photo';
 import Reveal from '../../../components/Reveal';
-import {Section, SectionHead, Wrap} from '../../../components/ui';
-import {TONE_TEXT} from '../../../data/command';
-import {STORAGE_COMPARISON} from '../../../data/plan';
+import {Estimated, Section, Wrap} from '../../../components/ui';
+import {TONE_TEXT, TONE_VAR} from '../../../data/command';
+import {
+  DEFAULT_RATES,
+  STORAGE_COMPARISON,
+  STORAGE_GENERATED,
+  type StorageDay
+} from '../../../data/plan';
 import {cn} from '../../../lib/cn';
+import {Figure, UnitKey, Units, type Segment} from './parts';
 
 /**
  * The same day, twice.
  *
- * One generation figure, fifteen kilowatt-hours, on both sides. Everything that
- * differs is where it ended up — and the row that matters is the last one,
- * where five kilowatt-hours of evening import become one. Setting the two
- * columns against each other with an identical top line is what makes storage
- * legible as a redistribution rather than as extra production, which is the
- * single most common misunderstanding this page has to clear.
+ * Fifteen kilowatt-hours generated on both sides, drawn as the same fifteen
+ * squares rearranged. Setting the two columns against an identical top line is
+ * what makes storage legible as a redistribution rather than as extra
+ * production, which is the single most common misunderstanding this page has
+ * to clear — and squares clear it in about a second, where two paragraphs and
+ * a bar chart do not.
+ *
+ * The row that actually decides it is the last one: five kilowatt-hours bought
+ * back that evening, or one. Everything above it is arrangement; that row is
+ * money.
  */
 export default function Storage() {
-  /* Both columns are drawn against the same ceiling, so a bar's length means
-     the same thing on either side. Without that, "exported: 7" and
-     "exported: 2" would render at whatever width their own column allowed. */
-  const ceiling = Math.max(
-    ...STORAGE_COMPARISON.flatMap((column) => column.rows.map((row) => row.value))
-  );
+  const [without, with_] = STORAGE_COMPARISON;
+  const avoided = ((without.later - with_.later) * DEFAULT_RATES.importRate) / 100;
 
   return (
-    <Section id="storage" hairline>
+    <Section id="storage" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
-        <SectionHead
-          eyebrow="Do you want battery storage?"
-          tone="blue"
-          index="03 / 05"
-          title="Same generation. Different destination."
-          body="Battery storage does not make your system produce more. It changes when you are able to use what it already produces — which, for a household that is out during the day and home in the evening, is the whole question."
+        <Heading
+          eyebrow="◇ Are you interested in battery storage?"
+          title="Same generation."
+          accent="Different destination."
+          body="A battery does not produce more. It changes when you can use what you already produce."
         />
 
-        {/* The hour the whole argument is about. A battery is not interesting at
-            midday; it is interesting here. */}
-        <Reveal className="mb-4 overflow-hidden rounded-[22px] ring-1 ring-line-2">
-          <div className="grid min-[900px]:grid-cols-[1fr_1.1fr]">
-            {/* The photo is sized by the copy beside it, never by its own
-                proportions: `h-full` on a grid item in an auto row cannot
-                resolve, so the image falls back to its natural height and
-                leaves half a screen of empty panel next to four lines of text.
-                An absolutely positioned layer inside a floor-height box takes
-                whatever height the row settles on and crops to it. */}
-            <div className="relative min-h-[220px] min-[900px]:min-h-[300px]">
-              <div className="absolute inset-0">
-                <Photo
-                  src="/assets/photos/evening.jpg"
-                  alt="A house with solar panels photographed at dusk, its windows lit"
-                  className="h-full w-full"
-                  veil={false}
-                />
-              </div>
-            </div>
-            <div className="bg-panel p-6 min-[760px]:p-9">
-              <div className="text-[10.5px] font-bold uppercase tracking-[.18em] text-purple">
-                Six in the evening
-              </div>
-              <h3 className="mt-4 font-display text-[clamp(21px,2.7vw,30px)] font-semibold uppercase leading-[1.08] text-ink">
-                The panels stopped an hour ago. The house did not.
+        {/* ---------- The hour the argument is about ---------- */}
+        <Reveal animation="animate-card-in" className="ring-lit overflow-hidden rounded-frame">
+          <Photo
+            src="/assets/photos/evening.jpg"
+            alt="A house with solar panels photographed at dusk, its windows lit"
+            className="h-[320px] min-[760px]:h-[380px]"
+            imgClassName="object-[50%_45%]"
+          >
+            <div
+              aria-hidden="true"
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(90deg, color-mix(in srgb, var(--color-bg) 92%, transparent), color-mix(in srgb, var(--color-bg) 60%, transparent) 52%, color-mix(in srgb, var(--color-bg) 12%, transparent) 84%)'
+              }}
+            />
+            <div className="absolute inset-x-0 bottom-0 p-6 min-[760px]:p-11">
+              <div className={cn(LABEL, 'text-purple')}>◇ Six in the evening</div>
+              <h3 className="mt-5 max-w-[620px] font-display text-[clamp(27px,4.2vw,46px)] font-semibold uppercase leading-[0.98] tracking-[-0.015em] text-ink">
+                The lights are on.
+                <br />
+                <span className="text-brand-gradient">The roof is finished.</span>
               </h3>
-              <p className="mt-4 text-[15.5px] font-light leading-[1.68] text-muted">
-                This is when a household uses most of its electricity, and it is the one time of day
-                a solar system has nothing to offer. Storage exists to move the afternoon’s surplus
-                into this hour — which is why the question is never “how big a battery?” but “how
-                much do you use after dark?”
+              <p className="mt-5 max-w-[460px] text-[16px] font-light leading-[1.6] text-ink/80">
+                This is the hour a battery is for. Not midday, when everything is easy.
               </p>
             </div>
-          </div>
+          </Photo>
         </Reveal>
 
-        <div className="grid gap-4 min-[900px]:grid-cols-2">
-          {STORAGE_COMPARISON.map((column, index) => (
-            <Reveal
-              key={column.key}
-              delay={index * 0.06}
-              className={cn(
-                'rounded-[22px] p-6 min-[760px]:p-8',
-                column.key === 'with'
-                  ? 'bg-[linear-gradient(125deg,var(--color-green-glow),var(--color-blue-glow))] ring-1 ring-line'
-                  : 'bg-panel ring-1 ring-line-2'
-              )}
-            >
-              <div className={cn('text-[10.5px] font-bold uppercase tracking-[.18em]', TONE_TEXT[column.tone])}>
-                {column.name}
-              </div>
-
-              <dl className="mt-7 space-y-5">
-                {column.rows.map((row) => {
-                  const last = row.label === 'Later grid import';
-
-                  return (
-                    <div key={row.label}>
-                      <div className="mb-2 flex items-baseline justify-between gap-4">
-                        <dt
-                          className={cn(
-                            'text-[14px] leading-[1.3]',
-                            last ? 'font-medium text-ink' : 'font-light text-muted'
-                          )}
-                        >
-                          {row.label}
-                        </dt>
-                        <dd
-                          className={cn(
-                            'mono text-[15px] font-semibold',
-                            last ? TONE_TEXT[column.tone] : 'text-ink'
-                          )}
-                        >
-                          {row.value} kWh
-                        </dd>
-                      </div>
-                      <div className="h-2 overflow-hidden rounded-full bg-line-2">
-                        <div
-                          className={cn(
-                            'h-full rounded-full',
-                            last
-                              ? column.key === 'with'
-                                ? 'bg-green'
-                                : 'bg-amber'
-                              : 'bg-ink/25'
-                          )}
-                          style={{width: `${(row.value / ceiling) * 100}%`}}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </dl>
-
-              <p className="mt-7 border-t border-line-2 pt-5 text-[14px] font-light leading-[1.6] text-muted">
-                {column.line}
-              </p>
+        {/* ---------- The same day, twice ---------- */}
+        <div className="mt-4 grid gap-4 min-[980px]:grid-cols-2">
+          {STORAGE_COMPARISON.map((day, index) => (
+            <Reveal key={day.key} delay={index * 0.08} className="min-w-0">
+              <Day day={day} best={index === 1} />
             </Reveal>
           ))}
         </div>
+
+        {/* ---------- What the difference is worth ---------- */}
+        <Reveal
+          delay={0.16}
+          className="mt-4 rounded-frame p-px"
+          style={{
+            background:
+              'linear-gradient(100deg, var(--logo-pale), var(--logo-green) 46%, var(--color-purple))'
+          }}
+        >
+          <div className="flex flex-col gap-6 rounded-[5px] bg-[linear-gradient(180deg,#15181c,#0f1114)] px-6 py-7 min-[900px]:flex-row min-[900px]:items-center min-[900px]:gap-10 min-[900px]:px-9">
+            <Tile colour="var(--color-purple)" size="lg">
+              <Glyph name="storage" bold className="h-7 w-7" />
+            </Tile>
+
+            <div className="min-w-0 flex-1">
+              <div className={cn(LABEL, 'text-purple')}>Guardian Care suggestion</div>
+              <div className="mt-3 font-display text-[clamp(23px,3vw,34px)] font-semibold uppercase leading-[1.02] tracking-[-0.01em] text-ink">
+                Battery storage opportunity identified
+              </div>
+              <p className="mt-3 max-w-[560px] text-[14.5px] font-light leading-[1.6] text-muted">
+                {without.later - with_.later} fewer kilowatt-hours bought back that evening, at{' '}
+                {DEFAULT_RATES.importRate}p each.
+              </p>
+            </div>
+
+            <div className="shrink-0 min-[900px]:text-right">
+              <Figure size="md" tone="purple" value={`£${avoided.toFixed(2)}`} unit="that evening" />
+              <div className="mt-3">
+                <Estimated label="Estimated, one day" />
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </Wrap>
     </Section>
+  );
+}
+
+/* ---------- One version of the day ---------- */
+
+function Day({day, best}: {day: StorageDay; best: boolean}) {
+  const segments: Segment[] = day.where.map((part) => ({
+    tone: part.tone,
+    count: part.value,
+    label: part.label
+  }));
+
+  const later: Segment[] = [
+    {tone: 'orange', count: day.later, hollow: true, label: 'Bought back that evening'}
+  ];
+
+  return (
+    <div
+      className={cn(
+        'glass ring-lit flex h-full flex-col overflow-hidden rounded-frame',
+        best && 'shadow-lift'
+      )}
+    >
+      <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-3.5 min-[520px]:px-6">
+        <span className={cn(LABEL, best ? 'text-purple' : 'text-faint')}>{day.name}</span>
+        <span className="mono text-[10px] uppercase tracking-[.14em] text-faint">
+          {STORAGE_GENERATED} kWh generated
+        </span>
+      </div>
+
+      <div className="flex flex-1 flex-col px-5 py-6 min-[520px]:px-6">
+        {/* Where the day's generation ended up. */}
+        <div>
+          <div className={cn(LABEL, 'text-faint')}>Where it went</div>
+          <Units segments={segments} className="mt-4" />
+          <UnitKey segments={segments} className="mt-4" />
+        </div>
+
+        {/* And what the property still had to buy. */}
+        <div className="mt-7 border-t border-line-2 pt-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="min-w-0">
+              <div className={cn(LABEL, 'text-orange')}>Then, that evening</div>
+              <div className="mt-3.5 max-w-[240px]">
+                <Units segments={later} pad={STORAGE_COMPARISON[0].later} />
+              </div>
+            </div>
+            <Figure
+              size="sm"
+              tone={best ? 'green' : 'orange'}
+              value={day.later}
+              unit="kWh bought"
+            />
+          </div>
+        </div>
+
+        <p
+          className={cn(
+            'mt-6 border-l-2 pl-4 text-[14px] font-light leading-[1.55] text-ink/85',
+            best ? 'border-purple/55' : 'border-line-2'
+          )}
+        >
+          {day.line}
+        </p>
+
+        {best ? (
+          <div className={cn('mt-5 flex items-center gap-2', TONE_TEXT.purple)}>
+            <span
+              aria-hidden="true"
+              className="h-1.5 w-1.5 rounded-full"
+              style={{background: TONE_VAR.purple}}
+            />
+            <span className="mono text-[10.5px] font-semibold uppercase tracking-[.14em]">
+              Same panels · same weather · same house
+            </span>
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 }

@@ -22,37 +22,37 @@ const JOURNEYS: Record<string, Journey> = {
     cta: {href: '#journeys', label: 'Choose your journey'},
     switcher: false
   },
-  '/existing': {
+  '/consumer': {
     links: [
-      {href: '#today', label: 'Your system today'},
-      {href: '#check', label: 'System check'},
+      {href: '#why', label: 'Why Guardian Care'},
+      {href: '#how', label: 'How it works'},
       {href: '#view', label: 'Bird’s-eye view'},
-      {href: '#thinking', label: 'Intelligence'},
-      {href: '#alerts', label: 'Alerts'}
+      {href: '#account', label: 'Your account'},
+      {href: '#aim', label: 'Our aim'}
     ],
-    cta: {href: '#check', label: 'Check my system'},
+    cta: {href: '#check', label: 'Start my system check'},
     switcher: true
   },
   '/plan': {
     links: [
-      {href: '#assess', label: 'Assessment'},
       {href: '#changes', label: 'What solar changes'},
       {href: '#storage', label: 'Storage'},
-      {href: '#setup', label: 'Suggested setup'},
-      {href: '#ask', label: 'Ask Guardian Care'}
+      {href: '#assess', label: 'Assessment'},
+      {href: '#quote', label: 'Your quote'},
+      {href: '#after', label: 'After installation'}
     ],
-    cta: {href: '#assess', label: 'See my estimate'},
+    cta: {href: '#assess', label: 'Get my quote'},
     switcher: true
   },
   '/business': {
     links: [
-      {href: '#assess', label: 'Assessment'},
-      {href: '#pillars', label: 'Lifecycle'},
-      {href: '#signals', label: 'Intelligence'},
-      {href: '#portfolio', label: 'Portfolio'},
-      {href: '#markets', label: 'Markets'}
+      {href: '#after', label: 'After handover'},
+      {href: '#products', label: 'The platform'},
+      {href: '#console', label: 'The console'},
+      {href: '#revenue', label: 'Revenue'},
+      {href: '#join', label: 'How you join'}
     ],
-    cta: {href: '#assess', label: 'Start my assessment'},
+    cta: {href: '#join', label: 'Join Guardian Care'},
     switcher: true
   }
 };
@@ -70,7 +70,10 @@ export default function Header() {
           <Lockup size="nav" />
         </Link>
 
-        <div className="ml-auto hidden gap-[26px] text-[12.5px] font-medium uppercase tracking-[.08em] text-muted min-[1180px]:flex">
+        {/* White, per the palette — not the supporting grey. A nav is the one
+            place on the page where every item is equally the thing you came
+            for, so none of them is set back. */}
+        <div className="ml-auto hidden gap-[26px] text-[12.5px] font-medium uppercase tracking-[.08em] text-ink min-[1180px]:flex">
           {journey.links.map((link) => (
             <a key={link.href} href={link.href} className="whitespace-nowrap transition-colors hover:text-green">
               {link.label}
@@ -89,7 +92,7 @@ export default function Header() {
 
         <a
           href={journey.cta.href}
-          className={`${journey.switcher ? 'ml-3' : 'ml-auto min-[1180px]:ml-[22px]'} hidden whitespace-nowrap rounded-pill bg-brand-gradient px-5 py-[11px] text-[12px] font-bold uppercase tracking-[.07em] text-bg shadow-[0_8px_24px_-12px_var(--btn-glow)] transition duration-200 hover:brightness-110 min-[620px]:inline-flex`}
+          className={`${journey.switcher ? 'ml-3' : 'ml-auto min-[1180px]:ml-[22px]'} hidden whitespace-nowrap rounded-pill bg-[var(--cta)] px-5 py-[11px] text-[12px] font-bold uppercase tracking-[.07em] text-[var(--cta-ink)] shadow-[0_8px_24px_-12px_var(--btn-glow)] transition duration-200 hover:bg-[var(--cta-hover)] min-[620px]:inline-flex`}
         >
           {journey.cta.label}
         </a>

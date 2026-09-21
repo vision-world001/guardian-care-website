@@ -57,9 +57,9 @@ function rowCentre(index: number): number {
 function tone(index: number): string {
   const t = index / (RECORD_SPINE.length - 1);
   if (t <= 0.5) {
-    return `color-mix(in oklab, var(--logo-lime) ${Math.round((t / 0.5) * 100)}%, var(--logo-gold))`;
+    return `color-mix(in oklab, var(--logo-green) ${Math.round((t / 0.5) * 100)}%, var(--logo-pale))`;
   }
-  return `color-mix(in oklab, var(--color-blue) ${Math.round(((t - 0.5) / 0.5) * 100)}%, var(--logo-lime))`;
+  return `color-mix(in oklab, var(--color-blue) ${Math.round(((t - 0.5) / 0.5) * 100)}%, var(--logo-green))`;
 }
 
 /** A tone at low strength, for tile fills and borders. */
@@ -123,8 +123,8 @@ export default function Record() {
               })}
 
               {/* Where every line starts: one point on the record. */}
-              <circle cx="0" cy={ORIGIN_Y} r="11" style={{fill: tint('var(--logo-lime)', 16)}} />
-              <circle cx="0" cy={ORIGIN_Y} r="5" style={{fill: 'var(--logo-lime)'}} />
+              <circle cx="0" cy={ORIGIN_Y} r="11" style={{fill: tint('var(--logo-green)', 16)}} />
+              <circle cx="0" cy={ORIGIN_Y} r="5" style={{fill: 'var(--logo-green)'}} />
             </svg>
           </Reveal>
 
@@ -205,7 +205,7 @@ export default function Record() {
             className="mx-auto mb-8 h-px max-w-[220px]"
             style={{
               background:
-                'linear-gradient(90deg, transparent, var(--logo-gold), var(--logo-lime), var(--color-blue), transparent)'
+                'linear-gradient(90deg, transparent, var(--logo-pale), var(--logo-green), var(--color-blue), transparent)'
             }}
           />
           {/* The sentence itself sits back in the muted grey so the four nouns
@@ -240,7 +240,7 @@ function RecordCore() {
         className="pointer-events-none absolute -inset-10 -z-10 rounded-full blur-[60px]"
         style={{
           background:
-            'radial-gradient(circle at 50% 42%, rgba(154,204,8,0.16), rgba(255,198,98,0.06) 45%, transparent 70%)'
+            'radial-gradient(circle at 50% 42%, rgba(113,190,19,0.16), rgba(255,210,97,0.06) 45%, transparent 70%)'
         }}
       />
 
@@ -249,7 +249,7 @@ function RecordCore() {
         className="h-full rounded-frame p-px"
         style={{
           background:
-            'linear-gradient(160deg, var(--logo-gold), var(--logo-lime) 48%, var(--color-blue))'
+            'linear-gradient(160deg, var(--logo-pale), var(--logo-green) 48%, var(--color-blue))'
         }}
       >
         <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,#15181c,#0f1114)] px-6 py-6">
@@ -339,13 +339,13 @@ function Emblem() {
     <svg viewBox="0 0 160 160" className="h-36 w-36 min-[1180px]:h-40 min-[1180px]:w-40" aria-hidden="true">
       <defs>
         <radialGradient id={glowId}>
-          <stop offset="0%" stopColor="#9acc08" stopOpacity="0.32" />
-          <stop offset="60%" stopColor="#9acc08" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="#9acc08" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--logo-green)" stopOpacity="0.32" />
+          <stop offset="60%" stopColor="var(--logo-green)" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="var(--logo-green)" stopOpacity="0" />
         </radialGradient>
         <linearGradient id={edgeId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#ffc662" />
-          <stop offset="52%" stopColor="#9acc08" />
+          <stop offset="0%" stopColor="#ffd261" />
+          <stop offset="52%" stopColor="var(--logo-green)" />
           <stop offset="100%" stopColor="#3d9ae8" />
         </linearGradient>
       </defs>
@@ -359,14 +359,14 @@ function Emblem() {
           cy={C}
           r="72"
           fill="none"
-          stroke="#9acc08"
+          stroke="var(--logo-green)"
           strokeWidth="1.6"
           strokeDasharray="2 8"
           strokeLinecap="round"
           opacity="0.5"
         />
         {/* One bright bead on it, so the turn is visible at all. */}
-        <circle cx={C} cy={C - 72} r="3" fill="#9acc08" />
+        <circle cx={C} cy={C - 72} r="3" fill="var(--logo-green)" />
       </g>
 
       {/* Middle ring: finer, faster, the other way. */}
@@ -376,13 +376,13 @@ function Emblem() {
           cy={C}
           r="54"
           fill="none"
-          stroke="#ffc662"
+          stroke="#ffd261"
           strokeWidth="1.3"
           strokeDasharray="1.5 6"
           strokeLinecap="round"
           opacity="0.55"
         />
-        <circle cx={C + 54} cy={C} r="2.4" fill="#ffc662" />
+        <circle cx={C + 54} cy={C} r="2.4" fill="#ffd261" />
       </g>
 
       {/* Inner ring: still. */}
@@ -396,7 +396,7 @@ function Emblem() {
         height="34"
         rx="3"
         transform={`rotate(45 ${C} ${C})`}
-        fill="rgba(154,204,8,0.08)"
+        fill="rgba(113,190,19,0.08)"
         stroke={`url(#${edgeId})`}
         strokeWidth="2"
       />
@@ -448,7 +448,7 @@ function StageRow({index}: {index: number}) {
  * nouns — gold for the site, lime for the system, blue beyond it — so the
  * record and the claim underneath it agree about what colour things are.
  */
-const ROOT_TONES = ['var(--logo-gold)', 'var(--logo-lime)', 'var(--color-blue)'];
+const ROOT_TONES = ['var(--logo-pale)', 'var(--logo-green)', 'var(--color-blue)'];
 
 const TILE = {
   row: 'h-12 w-12 rounded-tile',
@@ -503,8 +503,8 @@ function dottedRail(colour: string) {
 
 /** The four things the sentence names, and the colour each one is lit in. */
 const NOUNS: Record<string, string> = {
-  site: 'var(--logo-gold)',
-  system: 'var(--logo-lime)',
+  site: 'var(--logo-pale)',
+  system: 'var(--logo-green)',
   operator: 'var(--color-blue)',
   customer: 'var(--color-ink)'
 };

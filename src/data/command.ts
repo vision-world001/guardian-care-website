@@ -169,3 +169,54 @@ export const STATUSES: StatusDefinition[] = [
     description: 'A significant system problem requiring same-day action.'
   }
 ];
+
+/**
+ * The same portfolio as a population rather than as six counters.
+ *
+ * `CC_KPIS` answers "how many are there"; this answers "what does the whole
+ * customer base look like at once", which is the only thing the business page's
+ * opening has to say. One dot is one customer, so the figures have to reconcile
+ * exactly — and the healthy count is therefore derived rather than typed. A
+ * literal 1,036 here would be a second copy of a number that already exists,
+ * free to drift the moment either is edited.
+ *
+ * The residual — customers captured but not yet connected — is deliberately
+ * drawn hollow. They are the reason a company signs up: records it owns and
+ * cannot currently see.
+ */
+export type PortfolioBand = {label: string; tone: StatusTone; count: number; hollow?: boolean};
+
+const CC_TOTAL = 1245;
+
+const CC_ATTENTION_BANDS: PortfolioBand[] = [
+  {label: 'Offline', tone: 'amber', count: 61},
+  {label: 'Fault alerts', tone: 'red', count: 42},
+  {label: 'Engineer reviews', tone: 'orange', count: 21},
+  {label: 'Installation jobs', tone: 'blue', count: 34},
+  {label: 'Awaiting onboarding', tone: 'ink', count: 51, hollow: true}
+];
+
+export const CC_MIX: PortfolioBand[] = [
+  {
+    label: 'Healthy',
+    tone: 'green',
+    count: CC_ATTENTION_BANDS.reduce((rest, band) => rest - band.count, CC_TOTAL)
+  },
+  ...CC_ATTENTION_BANDS
+];
+
+/** One dot per customer, so the hero's field and the console's counters agree. */
+export const CC_CUSTOMERS = CC_TOTAL;
+
+/**
+ * How many of them want something from an operator today.
+ *
+ * Everything that is neither healthy nor merely waiting to be onboarded —
+ * derived, because the hero prints it beside the field and the console prints
+ * it above the queue, and the one number both pages lead on is the last one
+ * that should exist twice.
+ */
+export const CC_ATTENTION = CC_ATTENTION_BANDS.filter((band) => !band.hollow).reduce(
+  (total, band) => total + band.count,
+  0
+);

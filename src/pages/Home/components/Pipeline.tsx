@@ -123,7 +123,7 @@ export default function Pipeline() {
                             backgroundRepeat: 'repeat-x',
                             animation: 'rail-crawl 2.6s linear infinite'
                           }
-                        : {background: 'rgba(255,255,255,0.16)'}
+                        : {background: 'var(--color-line-2)'}
                     }
                   />
 
@@ -156,7 +156,7 @@ export default function Pipeline() {
                     style={{
                       borderColor: live
                         ? `color-mix(in srgb, ${TONE_VAR[tone]} 55%, transparent)`
-                        : 'rgba(255,255,255,0.18)',
+                        : 'var(--color-line-2)',
                       background: hinge
                         ? `color-mix(in srgb, ${TONE_VAR[tone]} 12%, var(--color-bg))`
                         : 'var(--color-bg)'
@@ -255,7 +255,7 @@ export default function Pipeline() {
                               backgroundRepeat: 'repeat-y',
                               animation: 'rail-crawl-y 2.6s linear infinite'
                             }
-                          : {background: 'rgba(255,255,255,0.16)'}
+                          : {background: 'var(--color-line-2)'}
                       }
                     />
                     <span
