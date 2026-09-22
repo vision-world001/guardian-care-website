@@ -91,7 +91,7 @@ export function Explanation({opportunity}: {opportunity: Opportunity}) {
   return (
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line-2 px-5 py-4 min-[520px]:px-6">
-        <span className={cn(LABEL, 'text-amber')}>◇ Guardian AI · Insight</span>
+        <span className={cn(LABEL, 'text-amber')}> Guardian AI · Insight</span>
         <span
           className={cn(
             'mono inline-flex items-center gap-2 rounded-pill border px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[.14em]',

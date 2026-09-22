@@ -68,7 +68,7 @@ export type AttentionRow = {
 export const CC_ROWS: AttentionRow[] = [
   {
     name: 'J. Whitmore',
-    location: 'Brisbane, AU',
+    location: 'Chelmsford, CM2',
     status: 'Opportunity',
     tone: 'purple',
     glyph: 'rise',
@@ -76,7 +76,7 @@ export const CC_ROWS: AttentionRow[] = [
     fields: [
       ['Status', 'Opportunity'],
       ['Detected', 'High export, no storage'],
-      ['Est. value', 'A$4,200 install']
+      ['Est. value', '£4,200 install']
     ],
     recommendation:
       'Their system is healthy — this is not a fault conversation. Lead on the pattern: they are selling surplus at export rates each afternoon and buying it back at retail each evening.',
@@ -84,7 +84,7 @@ export const CC_ROWS: AttentionRow[] = [
   },
   {
     name: 'S. Aroon',
-    location: 'Chiang Mai, TH',
+    location: 'Grays, RM15',
     status: 'Technical',
     tone: 'orange',
     glyph: 'spanner',
@@ -100,7 +100,7 @@ export const CC_ROWS: AttentionRow[] = [
   },
   {
     name: 'M. Haddad',
-    location: 'Dubai, UAE',
+    location: 'Seaton, EX12',
     status: 'Review',
     tone: 'amber',
     glyph: 'bang',
@@ -116,7 +116,7 @@ export const CC_ROWS: AttentionRow[] = [
   },
   {
     name: 'R. Delgado',
-    location: 'Phoenix, US',
+    location: 'Axmouth, EX12',
     status: 'Urgent',
     tone: 'red',
     glyph: 'alert',

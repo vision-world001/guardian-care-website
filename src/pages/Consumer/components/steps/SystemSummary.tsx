@@ -25,7 +25,7 @@ export default function SystemSummary({
   return (
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
       <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-4 min-[520px]:px-6">
-        <span className={cn(LABEL, 'text-amber')}>◇ {title}</span>
+        <span className={cn(LABEL, 'text-amber')}> {title}</span>
         <Estimated />
       </div>
 

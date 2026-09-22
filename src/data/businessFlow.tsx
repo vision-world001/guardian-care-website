@@ -17,20 +17,19 @@ export const BUSINESS_STEPS: Step[] = [
   {
     key: 'market',
     kind: 'choice',
-    glyph: 'portfolio',
-    title: 'Where do you operate?',
-    lead: 'Select your market.',
+    glyph: 'tariff',
+    title: 'When were most of your systems installed?',
+    lead: 'The tariff era decides what is worth reviewing.',
     options: [
-      {value: 'us', label: 'United States'},
-      {value: 'au', label: 'Australia'},
-      {value: 'sea', label: 'Southeast Asia'},
-      {value: 'uae', label: 'Dubai / UAE'},
-      {value: 'uk', label: 'United Kingdom'},
-      {value: 'multiple', label: 'Multiple markets'}
+      {value: 'fit-early', label: '2010 – 2012'},
+      {value: 'fit-mid', label: '2013 – 2015'},
+      {value: 'fit-late', label: '2016 – March 2019'},
+      {value: 'post-fit', label: 'April 2019 onwards'},
+      {value: 'mixed', label: 'A mix of all of them'}
     ],
     why: {
       heading: 'Why we ask',
-      body: 'Every energy market is different. Tariffs, export arrangements, system sizes, battery usage and customer behaviour vary significantly by region, and Guardian Care adapts the customer journey around the market you actually operate in.'
+      body: 'A Feed-in Tariff system was sold on a promised generation figure and has rarely been compared to it since. That gap is where the work is.'
     }
   },
   {
@@ -145,12 +144,11 @@ export const BUSINESS_STEPS: Step[] = [
 /* ---------- Reading the answers ---------- */
 
 export const MARKET_LABEL: Record<string, string> = {
-  us: 'United States',
-  au: 'Australia',
-  sea: 'Southeast Asia',
-  uae: 'Dubai / UAE',
-  uk: 'United Kingdom',
-  multiple: 'Multiple markets'
+  'fit-early': '2010 – 2012',
+  'fit-mid': '2013 – 2015',
+  'fit-late': '2016 – March 2019',
+  'post-fit': 'April 2019 onwards',
+  mixed: 'A mix of eras'
 };
 
 export const INSTALLED_LABEL: Record<string, string> = {
@@ -236,31 +234,6 @@ export function readBusiness(answers: Answers): BusinessPosition {
    carries one idea, drawn, with a line of text under it rather than a
    paragraph beside it. Where a sentence could be a diagram it is a diagram.
    ============================================================ */
-
-/* ---------- Where the relationship stops today ---------- */
-
-/**
- * The two chains the page opens on.
- *
- * `TODAY_CHAIN` is four stages and then nothing, which is the whole argument:
- * every company reading this already runs it, and already knows what follows
- * the last box. `GUARDIAN_CHAIN` is drawn on the same rail so the eye reads it
- * as the same line continuing rather than as a different product.
- *
- * None of the seven is a sales stage. That is deliberate, and it is the part
- * an installer will check for.
- */
-export const TODAY_CHAIN = ['Lead', 'Sale', 'Install', 'Handover'];
-
-export const GUARDIAN_CHAIN = [
-  'Capture',
-  'Connect',
-  'Monitor',
-  'Detect',
-  'Advise',
-  'Resolve',
-  'Retain'
-];
 
 /* ---------- The three products ---------- */
 
@@ -476,15 +449,19 @@ export const JOIN: JoinStep[] = [
   }
 ];
 
-/* ---------- Where it runs ---------- */
+/* ---------- Which systems this is for ----------
 
-/** Compact enough to be a strip rather than a section of its own. */
-export const MARKETS: Array<{name: string; currency: string; driver: string}> = [
-  {name: 'United Kingdom', currency: 'GBP', driver: 'Legacy FIT positions'},
-  {name: 'United States', currency: 'USD', driver: 'NEM transition'},
-  {name: 'Australia', currency: 'AUD', driver: 'High export, no storage'},
-  {name: 'Dubai / UAE', currency: 'AED', driver: 'Cooling load'},
-  {name: 'Southeast Asia', currency: 'THB', driver: 'Self-consumption'}
+    This strip used to name five markets and four currencies. The product's own
+    screens say MCS, DNO, consumer unit and p/kWh — it is a UK Feed-in Tariff
+    job — so the strip now says what the app's installation-date question says,
+    and the five entries are the five answers it offers. */
+
+export const ERAS: Array<{name: string; rate: string; note: string}> = [
+  {name: '2010 – 2012', rate: 'Highest FIT', note: 'Most to protect'},
+  {name: '2013 – 2015', rate: 'High FIT', note: 'Inverters now ageing'},
+  {name: '2016 – Mar 2019', rate: 'Lower FIT', note: 'Still in term'},
+  {name: 'Apr 2019 on', rate: 'SEG export', note: 'Storage rarely fitted'},
+  {name: 'Unknown', rate: 'We find it', note: 'From the MCS record'}
 ];
 
 /* ---------- What the assessment suggests first ---------- */

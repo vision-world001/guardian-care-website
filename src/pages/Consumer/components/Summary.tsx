@@ -23,10 +23,10 @@ export default function Summary({position}: {position: ExistingPosition}) {
     <Section id="summary" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Your initial system summary"
+          eyebrow=" Your initial system summary"
           title="Your system,"
           accent="at a glance."
-          body="Built from your answers alone — a starting point, not a measurement. Every figure stays marked as an estimate until monitoring is connected."
+          body="Built from your answers alone. Every figure stays an estimate until your system is connected."
         />
 
         <div className="grid gap-4 min-[1080px]:grid-cols-[1.15fr_0.85fr]">
@@ -41,7 +41,7 @@ export default function Summary({position}: {position: ExistingPosition}) {
           {/* ---------- What the answers suggest ---------- */}
           <Reveal delay={0.08} className="glass shadow-lift ring-lit flex flex-col overflow-hidden rounded-frame">
             <div className="border-b border-line-2 px-6 py-4">
-              <span className={cn(LABEL, 'text-amber')}>◇ Guardian AI · Initial observation</span>
+              <span className={cn(LABEL, 'text-amber')}> Guardian AI · Initial observation</span>
             </div>
             <div className="flex-1 px-6 py-6">
               <p className="font-display text-[clamp(21px,2.4vw,26px)] font-medium uppercase leading-[1.14] text-ink">

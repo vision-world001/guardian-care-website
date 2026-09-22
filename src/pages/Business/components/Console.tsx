@@ -35,7 +35,7 @@ export default function Console() {
           eyebrow="Guardian Care Operations"
           title="Open one screen."
           accent="Know where you stand."
-          body="Who is healthy, who is offline, who needs an engineer and who is quietly worth a phone call — before anybody rings you."
+          body="Who is healthy, who is offline, who needs an engineer — before anybody rings you."
         />
 
         <Reveal animation="animate-card-in">

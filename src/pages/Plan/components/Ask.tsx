@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import Glyph from '../../../components/Glyph';
-import {Heading} from '../../../components/kit';
+import {Link} from 'react-router';
+import {Heading, PRIMARY} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
 import {QUESTIONS} from '../../../data/plan';
@@ -25,7 +25,6 @@ export default function Ask() {
     <Section id="ask" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Ask Guardian Care"
           title="Before anybody"
           accent="takes your details."
           body="No form. No callback. The questions that actually decide it, answered in the order people ask them."
@@ -98,14 +97,15 @@ export default function Ask() {
           })}
         </ul>
 
-        <Reveal
-          delay={0.12}
-          className="mx-auto mt-6 flex max-w-[880px] items-center gap-3 text-faint"
-        >
-          <Glyph name="question" className="h-5 w-5 shrink-0" />
-          <span className="mono text-[10.5px] uppercase tracking-[.14em]">
-            Something else? Guardian Care answers it from your own figures, not a brochure.
-          </span>
+        {/* ---------- And the way in ----------
+
+            The same button the business journey ends on, for the same reason:
+            a reader who has run out of questions should have somewhere to go
+            that is not the footer. */}
+        <Reveal delay={0.12} className="mt-16 flex justify-center min-[760px]:mt-24">
+          <Link to="/start" className={PRIMARY}>
+            Go to dashboard &#8594;
+          </Link>
         </Reveal>
       </Wrap>
     </Section>

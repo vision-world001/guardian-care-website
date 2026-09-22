@@ -264,7 +264,18 @@ export function Panel({
   children: ReactNode;
 }) {
   return (
-    <div className={cn('glass ring-lit overflow-hidden rounded-frame', className)}>
+    /* A flex column, so a panel told to fill its row actually can.
+
+       It used to be a plain block. A caller wanting a full-height card wrote
+       `className="h-full"` here and `h-full` on the body — and the body's
+       100% then resolved against the *whole* card, title bar included, so it
+       overflowed the bottom by exactly the height of that bar. On the
+       business page that pushed the customer panel's footer clean out of its
+       own card.
+
+       As a column with a `flex-1` body, `h-full` on the card is all a caller
+       needs: the bar takes its height, the body takes the rest. */
+    <div className={cn('glass ring-lit flex flex-col overflow-hidden rounded-frame', className)}>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line-2 px-5 py-3.5 min-[520px]:px-6">
         <span className={cn(LABEL, 'flex items-center gap-2.5', TONE_TEXT[tone])}>
           {glyph ? <Glyph name={glyph} className="h-4 w-4" /> : <span aria-hidden="true">&#9671;</span>}
@@ -272,7 +283,7 @@ export function Panel({
         </span>
         {aside ? <span className="ml-auto shrink-0">{aside}</span> : null}
       </div>
-      <div className={cn('px-5 py-6 min-[520px]:px-6', bodyClassName)}>{children}</div>
+      <div className={cn('flex-1 px-5 py-6 min-[520px]:px-6', bodyClassName)}>{children}</div>
     </div>
   );
 }

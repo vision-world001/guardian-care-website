@@ -1,8 +1,9 @@
+import {Link} from 'react-router';
 import Glyph from '../../../components/Glyph';
-import {Heading, LABEL, LABEL_BASE, dottedRail, ramp, tint} from '../../../components/kit';
+import {Heading, LABEL, LABEL_BASE, PRIMARY, dottedRail, ramp, tint} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
-import {JOIN, MARKETS} from '../../../data/businessFlow';
+import {ERAS, JOIN} from '../../../data/businessFlow';
 import {cn} from '../../../lib/cn';
 
 /**
@@ -101,19 +102,31 @@ export default function Join() {
         <Reveal delay={0.24} className="mt-4 overflow-hidden rounded-frame ring-1 ring-line-2">
           <div className="flex items-center gap-3 border-b border-line-2 px-5 py-3.5">
             <span aria-hidden="true" className="h-4 w-px" style={dottedRail('var(--color-green)')} />
-            <span className={cn(LABEL, 'text-green')}>Live in five markets</span>
+            <span className={cn(LABEL, 'text-green')}>Built for Feed-in Tariff systems</span>
           </div>
 
           <dl className="grid grid-cols-2 gap-px bg-line-2 min-[760px]:grid-cols-5">
-            {MARKETS.map((market) => (
-              <div key={market.name} className="bg-panel/50 px-5 py-4">
-                <dt className="text-[13.5px] font-medium leading-tight text-ink">{market.name}</dt>
+            {ERAS.map((era) => (
+              <div key={era.name} className="bg-panel/50 px-5 py-4">
+                <dt className="text-[13.5px] font-medium leading-tight text-ink">{era.name}</dt>
                 <dd className="mono mt-1.5 text-[10px] uppercase tracking-[.14em] text-faint">
-                  {market.currency} &#183; {market.driver}
+                  {era.rate} &#183; {era.note}
                 </dd>
               </div>
             ))}
           </dl>
+        </Reveal>
+
+        {/* ---------- And the way in ----------
+
+            The four steps above describe joining; this is the click that
+            starts it. A route rather than an anchor, because the form is its
+            own page — a visitor who has read four steps and decided should
+            not have to hunt for where to say so. */}
+        <Reveal delay={0.3} className="mt-16 flex justify-center min-[760px]:mt-24">
+          <Link to="/start" className={PRIMARY}>
+            Go to dashboard &#8594;
+          </Link>
         </Reveal>
       </Wrap>
     </Section>

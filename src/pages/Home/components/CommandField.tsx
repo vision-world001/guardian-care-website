@@ -25,20 +25,20 @@ export default function CommandField() {
           directly on top of it is the sun arriving at somebody's roof. */}
       <div
         className="absolute -top-[22%] left-1/2 h-[80vw] w-[80vw] -translate-x-1/2 rounded-full blur-[140px]"
-        style={{background: 'radial-gradient(circle, rgba(255,210,97,0.09), transparent 66%)'}}
+        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-amber) 9%, transparent), transparent 66%)'}}
       />
 
       {/* A lime wash where the journeys sit, so the middle of the page is lit
           by the other half of the wordmark. */}
       <div
         className="absolute top-[26%] -left-[18%] h-[56vw] w-[56vw] rounded-full blur-[150px]"
-        style={{background: 'radial-gradient(circle, rgba(113,190,19,0.055), transparent 68%)'}}
+        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-green) 5.5%, transparent), transparent 68%)'}}
       />
 
       {/* And the panel blue, far enough down to light the operations half. */}
       <div
         className="absolute top-[62%] -right-[20%] h-[64vw] w-[64vw] rounded-full blur-[150px]"
-        style={{background: 'radial-gradient(circle, rgba(0,116,211,0.085), transparent 68%)'}}
+        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-blue) 8.5%, transparent), transparent 68%)'}}
       />
 
       {/* Sides down, and the last few per cent held for the handoff to the

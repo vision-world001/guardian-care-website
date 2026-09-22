@@ -102,7 +102,7 @@ export default function Intelligence() {
         <Reveal className="glass ring-lit mt-4 overflow-hidden rounded-frame">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line-2 px-6 py-4 min-[760px]:px-9">
             <span className="mono inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[.2em] text-amber">
-              ◇ Guardian AI
+               Guardian AI
             </span>
 
             {/* The same alert, addressed to two different readers. */}

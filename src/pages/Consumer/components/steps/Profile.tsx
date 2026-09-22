@@ -15,7 +15,7 @@ export default function Profile() {
   return (
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
       <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-4 min-[520px]:px-6">
-        <span className={cn(LABEL, 'text-amber')}>◇ System profile</span>
+        <span className={cn(LABEL, 'text-amber')}> System profile</span>
         <span className="mono text-[10px] uppercase tracking-[.16em] text-faint">
           {PROFILE_FIELDS.length} / {PROFILE_FIELDS.length} captured
         </span>

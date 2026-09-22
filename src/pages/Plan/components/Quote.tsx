@@ -29,7 +29,6 @@ export default function Quote({position}: {position: PlanPosition}) {
     <Section id="quote" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Your solar &amp; energy quote"
           title="Every recommendation"
           accent="comes with a reason."
           body="Not a list of equipment and a price — what the system is designed to achieve, and why each part is there."
@@ -89,13 +88,6 @@ export default function Quote({position}: {position: PlanPosition}) {
             </Reveal>
           ))}
         </ul>
-
-        <Reveal
-          delay={0.2}
-          className="mono mt-6 text-center text-[10.5px] uppercase tracking-[.16em] text-faint"
-        >
-          Every capacity is confirmed at a property assessment.
-        </Reveal>
       </Wrap>
     </Section>
   );

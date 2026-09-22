@@ -39,7 +39,7 @@ export default function Hero() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-[12%] -top-[18%] -z-10 h-[70vw] w-[70vw] rounded-full blur-[140px] min-[1000px]:h-[52vw] min-[1000px]:w-[52vw]"
-        style={{background: 'radial-gradient(circle, rgba(255,210,97,0.12), transparent 64%)'}}
+        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-amber) 12%, transparent), transparent 64%)'}}
       />
 
       <Wrap>
@@ -47,9 +47,8 @@ export default function Hero() {
           {/* ---------- The words ---------- */}
           <div>
             <Reveal
-              className={cn(LABEL_BASE, 'inline-flex items-center gap-3 text-[12px] tracking-[.22em] text-amber')}
+              className={cn(LABEL_BASE, 'inline-flex items-center text-[12px] tracking-[.22em] text-amber')}
             >
-              <Glyph name="solarRoof" className="h-5 w-5" />
               Already have solar?
             </Reveal>
 
@@ -80,26 +79,12 @@ export default function Hero() {
               <a href="#check" className={PRIMARY}>
                 Check my existing solar system →
               </a>
-              <a href="#how" className={SECONDARY}>
-                How it works
+              <a href="#findings" className={SECONDARY}>
+                What we find
               </a>
             </Reveal>
 
             {/* What the check costs the visitor, answered before they ask. */}
-            <Reveal
-              delay={0.22}
-              className="mono mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10.5px] uppercase tracking-[.16em] text-faint"
-            >
-              <span>A few simple questions</span>
-              <span aria-hidden="true" className="text-faint/50">
-                ◇
-              </span>
-              <span>No meter readings</span>
-              <span aria-hidden="true" className="text-faint/50">
-                ◇
-              </span>
-              <span>No documents</span>
-            </Reveal>
           </div>
 
           {/* ---------- The answer ---------- */}
@@ -204,7 +189,7 @@ function TodayCard() {
       {/* ---------- And whether anything is worth a look ---------- */}
       <div className="border-t border-line-2 bg-bg/40 px-6 py-5 min-[520px]:px-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className={cn(LABEL, 'text-amber')}>◇ Guardian AI</span>
+          <span className={cn(LABEL, 'text-amber')}> Guardian AI</span>
           <span className="mono inline-flex items-center gap-2 rounded-pill border border-amber/35 bg-amber/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[.14em] text-amber">
             1 worth reviewing
           </span>

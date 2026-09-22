@@ -79,7 +79,7 @@ export default function Journeys() {
                     <Glyph name={journey.glyph} className="h-10 w-10" />
                   </span>
                   <span className="mono text-[11px] font-semibold tracking-[.16em] text-faint">
-                    ◇ {journey.index}
+                     {journey.index}
                   </span>
                 </div> */}
 

@@ -1,6 +1,7 @@
 import {useId} from 'react';
 import type {ReactNode} from 'react';
 import Glyph from '../../../components/Glyph';
+import {PRIMARY} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
 import {RECORD_CLAIM, RECORD_ROOTS, RECORD_SPINE} from '../../../data/platform';
@@ -216,6 +217,20 @@ export default function Record() {
             <Claim text={RECORD_CLAIM} />
           </p>
         </Reveal>
+
+        {/* ---------- And so: pick one ----------
+
+            The page's last word is an argument, and an argument with no way
+            out of it is a dead end — the visitor agrees and then has nowhere
+            to go but the footer. This sends them back up to the three
+            journeys, which is where the home page has always wanted them; it
+            carries the header's own label so the two read as the same button
+            rather than as two different offers. */}
+        <Reveal delay={0.1} className="mt-16 flex justify-center min-[760px]:mt-24">
+          <a href="#journeys" className={PRIMARY}>
+            Choose your journey &#8594;
+          </a>
+        </Reveal>
       </Wrap>
     </Section>
   );
@@ -227,7 +242,7 @@ export default function Record() {
  * The one bright object in the section.
  *
  * A gradient rim in the mark's three colours, an emblem made of the site's own
- * ◇ inside slowly turning rings, and the three founding fields. It is a picture
+ *  inside slowly turning rings, and the three founding fields. It is a picture
  * of a record rather than a card of information — the fields are what make it
  * readable, the emblem is what makes it the centre.
  */
@@ -240,11 +255,27 @@ function RecordCore() {
         className="pointer-events-none absolute -inset-10 -z-10 rounded-full blur-[60px]"
         style={{
           background:
-            'radial-gradient(circle at 50% 42%, rgba(113,190,19,0.16), rgba(255,210,97,0.06) 45%, transparent 70%)'
+            'radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--color-green) 16%, transparent), color-mix(in srgb, var(--color-amber) 6%, transparent) 45%, transparent 70%)'
         }}
       />
 
-      {/* The rim: a 1px gradient border, drawn as padding round the panel. */}
+      {/* The rim: a 1px gradient border, drawn as padding round the panel.
+
+          The panel runs `panel -> bg-2`, which is the navy half of the surface
+          ramp, and that is deliberate. The ramp drops chroma as it lifts —
+          measured against the page: bg 100%, bg-2 83%, panel 65%, panel-2 52%
+          — so a flat card separates from the ground by going quieter rather
+          than bluer.
+
+          That is the wrong half for this card. It is the one bright object in
+          its section, inside a saturated brand rim with a coloured glow behind
+          it, and filling it from panel-2 put the greyest surface on the site
+          in the middle of all that. Running down toward bg-2 instead keeps it
+          lifted (L .226 over .202, against the page's .181) while getting more
+          navy toward the bottom rather than greyer toward the top.
+
+          Four sibling cards — Why, Aim, Goal, Storage — are the same object
+          and carry the same pair. */}
       <div
         className="h-full rounded-frame p-px"
         style={{
@@ -252,12 +283,12 @@ function RecordCore() {
             'linear-gradient(160deg, var(--logo-pale), var(--logo-green) 48%, var(--color-blue))'
         }}
       >
-        <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,#15181c,#0f1114)] px-6 py-6">
+        <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-6">
           {/* ---- Header ---- */}
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="mono text-[10.5px] font-semibold uppercase tracking-[.2em] text-amber">
-                ◇ Customer record
+                 Customer record
               </div>
               <div className="mono mt-1.5 text-[13px] text-faint">GC-0418</div>
             </div>
@@ -315,11 +346,11 @@ function RecordCore() {
 }
 
 /**
- * The site's ◇, inside rings turning in opposite directions.
+ * The site's , inside rings turning in opposite directions.
  *
  * Gradient IDs are generated per instance. The emblem renders twice — once in
  * the wide layout, once in the narrow — and `url(#id)` resolves to the *first*
- * element in the document with that ID. With a fixed ID, the phone layout's ◇
+ * element in the document with that ID. With a fixed ID, the phone layout's 
  * was pointing at the gradient inside the wide layout, which is `display:
  * none` at that width, so its edge, core and glow all silently painted as
  * nothing.
@@ -344,9 +375,9 @@ function Emblem() {
           <stop offset="100%" stopColor="var(--logo-green)" stopOpacity="0" />
         </radialGradient>
         <linearGradient id={edgeId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#ffd261" />
+          <stop offset="0%" stopColor="var(--color-amber)" />
           <stop offset="52%" stopColor="var(--logo-green)" />
-          <stop offset="100%" stopColor="#3d9ae8" />
+          <stop offset="100%" stopColor="var(--color-blue)" />
         </linearGradient>
       </defs>
 
@@ -386,9 +417,9 @@ function Emblem() {
       </g>
 
       {/* Inner ring: still. */}
-      <circle cx={C} cy={C} r="36" fill="none" stroke="#3d9ae8" strokeWidth="1" opacity="0.35" />
+      <circle cx={C} cy={C} r="36" fill="none" stroke="var(--color-blue)" strokeWidth="1" opacity="0.35" />
 
-      {/* The ◇. */}
+      {/* The . */}
       <rect
         x={C - 17}
         y={C - 17}
@@ -396,7 +427,7 @@ function Emblem() {
         height="34"
         rx="3"
         transform={`rotate(45 ${C} ${C})`}
-        fill="rgba(113,190,19,0.08)"
+        fill="color-mix(in srgb, var(--color-green) 8%, transparent)"
         stroke={`url(#${edgeId})`}
         strokeWidth="2"
       />

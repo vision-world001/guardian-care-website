@@ -1,8 +1,8 @@
-import {useId} from 'react';
 import Glyph from '../../../components/Glyph';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
-import {ONE_PICTURE, PARTS} from '../../../data/consumer';
+import {DAY, JOINED, PARTS} from '../../../data/consumer';
+import {TONE_TEXT} from '../../../data/command';
 import {cn} from '../../../lib/cn';
 import {LiveDot} from '../../Home/components/Conduit';
 import {Heading, LABEL, dottedRail, ramp, tint} from '../../../components/kit';
@@ -16,8 +16,12 @@ import {Heading, LABEL, dottedRail, ramp, tint} from '../../../components/kit';
  * thing it actually tells its owner — and a dotted line from every one of them
  * into a single lit record on the right.
  *
- * The parts are deliberately unlit. They are not broken; they are simply not
- * talking to anybody, and colour is reserved for the thing that joins them.
+ * The parts are quiet rather than unlit. They are not broken; they are simply
+ * not talking to anybody — so the rows stay muted and the lit card on the
+ * right remains the one bright object. Only each row's symbol carries colour,
+ * and it carries the colour of its own curve, which is what makes seven lines
+ * followable as seven.
+ *
  * It is the home page's record diagram turned round: there, one record fans
  * out into everything that happens to it; here, everything a household already
  * owns fans in.
@@ -45,10 +49,10 @@ export default function Why() {
     <Section id="why" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Why Guardian Care?"
+          eyebrow=" Why Guardian Care?"
           title="Many parts."
           accent="One clear picture."
-          body="Most solar homes have several parts working independently, each reporting on its own small piece. None of them shows you how the whole system is working together — or whether it is working for you."
+          body="Several parts, each reporting its own small piece. None of them tells you how the system is doing."
         />
 
         {/* ---------- Wide: the parts, the fan, the picture ---------- */}
@@ -165,16 +169,36 @@ export default function Why() {
 
 function PartRow({index}: {index: number}) {
   const part = PARTS[index];
+  const colour = ramp(index, PARTS.length);
 
   return (
     <>
-      {/* Hollow and grey: present, working, and connected to nothing. */}
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-tile border border-line-2 bg-bg/50 text-faint">
-        <Glyph name={part.glyph} className="h-6 w-6" />
+      {/* The tile wears the colour of the line that leaves this row.
+
+          It used to be a grey glyph in a barely-there box — `text-faint` at
+          3.6:1 inside a 5%-white tile — on the reasoning that the parts are
+          unlit until something joins them. The reasoning was sound and the
+          result was a smudge: seven identical grey shapes, none of them
+          readable as the thing it names.
+
+          Colouring each tile to match its own curve fixes both at once. The
+          symbol becomes legible, and the fan stops being a tangle of seven
+          lines and becomes seven lines you can follow one at a time. The rows
+          themselves stay quiet, so the lit card on the right is still the one
+          bright object in the section. */}
+      <span
+        className="grid h-10 w-10 shrink-0 place-items-center rounded-tile"
+        style={{
+          background: tint(colour, 12),
+          boxShadow: `inset 0 0 0 1px ${tint(colour, 34)}`,
+          color: colour
+        }}
+      >
+        <Glyph name={part.glyph} bold className="h-[22px] w-[22px]" />
       </span>
       <span className="min-w-0">
         <span className="block text-[15px] font-medium leading-tight text-ink">{part.name}</span>
-        <span className="mt-1 block text-[13px] font-light leading-snug text-faint">
+        <span className="mt-1 block text-[13px] font-light leading-snug text-muted">
           {part.says}
         </span>
       </span>
@@ -186,8 +210,16 @@ function PartRow({index}: {index: number}) {
 
 /**
  * The single bright object in the section: a gradient rim in the mark's three
- * colours, the site's ◇ inside a turning ring, and what joining the parts up
- * actually buys the household.
+ * colours, and inside it the seven parts from the left column, answered.
+ *
+ * It used to hold a decorative  turning inside dotted rings, which took the
+ * largest area of the card and said nothing — in the one section whose whole
+ * argument is that the scattered parts add up to a picture. The picture was
+ * the only thing the picture did not contain.
+ *
+ * Seven rows against seven rows, at matching heights, is also what makes the
+ * fan between them mean something: each curve now lands on the row that
+ * answers the one it left.
  */
 function Picture() {
   return (
@@ -197,7 +229,7 @@ function Picture() {
         className="pointer-events-none absolute -inset-10 -z-10 rounded-full blur-[60px]"
         style={{
           background:
-            'radial-gradient(circle at 50% 42%, rgba(113,190,19,0.14), rgba(255,210,97,0.06) 45%, transparent 70%)'
+            'radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--color-green) 14%, transparent), color-mix(in srgb, var(--color-amber) 6%, transparent) 45%, transparent 70%)'
         }}
       />
 
@@ -208,9 +240,9 @@ function Picture() {
             'linear-gradient(160deg, var(--logo-pale), var(--logo-green) 48%, var(--color-blue))'
         }}
       >
-        <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,#15181c,#0f1114)] px-6 py-6 min-[520px]:px-7">
+        <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-6 min-[520px]:px-7">
           <div className="flex items-center justify-between gap-4">
-            <span className={cn(LABEL, 'text-amber')}>◇ Guardian Care</span>
+            <span className={cn(LABEL, 'text-amber')}> Guardian Care</span>
             <span className="flex items-center gap-2">
               <LiveDot />
               <span className="mono text-[10px] font-semibold uppercase tracking-[.16em] text-green">
@@ -219,111 +251,57 @@ function Picture() {
             </span>
           </div>
 
-          <div className="flex flex-1 items-center justify-center py-5">
-            <Mark />
-          </div>
-
-          <div className="font-display text-[26px] font-semibold uppercase leading-none text-ink">
+          <div className="mt-5 font-display text-[26px] font-semibold uppercase leading-none text-ink">
             One view of your whole system
           </div>
 
-          <ul className="mt-5 space-y-3">
-            {ONE_PICTURE.map((line) => (
-              <li key={line} className="flex items-start gap-3 text-[14.5px] font-light leading-[1.45] text-ink/85">
-                <svg
-                  viewBox="0 0 12 12"
-                  className="mt-[3px] h-3.5 w-3.5 shrink-0 text-green"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
+          {/* ---------- The seven parts, answered ----------
+
+              A decorative  in turning rings used to occupy this space — the
+              largest area of the card, in the section whose entire argument is
+              that the parts add up to one picture. It showed nothing, so the
+              picture was the one thing the picture did not contain.
+
+              Each row answers the row at the same height in the left column,
+              which is what the fan between them is drawing. */}
+          <ul className="mt-6 flex flex-1 flex-col justify-center gap-px overflow-hidden rounded-card">
+            {PARTS.map((part, index) => {
+              const joined = JOINED[index];
+
+              return (
+                <li
+                  key={part.name}
+                  className="flex items-center gap-3 bg-bg/40 px-3.5 py-2.5"
                 >
-                  <path d="M2 6.2 4.8 9 10 3.2" />
-                </svg>
-                {line}
-              </li>
-            ))}
+                  <span className="shrink-0 text-faint">
+                    <Glyph name={part.glyph} className="h-4 w-4" />
+                  </span>
+
+                  <span className="min-w-0 flex-1 truncate text-[13.5px] font-light text-muted">
+                    {part.name}
+                  </span>
+
+                  <span
+                    className={cn(
+                      'mono shrink-0 text-[12.5px] font-semibold',
+                      TONE_TEXT[joined.tone]
+                    )}
+                  >
+                    {joined.reading}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
+
+          {/* What the seven readings add up to. 18 made = 9 used + 5 held +
+              4 sent, which is the arithmetic the whole section is claiming. */}
+          <p className="mono mt-5 border-t border-line-2 pt-4 text-[11px] uppercase tracking-[.14em] text-faint">
+            {DAY.generated} made = {DAY.used} used + {DAY.stored} held + {DAY.exported} sent
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-/**
- * The site's ◇, inside a dotted ring turning slowly.
- *
- * Gradient IDs are generated per instance: the picture renders twice, once in
- * each layout, and `url(#id)` resolves to the first match in the document —
- * which at phone width is inside the hidden wide layout, and paints nothing.
- */
-function Mark() {
-  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
-  const edgeId = `why-edge-${uid}`;
-  const glowId = `why-glow-${uid}`;
-  const C = 60;
-
-  return (
-    <svg viewBox="0 0 120 120" className="h-28 w-28" aria-hidden="true">
-      <defs>
-        <radialGradient id={glowId}>
-          <stop offset="0%" stopColor="var(--logo-green)" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="var(--logo-green)" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id={edgeId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#ffd261" />
-          <stop offset="52%" stopColor="var(--logo-green)" />
-          <stop offset="100%" stopColor="#3d9ae8" />
-        </linearGradient>
-      </defs>
-
-      <circle cx={C} cy={C} r="46" fill={`url(#${glowId})`} />
-
-      <g
-        style={{
-          transformOrigin: `${C}px ${C}px`,
-          transformBox: 'view-box',
-          animation: 'orbit 50s linear infinite'
-        }}
-      >
-        <circle
-          cx={C}
-          cy={C}
-          r="54"
-          fill="none"
-          stroke="var(--logo-green)"
-          strokeWidth="1.5"
-          strokeDasharray="2 8"
-          strokeLinecap="round"
-          opacity="0.5"
-        />
-        <circle cx={C} cy={C - 54} r="2.8" fill="var(--logo-green)" />
-      </g>
-
-      <circle cx={C} cy={C} r="34" fill="none" stroke="#3d9ae8" strokeWidth="1" opacity="0.35" />
-
-      <rect
-        x={C - 15}
-        y={C - 15}
-        width="30"
-        height="30"
-        rx="3"
-        transform={`rotate(45 ${C} ${C})`}
-        fill="rgba(113,190,19,0.08)"
-        stroke={`url(#${edgeId})`}
-        strokeWidth="2"
-      />
-      <rect
-        x={C - 4.5}
-        y={C - 4.5}
-        width="9"
-        height="9"
-        rx="1"
-        transform={`rotate(45 ${C} ${C})`}
-        fill={`url(#${edgeId})`}
-      />
-    </svg>
-  );
-}

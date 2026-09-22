@@ -232,13 +232,13 @@ export default function WaveSign() {
         className="pointer-events-none absolute left-1/2 top-[56%] h-[60%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px]"
         style={{
           background:
-            'radial-gradient(ellipse, rgba(113,190,19,0.13), rgba(255,210,97,0.05) 45%, transparent 72%)'
+            'radial-gradient(ellipse, color-mix(in srgb, var(--color-green) 13%, transparent), color-mix(in srgb, var(--color-amber) 5%, transparent) 45%, transparent 72%)'
         }}
       />
 
       <div ref={wordRef} className="absolute inset-x-0 bottom-[36%] z-10 flex justify-center">
         <Reveal animation="animate-rise">
-          <div style={{filter: 'drop-shadow(0 0 44px rgba(113,190,19,0.22))'}}>
+          <div style={{filter: 'drop-shadow(0 0 44px color-mix(in srgb, var(--color-green) 22%, transparent))'}}>
             <span
               className="block whitespace-nowrap font-display font-semibold uppercase leading-[0.78] tracking-[0.005em]"
               style={{

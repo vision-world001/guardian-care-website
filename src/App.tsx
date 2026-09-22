@@ -4,6 +4,7 @@ import Business from './pages/Business/Business';
 import Consumer from './pages/Consumer/Consumer';
 import Home from './pages/Home/Home';
 import Plan from './pages/Plan/Plan';
+import Start from './pages/Start/Start';
 
 /**
  * Three journeys and the door they open from.
@@ -23,6 +24,12 @@ export default function App() {
           <Route path="/existing" element={<Navigate to="/consumer" replace />} />
           <Route path="/plan" element={<Plan />} />
           <Route path="/business" element={<Business />} />
+
+          {/* The way in, from anywhere. The header's button points here on
+              every route, so it is a page rather than a section — a visitor
+              who clicks "get started" on the home page should not land in the
+              middle of the business page to find the form. */}
+          <Route path="/start" element={<Start />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

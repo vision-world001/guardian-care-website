@@ -35,7 +35,6 @@ export default function Storage() {
     <Section id="storage" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Are you interested in battery storage?"
           title="Same generation."
           accent="Different destination."
           body="A battery does not produce more. It changes when you can use what you already produce."
@@ -58,7 +57,7 @@ export default function Storage() {
               }}
             />
             <div className="absolute inset-x-0 bottom-0 p-6 min-[760px]:p-11">
-              <div className={cn(LABEL, 'text-purple')}>◇ Six in the evening</div>
+              <div className={cn(LABEL, 'text-purple')}> Six in the evening</div>
               <h3 className="mt-5 max-w-[620px] font-display text-[clamp(27px,4.2vw,46px)] font-semibold uppercase leading-[0.98] tracking-[-0.015em] text-ink">
                 The lights are on.
                 <br />
@@ -89,7 +88,7 @@ export default function Storage() {
               'linear-gradient(100deg, var(--logo-pale), var(--logo-green) 46%, var(--color-purple))'
           }}
         >
-          <div className="flex flex-col gap-6 rounded-[5px] bg-[linear-gradient(180deg,#15181c,#0f1114)] px-6 py-7 min-[900px]:flex-row min-[900px]:items-center min-[900px]:gap-10 min-[900px]:px-9">
+          <div className="flex flex-col gap-6 rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-7 min-[900px]:flex-row min-[900px]:items-center min-[900px]:gap-10 min-[900px]:px-9">
             <Tile colour="var(--color-purple)" size="lg">
               <Glyph name="storage" bold className="h-7 w-7" />
             </Tile>

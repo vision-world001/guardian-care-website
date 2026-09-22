@@ -1,8 +1,9 @@
+import {Link} from 'react-router';
 import Glyph from '../../../components/Glyph';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
 import {AIMS, AIM_SUM} from '../../../data/consumer';
-import {Heading, Tile, ramp} from '../../../components/kit';
+import {Heading, PRIMARY, Tile, ramp} from '../../../components/kit';
 
 /**
  * Our aim.
@@ -17,10 +18,10 @@ export default function Aim() {
     <Section id="aim" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Our aim"
+          eyebrow=" Our aim"
           title="Get more from the solar"
           accent="you already own."
-          body="You have already paid for the system. Guardian Care is designed to make sure you get the most from it, for as long as it runs."
+          body="You have already paid for the system. This is about getting what you paid for."
         />
 
         <ul className="ring-lit grid gap-px overflow-hidden rounded-frame bg-line-2 min-[620px]:grid-cols-2 min-[1000px]:grid-cols-3">
@@ -48,7 +49,7 @@ export default function Aim() {
               'linear-gradient(100deg, var(--logo-pale), var(--logo-green) 50%, var(--color-blue))'
           }}
         >
-          <div className="flex flex-col items-start gap-4 rounded-[5px] bg-[linear-gradient(180deg,#15181c,#0f1114)] px-6 py-6 min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-6 min-[760px]:px-8">
+          <div className="flex flex-col items-start gap-4 rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-6 min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-6 min-[760px]:px-8">
             <Tile colour="var(--logo-green)" size="md">
               <Glyph name="solarRoof" bold className="h-6 w-6" />
             </Tile>
@@ -56,6 +57,16 @@ export default function Aim() {
               And, above all: <span className="text-brand-gradient">{AIM_SUM}.</span>
             </span>
           </div>
+        </Reveal>
+
+        {/* ---------- And the way in ----------
+
+            The same button the other two journeys end on, so all three hand
+            over to the same place rather than each inventing its own exit. */}
+        <Reveal delay={0.26} className="mt-16 flex justify-center min-[760px]:mt-24">
+          <Link to="/start" className={PRIMARY}>
+            Go to dashboard &#8594;
+          </Link>
         </Reveal>
       </Wrap>
     </Section>

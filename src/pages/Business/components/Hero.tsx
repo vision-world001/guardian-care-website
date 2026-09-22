@@ -1,5 +1,4 @@
 import Counter from '../../../components/Counter';
-import Glyph from '../../../components/Glyph';
 import {Caption, LABEL, LABEL_BASE, PRIMARY, SECONDARY} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
 import {Wrap} from '../../../components/ui';
@@ -33,10 +32,9 @@ export default function Hero() {
             <Reveal
               className={cn(
                 LABEL_BASE,
-                'inline-flex items-center gap-3 text-[12px] tracking-[.22em] text-green'
+                'inline-flex items-center text-[12px] tracking-[.22em] text-green'
               )}
             >
-              <Glyph name="business" className="h-5 w-5" />
               For solar and energy companies
             </Reveal>
 
@@ -62,28 +60,14 @@ export default function Hero() {
             </Reveal>
 
             <Reveal delay={0.16} className="mt-10 flex flex-wrap items-center gap-3">
-              <a href="#console" className={PRIMARY}>
-                See the console →
+              <a href="#assess" className={PRIMARY}>
+                Start my assessment →
               </a>
-              <a href="#join" className={SECONDARY}>
-                How you join
+              <a href="#console" className={SECONDARY}>
+                See the console
               </a>
             </Reveal>
 
-            <Reveal
-              delay={0.22}
-              className="mono mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10.5px] uppercase tracking-[.16em] text-faint"
-            >
-              <span>Works with your monitoring</span>
-              <span aria-hidden="true" className="text-faint/50">
-                &#9671;
-              </span>
-              <span>Your branding</span>
-              <span aria-hidden="true" className="text-faint/50">
-                &#9671;
-              </span>
-              <span>No rebuild</span>
-            </Reveal>
           </div>
 
           {/* ---------- The portfolio ---------- */}

@@ -6,10 +6,8 @@ import {readPlan} from '../../data/plan';
 import Afterwards from './components/Afterwards';
 import Ask from './components/Ask';
 import Assess from './components/Assess';
-import Closing from './components/Closing';
 import Goal from './components/Goal';
 import Hero from './components/Hero';
-import Journey from './components/Journey';
 import Mechanism from './components/Mechanism';
 import Position from './components/Position';
 import Quote from './components/Quote';
@@ -33,17 +31,20 @@ import Storage from './components/Storage';
  *
  *   1. Here is where you are standing.          — the hero's bill
  *   2. What do you want to change?              — the goal picker
- *   3. Here is what solar does.                 — ten squares, six filled
- *   4. Here is what a battery does.             — the same day, twice
- *   5. Now your numbers.                        — the assessment
- *   6. Here is your position.                   — the estimate, with its sum
+ *   3. Now your numbers.                        — the assessment
+ *   4. Here is your position.                   — the estimate, with its sum
+ *   5. Here is what solar does.                 — ten squares, six filled
+ *   6. Here is what a battery does.             — the same day, twice
  *   7. Here is what we would propose, and why.  — the quote
  *   8. And it does not stop there.              — monitoring, and what it says
  *   9. Anything you want to ask.                — the questions
- *  10. The whole arc.                           — seven stages
- *  11. What it is all for.                      — five verbs
  *
  * …and then the name rising out of the water, as on the other two pages.
+ *
+ * The page used to close on two more sections — a seven-stage rail and five
+ * verbs naming what it was all for. Both were summaries of what the page had
+ * already shown, and a reader who has answered the questions and seen their
+ * own quote does not need the argument restated twice more.
  *
  * Runs on the brand navy alongside the home and consumer pages: this is the
  * same product, one click further in.
@@ -78,9 +79,14 @@ export default function Plan() {
       <CommandField />
 
       <Hero />
+
+      {/* Goal, then the assessment, both above the explanation.
+          The picker stays immediately in front of the questions because its
+          answer *is* question three — a visitor who picks here finds it
+          already chosen below, and putting the assessment first would break
+          that. Two clicks from landing to answering, and nothing to scroll
+          past first. */}
       <Goal goal={answers.choice.goal ?? null} onPick={pickGoal} />
-      <Mechanism />
-      <Storage />
 
       <Assess
         answers={answers}
@@ -94,11 +100,11 @@ export default function Plan() {
       {/* Only once the visitor has asked for it. */}
       {generated ? <Position position={position} /> : null}
 
+      <Mechanism />
+      <Storage />
       <Quote position={position} />
       <Afterwards />
       <Ask />
-      <Journey />
-      <Closing />
 
       <WaveSign />
     </main>

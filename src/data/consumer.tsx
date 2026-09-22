@@ -428,11 +428,15 @@ export function summaryOf(position: ExistingPosition): SummaryRow[] {
 
 /* ---------- One household, followed all the way through ----------
 
-   The page explains a service in seven steps, and seven steps told with seven
-   unrelated examples read as seven claims. Told about one house they read as
-   one story: this is what we learned about it, this is what we connected, this
-   is what its day looked like, and this is what we told the people living in
-   it. */
+   The page makes several claims about what Guardian Care sees, and claims told
+   with unrelated examples read as a list of assertions. Told about one house
+   they read as one story: this is what we learned about it, this is what we
+   connected, this is what its day looked like, and this is what we told the
+   people living in it.
+
+   The house is a 2014 install with 14 panels — squarely in the Feed-in Tariff
+   era the product is built for, which is why the same figures carry the
+   bird's-eye view, the insight and the dashboard. */
 
 /** The example home. Installed 2014, battery added 2022. */
 export const HOME = {
@@ -521,107 +525,33 @@ export const PARTS: Part[] = [
   {name: 'Monitoring apps', says: 'Graphs you are left to interpret', glyph: 'portfolio'}
 ];
 
-/** What joining them up actually buys the household. */
-export const ONE_PICTURE = [
-  'Every part of your system in one place',
-  'Explained in plain English, not graphs',
-  'Watched every day in the background',
-  'A clear next step when something matters'
-];
-
-/* ---------- How the service works ---------- */
-
-export type PhaseKey = 'estimate' | 'connect' | 'measure';
-
-export type StepPhase = {key: PhaseKey; name: string; line: string; tone: StatusTone};
-
 /**
- * The seven steps fall into three phases, and the phases are the argument: two
- * steps work from what the household tells us, one step connects the house, and
- * four run on real readings for as long as the system does.
+ * The same seven parts, answered.
+ *
+ * Printed in `PARTS` order and against the same row heights, so the fan's
+ * seven lines land on the seven things they resolve: the left column is what
+ * each part tells you on its own, and this is what it says once they are
+ * joined up.
+ *
+ * This replaced four sentences claiming the parts had been joined — *every
+ * part of your system in one place*, and so on. Claims about a picture, where
+ * the picture would have gone. The readings are the claim, and they are the
+ * example household's own, so they cannot disagree with the hero.
+ *
+ * Two of the seven are not quantities, because two of the seven were never
+ * about a number. A meter you no longer have to go and read, and one screen
+ * instead of four logins, are the answers to those rows.
  */
-export const STEP_PHASES: StepPhase[] = [
-  {key: 'estimate', name: 'Estimate', line: 'Built from what you tell us', tone: 'amber'},
-  {key: 'connect', name: 'Connect', line: 'Estimates become readings', tone: 'green'},
-  {key: 'measure', name: 'Understand', line: 'Measured and explained, every day', tone: 'blue'}
+export const JOINED: Array<{reading: string; tone: StatusTone}> = [
+  {reading: `${DAY.generated.toFixed(1)} kWh made`, tone: 'amber'},
+  {reading: 'No faults', tone: 'green'},
+  {reading: `${DAY.stored.toFixed(1)} kWh held`, tone: 'purple'},
+  {reading: 'Read for you', tone: 'ink'},
+  {reading: `${pounds(GRID_COST)} bought`, tone: 'orange'},
+  {reading: `${DAY.exported.toFixed(1)} kWh sent`, tone: 'blue'},
+  {reading: 'One screen', tone: 'green'}
 ];
 
-export type ServiceStep = {
-  index: string;
-  key: 'understand' | 'summary' | 'connect' | 'track' | 'view' | 'opportunities' | 'next';
-  name: string;
-  lead: string;
-  /** The line a hesitant reader is actually looking for. */
-  reassurance: string;
-  phase: PhaseKey;
-  glyph: GlyphName;
-};
-
-export const SERVICE_STEPS: ServiceStep[] = [
-  {
-    index: '01',
-    key: 'understand',
-    name: 'We understand your existing system',
-    lead: 'We start with what you already know about your installation — when it went in, what was fitted, what has changed since and what you pay for electricity. Together it becomes your Guardian Care system profile.',
-    reassurance: 'Nothing technical is asked of you. “I’m not sure” is always an answer.',
-    phase: 'estimate',
-    glyph: 'capture'
-  },
-  {
-    index: '02',
-    key: 'summary',
-    name: 'We build your system summary',
-    lead: 'From your profile, Guardian Care builds an estimated bird’s-eye view of your current setup — how old it is, what it should generate, what is fitted and what it is costing you.',
-    reassurance: 'Useful from day one, before anything is connected.',
-    phase: 'estimate',
-    glyph: 'insight'
-  },
-  {
-    index: '03',
-    key: 'connect',
-    name: 'We connect energy monitoring',
-    lead: 'Where suitable, we connect a CT clamp or compatible system monitoring. From then on we can see how electricity actually moves between your panels, your home, your battery and the grid.',
-    reassurance: 'Nothing about how your system runs changes. It is simply being read.',
-    phase: 'connect',
-    glyph: 'connect'
-  },
-  {
-    index: '04',
-    key: 'track',
-    name: 'We track your energy',
-    lead: 'Once monitoring is active, estimates give way to actual system behaviour. Guardian Care builds a clear, continuous picture of six things.',
-    reassurance: 'Six numbers that, together, explain your whole system.',
-    phase: 'measure',
-    glyph: 'monitoring'
-  },
-  {
-    index: '05',
-    key: 'view',
-    name: 'We give you a bird’s-eye view',
-    lead: 'Your whole system, simplified into one view. Here is one sunny day at an example home — and at a glance you can see exactly where its electricity went.',
-    reassurance: 'Where your electricity is going, in the time it takes to read it.',
-    phase: 'measure',
-    glyph: 'generation'
-  },
-  {
-    index: '06',
-    key: 'opportunities',
-    name: 'Guardian Care looks for opportunities',
-    lead: 'We do not just display numbers. We look at what the data means for you and flag the patterns worth reviewing. Choose one to see how it would be explained.',
-    reassurance: 'Numbers become advice.',
-    phase: 'measure',
-    glyph: 'goal'
-  },
-  {
-    index: '07',
-    key: 'next',
-    name: 'We help you understand the next step',
-    lead: 'Every Guardian Care insight explains three things: what we identified, why it matters and what we recommend.',
-    reassurance: 'No technical graphs to decode. No apps to juggle.',
-    phase: 'measure',
-    glyph: 'question'
-  }
-];
 
 /* ---------- Step 01: the profile ---------- */
 

@@ -57,7 +57,7 @@ export default function Position({position}: {position: PlanPosition}) {
     <Section id="estimate" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Your energy intelligence estimate"
+          eyebrow=" Your energy intelligence estimate"
           title="Your year,"
           accent="as it could be."
           body="Built from your answers, at the rate you gave us. Every figure that matters shows the sum behind it."

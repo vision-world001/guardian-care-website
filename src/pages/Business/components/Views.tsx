@@ -68,7 +68,7 @@ export default function Views() {
                 tone={EVENT.customer.tone}
                 glyph={EVENT.customer.glyph}
                 className="h-full"
-                bodyClassName="flex h-full flex-col"
+                bodyClassName="flex flex-col"
               >
                 <p className="text-[15.5px] font-light leading-[1.6] text-ink/90">
                   {EVENT.customer.line}
@@ -93,7 +93,7 @@ export default function Views() {
                 tone={EVENT.operator.tone}
                 glyph={EVENT.operator.glyph}
                 className="h-full"
-                bodyClassName="flex h-full flex-col"
+                bodyClassName="flex flex-col"
               >
                 <p className="mono text-[13.5px] leading-[1.6] text-ink/90">
                   {EVENT.operator.line}

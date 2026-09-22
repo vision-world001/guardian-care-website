@@ -1,10 +1,8 @@
 import Assessment from '../../../components/Assessment/Assessment';
 import type {Answers, ProfileLine} from '../../../components/Assessment/types';
-import {LABEL} from '../../../components/kit';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
 import {GOAL_LABEL, PLAN_STEPS, type PlanPosition} from '../../../data/plan';
-import {cn} from '../../../lib/cn';
 
 /**
  * Your own numbers, finally.
@@ -39,8 +37,7 @@ export default function Assess({
       <Wrap>
         <Reveal className="mb-10 grid gap-6 min-[1000px]:grid-cols-[1fr_auto] min-[1000px]:items-end">
           <div className="max-w-[660px]">
-            <div className={cn(LABEL, 'text-amber')}>◇ Your energy assessment</div>
-            <h2 className="mt-4 font-display text-[clamp(30px,4.6vw,54px)] font-semibold uppercase leading-[0.98] tracking-[-0.015em] text-ink">
+            <h2 className="font-display text-[clamp(30px,4.6vw,54px)] font-semibold uppercase leading-[0.98] tracking-[-0.015em] text-ink">
               Your position first.
               <br />
               <span className="text-brand-gradient">Panels later.</span>

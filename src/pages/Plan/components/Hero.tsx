@@ -45,7 +45,7 @@ export default function Hero() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-[14%] -top-[20%] -z-10 h-[72vw] w-[72vw] rounded-full blur-[150px] min-[1000px]:h-[54vw] min-[1000px]:w-[54vw]"
-        style={{background: 'radial-gradient(circle, rgba(255,210,97,0.13), transparent 64%)'}}
+        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-amber) 13%, transparent), transparent 64%)'}}
       />
 
       <Wrap>
@@ -55,10 +55,9 @@ export default function Hero() {
             <Reveal
               className={cn(
                 LABEL_BASE,
-                'inline-flex items-center gap-3 text-[12px] tracking-[.22em] text-amber'
+                'inline-flex items-center text-[12px] tracking-[.22em] text-amber'
               )}
             >
-              <Glyph name="savings" className="h-5 w-5" />
               Looking to reduce your electricity costs?
             </Reveal>
 
@@ -113,20 +112,6 @@ export default function Hero() {
               </a>
             </Reveal>
 
-            <Reveal
-              delay={0.28}
-              className="mono mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-[10.5px] uppercase tracking-[.16em] text-faint"
-            >
-              <span>No contact details</span>
-              <span aria-hidden="true" className="text-faint/50">
-                ◇
-              </span>
-              <span>No callback</span>
-              <span aria-hidden="true" className="text-faint/50">
-                ◇
-              </span>
-              <span>Every figure shows its sum</span>
-            </Reveal>
           </div>
 
           {/* ---------- Where you are standing ---------- */}
@@ -150,7 +135,7 @@ function StartingCard() {
   return (
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
       <div className="flex items-center justify-between gap-4 border-b border-line-2 px-6 py-4 min-[520px]:px-7">
-        <span className={cn(LABEL, 'text-orange')}>◇ Your starting position</span>
+        <span className={cn(LABEL, 'text-orange')}> Your starting position</span>
         <span className="mono text-[10px] uppercase tracking-[.16em] text-faint">Example home</span>
       </div>
 

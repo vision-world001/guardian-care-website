@@ -587,76 +587,6 @@ export const QUESTIONS: Question[] = [
 
 /* ---------- The complete energy journey ---------- */
 
-/**
- * Seven stages, from a bill to a system that keeps being improved.
- *
- * The split at stage five is the one that carries the argument. Everything
- * before it is estimated — the page says so on every figure it prints — and
- * everything after it is measured. Most solar journeys end at four.
- */
-export type Stage = {
-  index: string;
-  name: string;
-  line: string;
-  glyph: GlyphName;
-  /** Before monitoring exists, or after. The rail changes at the boundary. */
-  measured: boolean;
-};
-
-export const JOURNEY: Stage[] = [
-  {
-    index: '1',
-    name: 'Tell us what you pay',
-    line: 'We establish your current grid-cost position.',
-    glyph: 'cost',
-    measured: false
-  },
-  {
-    index: '2',
-    name: 'Tell us what you want',
-    line: 'Lower bills, storage, your own generation, less grid.',
-    glyph: 'goal',
-    measured: false
-  },
-  {
-    index: '3',
-    name: 'We build an estimate',
-    line: 'An indicative solar and storage position, with its arithmetic shown.',
-    glyph: 'insight',
-    measured: false
-  },
-  {
-    index: '4',
-    name: 'Receive your quote',
-    line: 'Solar, battery, monitoring and Guardian Care as one energy solution.',
-    glyph: 'plan',
-    measured: false
-  },
-  {
-    index: '5',
-    name: 'Install & connect',
-    line: 'The system is installed and monitoring is activated.',
-    glyph: 'connect',
-    measured: true
-  },
-  {
-    index: '6',
-    name: 'See your energy',
-    line: 'Generation, storage, export and what you still buy — every day.',
-    glyph: 'monitoring',
-    measured: true
-  },
-  {
-    index: '7',
-    name: 'Guardian Care optimises',
-    line: 'The platform keeps looking for meaningful changes and opportunities.',
-    glyph: 'retain',
-    measured: true
-  }
-];
-
-/** The line the rail crosses — estimates on one side, readings on the other. */
-export const JOURNEY_HINGE = JOURNEY.findIndex((stage) => stage.measured);
 
 /* ---------- The dashboard that arrives afterwards ---------- */
 
@@ -765,17 +695,3 @@ export const EXAMPLE = {
 
 /* ---------- Where it leaves you ---------- */
 
-/**
- * The closing sequence — the page's whole argument as five verbs.
- *
- * Deliberately not sentences. By the time a reader reaches the bottom they
- * have seen each of these demonstrated, and the line is there to name what
- * they were just shown rather than to explain it again.
- */
-export const OUTCOME: Array<{verb: string; line: string; glyph: GlyphName}> = [
-  {verb: 'Generate it.', line: 'Electricity made at the property', glyph: 'generation'},
-  {verb: 'Use it.', line: 'Used as it is made, at no grid cost', glyph: 'consumption'},
-  {verb: 'Store it.', line: 'Surplus held back for the evening', glyph: 'storage'},
-  {verb: 'Understand it.', line: 'Measured, not assumed', glyph: 'monitoring'},
-  {verb: 'Pay the grid less.', line: 'Which was the point', glyph: 'savings'}
-];

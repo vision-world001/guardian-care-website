@@ -47,10 +47,10 @@ export default function Afterwards() {
     <Section id="after" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ After installation"
+          eyebrow=" After installation"
           title="Installation"
           accent="is not the end."
-          body="Once your system is connected, Guardian Care stops estimating. Every figure becomes a reading — and your quote can finally be checked against reality."
+          body="Once connected, Guardian Care stops estimating. Every figure becomes a reading."
         />
 
         {/* ---------- What you would be looking at ---------- */}
@@ -97,11 +97,11 @@ export default function Afterwards() {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line-2 bg-bg/40 px-5 py-4 min-[520px]:px-6">
               <Caption>Log in whenever you like</Caption>
               <span aria-hidden="true" className="text-faint/40">
-                ◇
+                
               </span>
               <Caption>Nothing you have to check</Caption>
               <span aria-hidden="true" className="text-faint/40">
-                ◇
+                
               </span>
               <Caption>Guardian Care watches it for you</Caption>
             </div>
@@ -112,7 +112,7 @@ export default function Afterwards() {
         <div className="mt-16 grid gap-10 min-[1080px]:grid-cols-[0.78fr_1.22fr] min-[1080px]:gap-14">
           <div>
             <Reveal>
-              <div className={cn(LABEL, 'text-amber')}>◇ Guardian Care keeps learning</div>
+              <div className={cn(LABEL, 'text-amber')}> Guardian Care keeps learning</div>
               <h3 className="mt-4 font-display text-[clamp(26px,3.4vw,40px)] font-semibold uppercase leading-[1] tracking-[-0.01em] text-ink">
                 Your quote was a guess.
                 <br />
@@ -124,7 +124,7 @@ export default function Afterwards() {
               {ANSWERS.map((line) => (
                 <li key={line} className="flex items-start gap-3">
                   <span aria-hidden="true" className="mt-[7px] text-[9px] text-green">
-                    ◇
+                    
                   </span>
                   <span className="text-[14.5px] font-light leading-[1.45] text-ink/85">
                     {line}

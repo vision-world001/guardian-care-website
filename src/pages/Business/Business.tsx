@@ -4,9 +4,7 @@ import {NO_ANSWERS, type Answers} from '../../components/Assessment/types';
 import WaveSign from '../../context/layouts/WaveSign';
 import {readBusiness} from '../../data/businessFlow';
 import Assess from './components/Assess';
-import Closing from './components/Closing';
 import Console from './components/Console';
-import Handover from './components/Handover';
 import Hero from './components/Hero';
 import Join from './components/Join';
 import Model from './components/Model';
@@ -28,18 +26,22 @@ import Watch from './components/Watch';
  * single picture with a line under it:
  *
  *   1. Here is your whole portfolio.             — 1,245 dots, 42 of them blipping
- *   2. Here is where you lose them.              — a chain that stops at handover
- *   3. Here is what we are.                      — three products, one record
- *   4. Here it is, working.                      — the console, operable
- *   5. It is already watching.                   — six rules, five words each
- *   6. Your customer never sees a fault code.    — one event, two readings
- *   7. Here is the revenue in it.                — the same battery, sold twice
- *   8. Here is how you join.                     — four steps, four objections
- *   9. Now your business.                        — the assessment
- *  10. Here is where you start.                  — their own first five moves
- *  11. What it is all for.                       — five questions, answered
+ *   2. Now your business.                        — the assessment
+ *   3. Here is where you start.                  — their own first five moves
+ *   4. Here is what we are.                      — three products, one record
+ *   5. Here it is, working.                      — the console, operable
+ *   6. It is already watching.                   — six rules, five words each
+ *   7. Your customer never sees a fault code.    — one event, two readings
+ *   8. Here is the revenue in it.                — the same battery, sold twice
+ *   9. Here is how you join.                     — four steps, four objections
+ *  10. So start.                                 — the form, and what follows it
  *
  * …and then the name rising out of the water, as on the other three pages.
+ *
+ * The page used to open on a chain that stopped at handover and close on five
+ * questions answered. Both argued; neither collected. A visitor convinced by
+ * the console had nowhere to say so, which is a fine way to end an essay and
+ * a poor way to end a sales page — so the last section is now the form.
  *
  * Runs on the brand navy with the console grid behind it. The other three
  * pages are lit the same way, which is the point: an operator who has just
@@ -67,14 +69,16 @@ export default function Business() {
       <ConsoleField />
 
       <Hero />
-      <Handover />
-      <Products />
-      <Console />
-      <Watch />
-      <Views />
-      <Revenue />
-      <Join />
 
+      {/* Second, not ninth.
+          This used to sit after seven sections, on the argument that six
+          questions asked before a visitor has seen what they are for is a
+          form. True of somebody scrolling — but the hero's button points
+          here, and a visitor who clicks it has already decided they want the
+          questions. Making them travel seven sections to reach what they
+          asked for is the worse failure. The seven sections are the answer to
+          "what was that for", and they read better after the questions than
+          in front of them. */}
       <Assess
         answers={answers}
         position={position}
@@ -87,7 +91,12 @@ export default function Business() {
       {/* Only once the visitor has asked for it. */}
       {generated ? <Model position={position} /> : null}
 
-      <Closing />
+      <Products />
+      <Console />
+      <Watch />
+      <Views />
+      <Revenue />
+      <Join />
 
       <WaveSign />
     </main>

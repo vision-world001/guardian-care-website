@@ -41,7 +41,6 @@ export default function Goal({
     <Section id="goal" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ Start with where you want to get to"
           title="What would you"
           accent="like to achieve?"
           body="The same property is assessed differently depending on the answer."
@@ -86,7 +85,7 @@ export default function Goal({
                   background: `linear-gradient(120deg, ${TONE_VAR[picked.tone]}, color-mix(in srgb, ${TONE_VAR[picked.tone]} 20%, transparent))`
                 }}
               >
-                <div className="flex flex-col gap-5 rounded-[5px] bg-[linear-gradient(180deg,#15181c,#0f1114)] px-6 py-7 min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-8 min-[760px]:px-9">
+                <div className="flex flex-col gap-5 rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-7 min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-8 min-[760px]:px-9">
                   <Tile colour={TONE_VAR[picked.tone]} size="lg">
                     <Glyph name={picked.glyph} bold className="h-7 w-7" />
                   </Tile>
@@ -112,7 +111,7 @@ export default function Goal({
                 className="mono mt-5 flex flex-wrap items-center justify-center gap-2.5 text-[10.5px] uppercase tracking-[.16em] text-faint"
               >
                 <span aria-hidden="true" className={TONE_TEXT[picked.tone]}>
-                  ◇
+                  
                 </span>
                 Carried into your assessment
                 <a
@@ -123,14 +122,7 @@ export default function Goal({
                 </a>
               </Reveal>
             </>
-          ) : (
-            <p className="mono mt-7 text-center text-[10.5px] uppercase leading-[1.6] tracking-[.16em] text-faint">
-              <span aria-hidden="true" className="text-amber">
-                ◇
-              </span>{' '}
-              Pick one — it is carried into your assessment below
-            </p>
-          )}
+          ) : null}
         </div>
       </Wrap>
     </Section>

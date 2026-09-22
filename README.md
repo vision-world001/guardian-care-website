@@ -13,9 +13,9 @@ Energy intelligence for solar households and the companies that install for them
 
 Built around the platform's three products rather than around three audiences:
 
-- **◇ 01 Onsite** — build the system (capture, assess, update)
-- **◇ 02 Operations** — run the system (monitor, analyse, operate, notify, support)
-- **◇ 03 Customer** — understand your energy (understand, visualise, advise)
+- ** 01 Onsite** — build the system (capture, assess, update)
+- ** 02 Operations** — run the system (monitor, analyse, operate, notify, support)
+- ** 03 Customer** — understand your energy (understand, visualise, advise)
 
 Operations is drawn larger than the other two because it is the thing in the
 middle that connects them. The cards currently route into the existing journey

@@ -29,7 +29,7 @@
 
   /* Hairlines: the green at low strength where a rule is brand, white where
      it is only structure. */
-  --color-line: rgba(112, 169, 20, 0.22);
+  --color-line: rgba(122, 179, 0, 0.24);
   --color-line-2: rgba(255, 255, 255, 0.1);
 
   /* Type, straight off the brand sheet: white headings and the supporting
@@ -40,23 +40,36 @@
   --color-muted: #d5dee5;
   --color-faint: #7e97a9;
 
-  /* Accents.
+  /* Accents — the mark's blue and green, at the chroma they can actually hold.
      ------------------------------------------------------------
-     `--color-green` is not the CTA green. #589009 is a midtone: on this navy
-     it is 4.84:1, which passes as type but only just, and it is the wrong
-     colour to set a 10px tracked label in. So the token type uses is the
-     brand's own hover green at 6.6:1, and the fill stays #589009 — see
-     `--cta`. Same split the blue has always had here, for the same reason.
+     Both hues come straight off the artwork: the C's swoosh measures hue 129
+     and the G's lit edge hue 250, 121° apart. What the pair needed was not
+     new hues but the saturation the old tokens were leaving on the table —
+     #70a914 sat at C 0.16 where that hue reaches 0.21.
+
+     So each is set to the most saturated colour sRGB can show at its hue and
+     a lightness that clears contrast on the navy. The useful accident is that
+     they land level: green C 0.185, blue C 0.184 — two thousandths apart. It
+     matters because chroma is what the eye reads as loudness, so neither
+     colour dominates the other and the pair genuinely buzzes instead of one
+     of them simply looking brighter.
+
+     Green keeps climbing in chroma as it lightens and blue falls away — an
+     sRGB fact, not a choice — which is why the two bright variants are not
+     symmetrical: #93d600 gains saturation, #3fa3ff loses it.
+
+     Contrast on #011227: green 7.4:1, blue 5.8:1, bright green 10.6:1,
+     bright blue 7.1:1, deep green 5.0:1. All clear AA at any size.
 
      The other four are the status tones, which have no colour in the mark and
      are held at the brightness this ground needs. */
-  --color-green: #70a914;
-  --color-green-bright: #8cc72a;
-  --color-green-deep: #589009;
-  --color-green-glow: rgba(112, 169, 20, 0.14);
-  --color-blue: #3d9ae8;
-  --color-blue-bright: #64b2f0;
-  --color-blue-glow: rgba(0, 116, 211, 0.13);
+  --color-green: #7ab300;
+  --color-green-bright: #93d600;
+  --color-green-deep: #629100;
+  --color-green-glow: rgba(122, 179, 0, 0.16);
+  --color-blue: #0092f9;
+  --color-blue-bright: #3fa3ff;
+  --color-blue-glow: rgba(0, 146, 249, 0.15);
   --color-amber: #ffd261;
   --color-orange: #ff9d4d;
   --color-red: #ff6b5a;
@@ -221,7 +234,7 @@
      that one is tuned for washes behind panels, and at 13% it disappears
      entirely under a button on a white page. This is sized for a cast shadow
      and restepped per theme, so the lift reads the same in both. */
-  --btn-glow: rgba(88, 144, 9, 0.4);
+  --btn-glow: rgba(122, 179, 0, 0.45);
 
   --scroll-track: #010d1e;
   --scroll-thumb: rgba(255, 255, 255, 0.14);
@@ -254,8 +267,8 @@
 
   /* Stands in for a photograph that failed to load. It has to belong to the
      page it fails on, or a missing file leaves a hole of the opposite theme. */
-  --photo-fallback: radial-gradient(ellipse at 30% 20%, rgba(88, 144, 9, 0.20), transparent 62%),
-    radial-gradient(ellipse at 78% 74%, rgba(0, 116, 211, 0.2), transparent 64%),
+  --photo-fallback: radial-gradient(ellipse at 30% 20%, color-mix(in srgb, var(--color-green) 20%, transparent), transparent 62%),
+    radial-gradient(ellipse at 78% 74%, color-mix(in srgb, var(--color-blue) 20%, transparent), transparent 64%),
     linear-gradient(160deg, var(--color-panel-2), var(--color-bg));
 }
 
@@ -288,17 +301,20 @@
 
      #011227  navy     the "G" — the ground everything sits on
      #17222d  slate    the panel the ground steps up into
-     #589009  green    the "C" — the one accent
+     #7fb902  green    the "C" — the one accent
      #dcebbe  pale     the type, and the light end of every ramp
 
-   Two of them do a second job, and the reason is contrast rather than taste.
+   The green is the mark's own, measured: the most saturated pixel in the C's
+   swoosh, hue 129 at C 0.19. It sat at #589009 here for a while, which is a
+   third of the way down that same hue toward black — a green chosen to carry
+   white text rather than to match the artwork. Now that the buttons cut navy
+   out of the green instead of printing white on it, the darker value has no
+   job left, and the ramps this constant feeds — the record fan, the parts
+   fan, the brand gradient — read as the logo rather than as a muted version
+   of it.
 
-   The green is hue 85 at 30% lightness, which clears 4.84:1 on the navy but
-   only 4.39:1 on the panel — so it carries a heading and fails a 12px label,
-   which is precisely the size it is most often needed at. `--color-green`
-   below is therefore the same hue lifted to 44%, and #589009 itself stays for
-   fills, buttons and anything set large. This is the same split the blue has
-   always had here, for the same reason.
+   See **Accents** above for the working pair derived from this hue and the
+   G's blue, and why they are set where they are.
 
    The pale is the ink. Stepping it down toward the navy to make the muted and
    faint greys does not work — hue 80 into hue 213 crosses through neutral and
@@ -313,7 +329,7 @@
 :root {
   --logo-navy: #011227;
   --logo-slate: #17222d;
-  --logo-green: #589009;
+  --logo-green: #7fb902;
   --logo-pale: #dcebbe;
 
   /* The pale is also the light end of every ramp on the site — the diagrams
@@ -327,18 +343,25 @@
      ------------------------------------------------------------
      Declared here rather than per theme on purpose: a button that changes
      colour between the navy hero and the white page below it stops reading as
-     the same control. #589009 is the brand's CTA green and #70a914 its hover,
-     exactly as specified.
+     the same control. The fill is the mark's green at the chroma its hue can
+     hold, and the hover is the same hue brighter — see **Accents** above.
 
-     Worth knowing before anyone reuses these as text colours: #589009 is a
-     midtone, so white on it is 3.88:1. That clears AA for large text and does
-     not clear it for a small label — see `--cta-strong`, which is the same
-     hue dark enough to carry white at 4.95:1, for buttons whose label is
-     genuinely small. */
-  --cta: #589009;
-  --cta-hover: #70a914;
-  --cta-strong: #4c7d08;
-  --cta-ink: #ffffff;
+     The ink is navy, not white, and that is the part worth reading.
+
+     White on the old #589009 measured 3.88:1. Every button label on this site
+     is 12px bold uppercase — which is not "large text" under WCAG, so that
+     was failing AA wherever it appeared, and brightening the green to the
+     mark's own value would have taken it to 2.5:1.
+
+     Flipping the ink solves it in the only direction that also serves the
+     brief: navy on this green is 7.4:1, and it goes *up* as the fill
+     brightens — 10.6:1 on hover — where white went down. A vivid green pill
+     with the ground's own navy cut out of it is also the more energetic
+     object, which is what was asked for. One token flips every button. */
+  --cta: #7ab300;
+  --cta-hover: #93d600;
+  --cta-strong: #629100;
+  --cta-ink: #011227;
 }
 
 /* ============================================================
@@ -456,8 +479,8 @@
    Kept as utilities because the multi-stop values are unreadable inline. */
 @utility bg-entry-glow {
   background:
-    radial-gradient(ellipse 800px 560px at 22% 20%, rgba(88, 144, 9, 0.12), transparent 60%),
-    radial-gradient(ellipse 860px 600px at 80% 60%, rgba(0, 116, 211, 0.13), transparent 62%),
+    radial-gradient(ellipse 800px 560px at 22% 20%, color-mix(in srgb, var(--color-green) 12%, transparent), transparent 60%),
+    radial-gradient(ellipse 860px 600px at 80% 60%, color-mix(in srgb, var(--color-blue) 13%, transparent), transparent 62%),
     linear-gradient(180deg, var(--color-bg), var(--color-bg-2));
 }
 

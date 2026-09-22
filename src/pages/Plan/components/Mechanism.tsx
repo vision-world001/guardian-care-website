@@ -78,10 +78,9 @@ export default function Mechanism() {
     <Section id="changes" hairline className="py-16 min-[760px]:py-24">
       <Wrap>
         <Heading
-          eyebrow="◇ What solar actually changes"
           title="Same house. Same usage."
           accent="Different bill."
-          body="A bill falls when your home uses the electricity as it is made — so it never has to be bought. That is the entire mechanism."
+          body="Electricity used as it is made is electricity never bought. That is the whole mechanism."
         />
 
         <div className="grid gap-4 min-[1080px]:grid-cols-[1.25fr_0.75fr]">
