@@ -189,7 +189,7 @@ function TodayCard() {
       {/* ---------- And whether anything is worth a look ---------- */}
       <div className="border-t border-line-2 bg-bg/40 px-6 py-5 min-[520px]:px-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className={cn(LABEL, 'text-amber')}> Guardian AI</span>
+          <span className={cn(LABEL, 'text-amber')}> Guardian Care Intelligence</span>
           <span className="mono inline-flex items-center gap-2 rounded-pill border border-amber/35 bg-amber/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[.14em] text-amber">
             1 worth reviewing
           </span>

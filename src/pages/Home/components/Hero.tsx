@@ -108,7 +108,7 @@ export default function Hero() {
 
             <span className="text-[14px] font-light leading-[1.5] text-muted min-[680px]:text-left">
               <span className="mono mr-2 text-[10px] font-semibold uppercase tracking-[.18em] text-amber">
-                Guardian AI
+                Guardian Care Intelligence
               </span>
               {LIVE.ai}
             </span>

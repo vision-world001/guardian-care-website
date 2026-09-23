@@ -90,7 +90,7 @@ export default function CustomerView() {
             {/* ---------- What the platform made of it ---------- */}
             <div className="border-t border-line-2 bg-bg/40 px-6 py-6 min-[520px]:px-8">
               <span className="mono block text-[10px] font-semibold uppercase tracking-[.2em] text-amber">
-                Guardian AI
+                Guardian Care Intelligence
               </span>
               <p className="mt-2.5 text-[15.5px] font-light leading-[1.55] text-ink/90">
                 “{TODAY.ai}”

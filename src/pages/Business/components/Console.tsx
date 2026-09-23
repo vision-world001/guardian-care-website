@@ -145,7 +145,7 @@ export default function Console() {
                   }}
                 >
                   <div className={cn(LABEL, 'text-[10px]', TONE_TEXT[row.tone])}>
-                    &#9671; Guardian AI
+                    &#9671; Guardian Care Intelligence
                   </div>
                   <p className="mt-2 text-[13.5px] font-light leading-[1.55] text-ink/90">
                     {row.recommendation}

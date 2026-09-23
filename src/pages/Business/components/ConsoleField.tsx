@@ -33,12 +33,24 @@ import GridPulses from './GridPulses';
  * through the base stylesheet.
  */
 
-/** Where the light falls, down the length of the page. */
+/**
+ * Where the light falls, down the length of the page.
+ *
+ * Three, not four. A fourth sat at 84% on the right and washed the foot of the
+ * page green — which mattered more after the palette move, because the glow
+ * token went from rgba(112,169,20,.14) to a brighter rgba(122,179,0,.16) and
+ * what had been a hint became a cast.
+ *
+ * It also fell in the worst possible place: below the last section, where the
+ * page has nothing left to light. The result was a long empty band that was
+ * dark on the left and green on the right, immediately above the wordmark —
+ * an asymmetry with no content to justify it. Dropping it lets the foot go
+ * evenly dark and hands the eye to the wave.
+ */
 const GLOWS = [
   {top: '-6%', side: 'left', offset: '-14%', size: 66, colour: 'var(--color-green-glow)', delay: '0s', duration: '26s'},
   {top: '26%', side: 'right', offset: '-16%', size: 70, colour: 'var(--color-blue-glow)', delay: '-15s', duration: '32s'},
-  {top: '58%', side: 'left', offset: '-18%', size: 62, colour: 'var(--color-blue-glow)', delay: '-7s', duration: '29s'},
-  {top: '84%', side: 'right', offset: '-12%', size: 64, colour: 'var(--color-green-glow)', delay: '-21s', duration: '34s'}
+  {top: '58%', side: 'left', offset: '-18%', size: 62, colour: 'var(--color-blue-glow)', delay: '-7s', duration: '29s'}
 ];
 
 export default function ConsoleField() {
