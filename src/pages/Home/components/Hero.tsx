@@ -55,7 +55,7 @@ export default function Hero() {
         <div className="mx-auto flex min-h-[86vh] max-w-[960px] flex-col justify-center py-24 text-center min-[760px]:min-h-[88vh]">
           <Reveal
             as="h1"
-            className="font-display text-[clamp(54px,11vw,140px)] font-semibold uppercase leading-[0.86] tracking-[-0.022em] text-ink"
+            className="font-display text-[clamp(44px,11vw,140px)] font-semibold uppercase leading-[0.86] tracking-[-0.022em] text-ink"
           >
             Energy,
             <br />
@@ -65,7 +65,7 @@ export default function Hero() {
           <Reveal
             as="p"
             delay={0.06}
-            className="mono mx-auto mt-8 text-[12.5px] font-medium uppercase tracking-[.22em] text-amber"
+            className="mono mx-auto mt-8 text-[12.5px] font-medium uppercase tracking-[.12em] text-amber"
           >
             AI intelligence for every solar system
           </Reveal>
@@ -96,7 +96,7 @@ export default function Hero() {
           >
             <span className="flex shrink-0 items-center gap-2.5">
               <LiveDot />
-              <span className="mono whitespace-nowrap text-[10.5px] font-semibold uppercase tracking-[.16em] text-green">
+              <span className="mono whitespace-nowrap text-[11.5px] font-semibold uppercase tracking-[.12em] text-green">
                 {LIVE.status}
               </span>
             </span>
@@ -107,7 +107,7 @@ export default function Hero() {
             />
 
             <span className="text-[14px] font-light leading-[1.5] text-muted min-[680px]:text-left">
-              <span className="mono mr-2 text-[10px] font-semibold uppercase tracking-[.18em] text-amber">
+              <span className="mono mr-2 text-[11px] font-semibold uppercase tracking-[.13em] text-amber">
                 Guardian Care Intelligence
               </span>
               {LIVE.ai}
@@ -139,7 +139,7 @@ export default function Hero() {
                   </span>
                 ) : null}
 
-                <div className="mono text-[9.5px] font-semibold uppercase tracking-[.2em] text-faint">
+                <div className="mono text-[11px] font-semibold uppercase tracking-[.13em] text-faint">
                   {reading.verb}
                 </div>
                 <div
@@ -158,7 +158,7 @@ export default function Hero() {
                     {reading.unit}
                   </span>
                 </div>
-                <div className="mono mt-2 text-[9.5px] uppercase tracking-[.14em] text-faint/80">
+                <div className="mono mt-2 text-[11px] uppercase tracking-[.12em] text-faint/80">
                   {reading.name}
                 </div>
               </div>

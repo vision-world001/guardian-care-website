@@ -49,7 +49,7 @@ export default function Ask() {
                     <span
                       aria-hidden="true"
                       className={cn(
-                        'mono shrink-0 text-[11px] font-semibold tracking-[.14em] transition-colors',
+                        'mono shrink-0 text-[11px] font-semibold tracking-[.12em] transition-colors',
                         on ? 'text-amber' : 'text-faint'
                       )}
                     >

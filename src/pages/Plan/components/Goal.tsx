@@ -108,7 +108,7 @@ export default function Goal({
 
               <Reveal
                 delay={0.08}
-                className="mono mt-5 flex flex-wrap items-center justify-center gap-2.5 text-[10.5px] uppercase tracking-[.16em] text-faint"
+                className="mono mt-5 flex flex-wrap items-center justify-center gap-2.5 text-[11.5px] uppercase tracking-[.12em] text-faint"
               >
                 <span aria-hidden="true" className={TONE_TEXT[picked.tone]}>
                   

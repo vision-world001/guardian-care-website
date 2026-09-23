@@ -32,7 +32,7 @@ export default function Hero() {
             <Reveal
               className={cn(
                 LABEL_BASE,
-                'inline-flex items-center text-[12px] tracking-[.22em] text-green'
+                'inline-flex items-center text-[12px] tracking-[.12em] text-green'
               )}
             >
               For solar and energy companies

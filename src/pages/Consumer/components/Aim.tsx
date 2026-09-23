@@ -46,11 +46,11 @@ export default function Aim() {
           className="mt-4 rounded-frame p-px"
           style={{
             background:
-              'linear-gradient(100deg, var(--logo-pale), var(--logo-green) 50%, var(--color-blue))'
+              'linear-gradient(100deg, var(--ramp-far), var(--ramp-mid) 50%, var(--color-blue))'
           }}
         >
           <div className="flex flex-col items-start gap-4 rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-6 min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-6 min-[760px]:px-8">
-            <Tile colour="var(--logo-green)" size="md">
+            <Tile colour="var(--ramp-mid)" size="md">
               <Glyph name="solarRoof" bold className="h-6 w-6" />
             </Tile>
             <span className="font-display text-[clamp(21px,2.6vw,28px)] font-semibold uppercase leading-[1.08] text-ink">

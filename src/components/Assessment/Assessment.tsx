@@ -258,7 +258,7 @@ export default function Assessment({
 
             {/* ---------- Why we ask ---------- */}
             <div className="mt-7 rounded-card border-l-2 border-green/45 bg-bg-2/70 px-5 py-4">
-              <div className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
+              <div className="text-[11.5px] font-bold uppercase tracking-[.13em] text-green">
                 {step.why.heading}
               </div>
               <div className="mt-2 text-[14.5px] font-light leading-[1.6] text-muted [&_b]:font-medium [&_b]:text-ink">
@@ -272,7 +272,7 @@ export default function Assessment({
                 <button
                   type="button"
                   onClick={back}
-                  className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[13.5px] font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-3 text-[13.5px] min-[520px]:py-2.5 font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
                 >
                   ← Back
                 </button>
@@ -299,7 +299,7 @@ export default function Assessment({
 
       {/* ---------- The profile, filling in ---------- */}
       <aside className="bg-bg-2 p-6 min-[760px]:p-7">
-        <div className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
+        <div className="text-[11.5px] font-bold uppercase tracking-[.13em] text-green">
           {profile.heading}
         </div>
 
@@ -325,7 +325,7 @@ export default function Assessment({
           <button
             type="button"
             onClick={restart}
-            className="mt-5 w-full rounded-full px-4 py-2.5 text-[13px] font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
+            className="mt-5 w-full rounded-full px-4 py-3 text-[13px] min-[520px]:py-2.5 font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
           >
             Start again
           </button>
@@ -346,7 +346,7 @@ function Progress({at, total}: {at: number; total: number}) {
   return (
     <div>
       <div className="flex items-baseline justify-between">
-        <span className="text-[10.5px] font-bold uppercase tracking-[.18em] text-green">
+        <span className="text-[11.5px] font-bold uppercase tracking-[.13em] text-green">
           Step {at + 1} of {total}
         </span>
         <span className="mono text-[11px] text-faint">
@@ -405,7 +405,7 @@ function Complete({count, onRestart}: {count: number; onRestart: () => void}) {
         <button
           type="button"
           onClick={onRestart}
-          className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13.5px] font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
+          className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-[13.5px] min-[520px]:py-2.5 font-medium text-faint ring-1 ring-line-2 transition duration-200 hover:text-ink hover:ring-ink/25"
         >
           Start again
         </button>

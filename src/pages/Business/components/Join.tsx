@@ -57,7 +57,7 @@ export default function Join() {
                     <Glyph name={step.glyph} className="h-5 w-5" />
                   </span>
 
-                  <span className="mono text-[11px] tracking-[.14em] text-faint">
+                  <span className="mono text-[11px] tracking-[.12em] text-faint">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 </div>
@@ -76,7 +76,7 @@ export default function Join() {
                 <span
                   className={cn(
                     LABEL_BASE,
-                    'mt-6 inline-flex w-fit rounded-pill px-3 py-1.5 text-[9.5px] tracking-[.16em]'
+                    'mt-6 inline-flex w-fit rounded-pill px-3 py-1.5 text-[11px] tracking-[.12em]'
                   )}
                   style={{color: colour, background: tint(colour, 10)}}
                 >
@@ -109,7 +109,7 @@ export default function Join() {
             {ERAS.map((era) => (
               <div key={era.name} className="bg-panel/50 px-5 py-4">
                 <dt className="text-[13.5px] font-medium leading-tight text-ink">{era.name}</dt>
-                <dd className="mono mt-1.5 text-[10px] uppercase tracking-[.14em] text-faint">
+                <dd className="mono mt-1.5 text-[11px] uppercase tracking-[.12em] text-faint">
                   {era.rate} &#183; {era.note}
                 </dd>
               </div>

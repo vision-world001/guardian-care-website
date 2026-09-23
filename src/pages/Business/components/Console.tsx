@@ -56,7 +56,7 @@ export default function Console() {
                   <dd className={cn('mono text-[22px] font-semibold leading-none', TONE_TEXT[kpi.tone])}>
                     {kpi.value}
                   </dd>
-                  <dt className="mt-2 text-[11px] uppercase tracking-[.14em] text-faint">
+                  <dt className="mt-2 text-[11px] uppercase tracking-[.12em] text-faint">
                     {kpi.label}
                   </dt>
                 </div>
@@ -67,7 +67,7 @@ export default function Console() {
             <div className="grid min-[900px]:grid-cols-[1fr_1fr]">
               <ul className="border-b border-line-2 min-[900px]:border-b-0 min-[900px]:border-r">
                 <li className="border-b border-line-2 px-5 py-3 min-[520px]:px-6">
-                  <span className={cn(LABEL_BASE, 'text-[10px] tracking-[.18em] text-faint')}>
+                  <span className={cn(LABEL_BASE, 'text-[11px] tracking-[.13em] text-faint')}>
                     Needs attention &#183; {CC_ROWS.length} of {CC_ATTENTION}
                   </span>
                 </li>
@@ -96,7 +96,7 @@ export default function Console() {
                         <span className="min-w-0 flex-1">
                           <span className="flex flex-wrap items-baseline gap-x-2.5">
                             <span className="text-[14.5px] font-medium text-ink">{item.name}</span>
-                            <span className="mono text-[10.5px] uppercase tracking-[.12em] text-faint">
+                            <span className="mono text-[11.5px] uppercase tracking-[.12em] text-faint">
                               {item.location}
                             </span>
                           </span>
@@ -108,7 +108,7 @@ export default function Console() {
                         <span
                           className={cn(
                             LABEL_BASE,
-                            'shrink-0 rounded-pill px-2.5 py-1 text-[9.5px] tracking-[.12em]'
+                            'shrink-0 rounded-pill px-2.5 py-1 text-[11px] tracking-[.12em]'
                           )}
                           style={{
                             color: TONE_VAR[item.tone],
@@ -144,7 +144,7 @@ export default function Console() {
                     boxShadow: `inset 0 0 0 1px ${tint(TONE_VAR[row.tone], 20)}`
                   }}
                 >
-                  <div className={cn(LABEL, 'text-[10px]', TONE_TEXT[row.tone])}>
+                  <div className={cn(LABEL, 'text-[11px]', TONE_TEXT[row.tone])}>
                     &#9671; Guardian Care Intelligence
                   </div>
                   <p className="mt-2 text-[13.5px] font-light leading-[1.55] text-ink/90">
@@ -156,7 +156,7 @@ export default function Console() {
                   {row.actions.map((action) => (
                     <li
                       key={action}
-                      className="mono rounded-pill border border-line-2 px-3 py-1.5 text-[10px] uppercase tracking-[.12em] text-muted"
+                      className="mono rounded-pill border border-line-2 px-3 py-1.5 text-[11px] uppercase tracking-[.12em] text-muted"
                     >
                       {action}
                     </li>

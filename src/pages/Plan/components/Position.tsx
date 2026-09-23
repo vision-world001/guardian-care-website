@@ -85,7 +85,7 @@ export default function Position({position}: {position: PlanPosition}) {
                     <span className="font-display text-[clamp(19px,2.2vw,24px)] font-semibold uppercase leading-none text-ink">
                       Today
                     </span>
-                    <span className="mono text-[13px] uppercase tracking-[.14em] text-orange">
+                    <span className="mono text-[13px] uppercase tracking-[.12em] text-orange">
                       100% purchased
                     </span>
                   </div>
@@ -104,7 +104,7 @@ export default function Position({position}: {position: PlanPosition}) {
                     <span className="font-display text-[clamp(19px,2.2vw,24px)] font-semibold uppercase leading-none text-ink">
                       Potentially
                     </span>
-                    <span className="mono text-[13px] uppercase tracking-[.14em] text-green">
+                    <span className="mono text-[13px] uppercase tracking-[.12em] text-green">
                       {Math.round(((solarCells + batteryCells) / CELLS) * 100)}% your own
                     </span>
                   </div>
@@ -182,7 +182,7 @@ export default function Position({position}: {position: PlanPosition}) {
                 </div>
 
                 <div className="max-w-[420px]">
-                  <div className="mono text-[10px] font-semibold uppercase tracking-[.16em] text-faint">
+                  <div className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-faint">
                     Depends on
                   </div>
                   <ul className="mt-3 grid gap-x-6 gap-y-1 text-[12.5px] font-light text-faint min-[520px]:grid-cols-2">

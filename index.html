@@ -15,6 +15,19 @@
       href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- The theme, before anything is painted.
+
+         Blocking and inline on purpose. Deferring this to React means the
+         first frame is always the default theme, so a reader who chose the
+         day theme gets a full navy page flashed at them on every navigation
+         and reload. It is three lines; it costs less than the flash. -->
+    <script>
+      try {
+        var t = localStorage.getItem('gc-theme');
+        if (t === 'day') document.documentElement.dataset.theme = 'day';
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

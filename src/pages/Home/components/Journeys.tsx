@@ -78,7 +78,7 @@ export default function Journeys() {
                   >
                     <Glyph name={journey.glyph} className="h-10 w-10" />
                   </span>
-                  <span className="mono text-[11px] font-semibold tracking-[.16em] text-faint">
+                  <span className="mono text-[11px] font-semibold tracking-[.12em] text-faint">
                      {journey.index}
                   </span>
                 </div> */}
@@ -91,7 +91,7 @@ export default function Journeys() {
                     reads as a mistake rather than as a longer question. */}
                 <div
                   className={cn(
-                    'mono text-[11px] font-semibold uppercase leading-[1.5] tracking-[.18em] min-[1000px]:min-h-[33px]',
+                    'mono text-[11px] font-semibold uppercase leading-[1.5] tracking-[.13em] min-[1000px]:min-h-[33px]',
                     TONE_TEXT[journey.tone]
                   )}
                 >
@@ -117,7 +117,7 @@ export default function Journeys() {
                 {/* <div className="flex-1">
                   {journey.list ? (
                     <div className="mt-7 border-t border-line-2 pt-6">
-                      <div className="mono text-[10px] font-semibold uppercase tracking-[.18em] text-faint">
+                      <div className="mono text-[11px] font-semibold uppercase tracking-[.13em] text-faint">
                         {journey.list.label}
                       </div>
                       <ul className="mt-4 space-y-2.5">

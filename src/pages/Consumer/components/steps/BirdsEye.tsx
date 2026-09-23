@@ -40,9 +40,9 @@ export default function BirdsEye() {
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line-2 px-5 py-4 min-[520px]:px-6">
         <span className="flex items-center gap-2.5">
           <LiveDot />
-          <span className={cn(LABEL_BASE, 'text-[10.5px] tracking-[.16em] text-green')}>Bird’s-eye view</span>
+          <span className={cn(LABEL_BASE, 'text-[11.5px] tracking-[.12em] text-green')}>Bird’s-eye view</span>
         </span>
-        <span className="mono text-[10px] uppercase tracking-[.16em] text-faint">
+        <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">
           Example home · one sunny day
         </span>
       </div>
@@ -101,7 +101,7 @@ export default function BirdsEye() {
               <Counter value={branch.value.toFixed(1)} />
               <span className="mono ml-1 text-[11px] font-normal text-faint">kWh</span>
             </dd>
-            <dd className="mono mt-2 text-[10.5px] text-faint">
+            <dd className="mono mt-2 text-[11.5px] text-faint">
               {Math.round((branch.value / DAY.generated) * 100)}%
             </dd>
           </div>
@@ -117,7 +117,7 @@ export default function BirdsEye() {
         <Figure label="Grid cost" value={pounds(GRID_COST)} tone="ink" />
       </div>
 
-      <p className="mono border-t border-line-2 bg-bg/40 px-5 py-4 text-center text-[10.5px] uppercase tracking-[.12em] text-faint min-[520px]:px-6">
+      <p className="mono border-t border-line-2 bg-bg/40 px-5 py-4 text-center text-[11.5px] uppercase tracking-[.12em] text-faint min-[520px]:px-6">
         {DAY.used} + {DAY.stored} + {DAY.exported} = {DAY.generated} kWh · every unit accounted for
       </p>
     </div>

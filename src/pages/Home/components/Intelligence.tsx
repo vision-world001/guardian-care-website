@@ -101,7 +101,7 @@ export default function Intelligence() {
         {/* ---------- One event, both ways ---------- */}
         <Reveal className="glass ring-lit mt-4 overflow-hidden rounded-frame">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line-2 px-6 py-4 min-[760px]:px-9">
-            <span className="mono inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[.2em] text-amber">
+            <span className="mono inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[.13em] text-amber">
                Guardian Care Intelligence
             </span>
 
@@ -119,7 +119,7 @@ export default function Intelligence() {
                   aria-selected={index === at}
                   onClick={() => setAt(index)}
                   className={cn(
-                    'mono px-4 py-2 text-[10.5px] font-semibold uppercase tracking-[.14em] transition duration-200',
+                    'mono px-4 py-2 text-[11.5px] font-semibold uppercase tracking-[.12em] transition duration-200',
                     index === at
                       ? 'bg-amber/15 text-amber'
                       : 'text-faint hover:text-ink'
@@ -132,7 +132,7 @@ export default function Intelligence() {
           </div>
 
           <div className="px-6 py-8 min-[760px]:px-9 min-[760px]:py-10">
-            <div className="mono text-[10.5px] font-semibold uppercase tracking-[.2em] text-faint">
+            <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
               System insight
             </div>
 
@@ -153,7 +153,7 @@ export default function Intelligence() {
             </ul>
 
             <div className="mt-8 border-l-2 border-amber/50 pl-5">
-              <div className="mono text-[10.5px] font-semibold uppercase tracking-[.2em] text-amber">
+              <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-amber">
                 {view.actionLabel}
               </div>
               <p className="mt-2 text-[15.5px] font-light leading-[1.55] text-ink/90">

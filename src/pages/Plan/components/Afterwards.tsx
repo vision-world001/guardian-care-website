@@ -62,7 +62,7 @@ export default function Afterwards() {
             aside={
               <span className="flex items-center gap-2">
                 <LiveDot />
-                <span className="mono text-[10px] font-semibold uppercase tracking-[.16em] text-green">
+                <span className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-green">
                   Measured
                 </span>
               </span>
@@ -73,7 +73,7 @@ export default function Afterwards() {
               {DASHBOARD.map((reading) => (
                 <div key={reading.key} className="bg-panel px-4 py-5 min-[520px]:px-5">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="mono text-[9.5px] font-semibold uppercase tracking-[.14em] text-faint">
+                    <span className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-faint">
                       {reading.label}
                     </span>
                     <Glyph
@@ -89,7 +89,7 @@ export default function Afterwards() {
                   >
                     <Counter value={reading.value} />
                   </div>
-                  <div className="mono mt-2 text-[10.5px] text-faint">{reading.unit}</div>
+                  <div className="mono mt-2 text-[11.5px] text-faint">{reading.unit}</div>
                 </div>
               ))}
             </div>
@@ -221,7 +221,7 @@ export default function Afterwards() {
 
             <Reveal
               delay={0.08}
-              className="mono mt-4 text-[10.5px] uppercase leading-[1.5] tracking-[.14em] text-faint"
+              className="mono mt-4 text-[11.5px] uppercase leading-[1.5] tracking-[.12em] text-faint"
             >
               What it saw, then what it would look at. Nothing when there is nothing worth saying.
             </Reveal>

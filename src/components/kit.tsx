@@ -44,7 +44,7 @@ export const PRIMARY =
  */
 export const SECONDARY =
   'mono inline-flex items-center gap-2.5 rounded-pill border border-line-2 px-6 py-[15px] ' +
-  'text-[11px] font-semibold uppercase tracking-[.14em] text-ink transition duration-200 ' +
+  'text-[11px] font-semibold uppercase tracking-[.12em] text-ink transition duration-200 ' +
   'hover:border-green/60 hover:text-green';
 
 /* ---------- Type ---------- */
@@ -59,7 +59,7 @@ export const SECONDARY =
  */
 export const LABEL_BASE = 'mono font-semibold uppercase';
 
-export const LABEL = `${LABEL_BASE} text-[10.5px] tracking-[.2em]`;
+export const LABEL = `${LABEL_BASE} text-[11.5px] tracking-[.13em]`;
 
 /**
  * A section's opening: a mono eyebrow, the two-line uppercase headline with its
@@ -94,7 +94,7 @@ export function Heading({
   return (
     <Reveal className={cn('max-w-[740px]', spacing, centred && 'mx-auto text-center')}>
       {eyebrow ? (
-        <div className={cn(LABEL_BASE, 'mb-5 text-[11px] tracking-[.22em] text-green')}>{eyebrow}</div>
+        <div className={cn(LABEL_BASE, 'mb-5 text-[11px] tracking-[.12em] text-green')}>{eyebrow}</div>
       ) : null}
 
       <h2 className="font-display text-[clamp(30px,4.6vw,54px)] font-semibold uppercase leading-[0.98] tracking-[-0.015em] text-ink">
@@ -129,18 +129,26 @@ export function tint(colour: string, percent: number): string {
 }
 
 /**
- * A point on the mark's own gold → lime → blue ramp, resolved by the browser.
+ * A point on the mark's own ramp, resolved by the browser.
  *
  * The same ramp the home page's record diagram runs down its seven stages, so
  * wherever this page draws a sequence it is lit in the same order. Mixed in
  * OKLab so the midpoints stay saturated.
+ *
+ * The far end is a token rather than `--logo-pale` because these are fills
+ * with type cut out of them. On the navy ground the sequence runs pale into
+ * green into blue and the type on it is the ground's own navy; invert the
+ * page and that pale end still carries near-white text at about 1.2:1 — the
+ * stage simply goes blank. On the day theme it becomes the deep bronze at the
+ * other end of the same warm hue, so the sequence keeps its shape and every
+ * stage in it keeps its label.
  */
 export function ramp(index: number, count: number): string {
   const t = count > 1 ? index / (count - 1) : 0;
   if (t <= 0.5) {
-    return `color-mix(in oklab, var(--logo-green) ${Math.round((t / 0.5) * 100)}%, var(--logo-pale))`;
+    return `color-mix(in oklab, var(--ramp-mid) ${Math.round((t / 0.5) * 100)}%, var(--ramp-far))`;
   }
-  return `color-mix(in oklab, var(--color-blue) ${Math.round(((t - 0.5) / 0.5) * 100)}%, var(--logo-green))`;
+  return `color-mix(in oklab, var(--color-blue) ${Math.round(((t - 0.5) / 0.5) * 100)}%, var(--ramp-mid))`;
 }
 
 /* ---------- Symbols ---------- */
@@ -290,5 +298,5 @@ export function Panel({
 
 /** The caption a title bar carries on its right: quiet, mono, never a claim. */
 export function Caption({children}: {children: ReactNode}) {
-  return <span className="mono text-[10px] uppercase tracking-[.14em] text-faint">{children}</span>;
+  return <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">{children}</span>;
 }

@@ -46,7 +46,7 @@ export default function Quote({position}: {position: PlanPosition}) {
                 <Tile colour={TONE_VAR[item.tone]} size="lg">
                   <Glyph name={item.glyph} bold className="h-7 w-7" />
                 </Tile>
-                <span className="mono shrink-0 text-[10px] uppercase tracking-[.16em] text-faint">
+                <span className="mono shrink-0 text-[11px] uppercase tracking-[.12em] text-faint">
                   {String(index + 1).padStart(2, '0')}
                 </span>
               </div>
@@ -65,7 +65,7 @@ export default function Quote({position}: {position: PlanPosition}) {
 
               <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
                 <span
-                  className="mono rounded-pill px-2.5 py-1 text-[10px] font-bold uppercase tracking-[.14em]"
+                  className="mono rounded-pill px-2.5 py-1 text-[11px] font-bold uppercase tracking-[.12em]"
                   style={{
                     color: TONE_VAR[item.tone],
                     background: `color-mix(in srgb, ${TONE_VAR[item.tone]} 13%, transparent)`,

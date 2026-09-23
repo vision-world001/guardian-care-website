@@ -127,7 +127,7 @@ export default function GridPulses() {
                 height: vertical ? TAIL : 1,
                 /* The head leads, so the gradient runs bright at the end the
                    pulse is travelling towards. */
-                background: `linear-gradient(${vertical ? 180 : 90}deg, transparent 0%, ${colour} 78%, #fff 100%)`,
+                background: `linear-gradient(${vertical ? 180 : 90}deg, transparent 0%, ${colour} 78%, var(--color-ink) 100%)`,
                 opacity: 0,
                 '--travel': `${pulse.travel}px`,
                 animation: `${vertical ? 'trace-y' : 'trace-x'} ${pulse.duration}s linear ${pulse.delay}s infinite`

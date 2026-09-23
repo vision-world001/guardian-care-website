@@ -96,7 +96,7 @@ export default function Model({position}: {position: BusinessPosition}) {
                   return (
                     <li key={stage} className="flex items-center gap-3.5">
                       <span
-                        className="mono grid h-6 w-6 shrink-0 place-items-center rounded-tile text-[10px] font-semibold"
+                        className="mono grid h-6 w-6 shrink-0 place-items-center rounded-tile text-[11px] font-semibold"
                         style={{background: tint(colour, 16), color: colour}}
                       >
                         {index + 1}

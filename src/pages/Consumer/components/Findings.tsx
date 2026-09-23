@@ -48,7 +48,7 @@ export default function Findings() {
               <span
                 className={cn(
                   LABEL_BASE,
-                  'inline-flex w-fit rounded-pill px-2.5 py-1 text-[9.5px] tracking-[.14em]'
+                  'inline-flex w-fit rounded-pill px-2.5 py-1 text-[11px] tracking-[.12em]'
                 )}
                 style={{
                   color: TONE_VAR[finding.tone],

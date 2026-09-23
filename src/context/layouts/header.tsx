@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Link, useLocation} from 'react-router';
 import Lockup from '../../components/Lockup';
+import ThemeToggle from '../../components/ThemeToggle';
 import {cn} from '../../lib/cn';
 
 /**
@@ -115,13 +116,13 @@ export default function Header() {
       className={cn(
         'sticky top-0 z-90 border-b transition-[background-color,border-color,box-shadow] duration-300 ease-brand',
         scrolled
-          ? 'border-line-2 bg-bg/85 shadow-[0_10px_30px_-18px_rgba(0,0,0,0.9)] backdrop-blur-xl'
+          ? 'border-line-2 bg-bg/85 shadow-[0_10px_30px_-18px_var(--drop)] backdrop-blur-xl'
           : 'border-transparent bg-transparent'
       )}
     >
       <div
         className={cn(
-          'mx-auto flex max-w-[1220px] items-center gap-4 px-5 transition-[padding] duration-300 ease-brand min-[760px]:px-[34px]',
+          'mx-auto flex max-w-[1220px] items-center gap-4 px-4 transition-[padding] duration-300 ease-brand min-[520px]:px-5 min-[760px]:px-[34px]',
           scrolled ? 'py-2.5 min-[760px]:py-3' : 'py-4 min-[760px]:py-5'
         )}
       >
@@ -140,10 +141,12 @@ export default function Header() {
           ))}
         </div>
 
+        <ThemeToggle className="ml-auto min-[1180px]:ml-[22px]" />
+
         {journey.switcher ? (
           <Link
             to="/"
-            className="ml-auto whitespace-nowrap rounded-pill border border-line-2 px-4 py-[9px] text-[11.5px] font-semibold uppercase tracking-[.08em] text-faint transition duration-200 min-[1180px]:ml-[22px] hover:border-line hover:bg-ink/5 hover:text-ink"
+            className="ml-2 whitespace-nowrap rounded-pill border border-line-2 px-3 py-[9px] text-[11.5px] font-semibold uppercase tracking-[.06em] text-faint transition duration-200 min-[520px]:ml-3 min-[520px]:px-4 min-[520px]:tracking-[.08em] hover:border-line hover:bg-ink/5 hover:text-ink"
           >
             Switch journey
           </Link>
@@ -153,7 +156,7 @@ export default function Header() {
         {pathname === START.to ? null : (
           <Link
             to={START.to}
-            className={`${journey.switcher ? 'ml-3' : 'ml-auto min-[1180px]:ml-[22px]'} whitespace-nowrap rounded-pill bg-[var(--cta)] px-5 py-[11px] text-[12px] font-bold uppercase tracking-[.07em] text-[var(--cta-ink)] shadow-[0_8px_24px_-12px_var(--btn-glow)] transition duration-200 hover:bg-[var(--cta-hover)]`}
+            className="ml-2 whitespace-nowrap rounded-pill bg-[var(--cta)] px-3.5 py-[10px] text-[11.5px] font-bold uppercase tracking-[.05em] text-[var(--cta-ink)] shadow-[0_8px_24px_-12px_var(--btn-glow)] transition duration-200 min-[520px]:ml-3 min-[520px]:px-5 min-[520px]:py-[11px] min-[520px]:text-[12px] min-[520px]:tracking-[.07em] hover:bg-[var(--cta-hover)]"
           >
             {START.label}
           </Link>

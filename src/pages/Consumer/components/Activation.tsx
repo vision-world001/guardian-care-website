@@ -72,7 +72,7 @@ export default function Activation() {
             </div>
 
             <div className="mt-6 border-t border-line-2 pt-5">
-              <div className="mono text-[11px] uppercase tracking-[.16em] text-faint">Then</div>
+              <div className="mono text-[11px] uppercase tracking-[.12em] text-faint">Then</div>
               <div className="mono mt-2 text-[clamp(30px,4.4vw,40px)] font-semibold leading-none text-ink">
                 {PRICE.then}
                 <span className="mono text-[17px] font-normal text-muted">{PRICE.per}</span>

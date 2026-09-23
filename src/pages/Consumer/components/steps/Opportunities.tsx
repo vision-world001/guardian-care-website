@@ -48,7 +48,7 @@ export function OpportunityPicker({at, onPick}: {at: number; onPick: (index: num
               </Tile>
               <span
                 className={cn(
-                  'mono text-[9.5px] font-semibold uppercase tracking-[.16em]',
+                  'mono text-[11px] font-semibold uppercase tracking-[.12em]',
                   selected ? TONE_TEXT[item.tone] : 'text-faint'
                 )}
               >
@@ -64,7 +64,7 @@ export function OpportunityPicker({at, onPick}: {at: number; onPick: (index: num
             </span>
 
             <span className="mt-auto block pt-4">
-              <span className={cn(LABEL_BASE, 'block text-[9.5px] tracking-[.16em] text-faint')}>
+              <span className={cn(LABEL_BASE, 'block text-[11px] tracking-[.12em] text-faint')}>
                 Guardian Care may suggest
               </span>
               <span className={cn('mt-1.5 block text-[13.5px] leading-[1.45]', TONE_TEXT[item.tone])}>
@@ -94,7 +94,7 @@ export function Explanation({opportunity}: {opportunity: Opportunity}) {
         <span className={cn(LABEL, 'text-amber')}> Guardian Care Intelligence · Insight</span>
         <span
           className={cn(
-            'mono inline-flex items-center gap-2 rounded-pill border px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[.14em]',
+            'mono inline-flex items-center gap-2 rounded-pill border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[.12em]',
             TONE_TEXT[opportunity.tone]
           )}
           style={{borderColor: tint(TONE_VAR[opportunity.tone], 40)}}
@@ -124,7 +124,7 @@ export function Explanation({opportunity}: {opportunity: Opportunity}) {
                 <div
                   className={cn(
                     LABEL_BASE,
-                    'text-[10px] tracking-[.16em]',
+                    'text-[11px] tracking-[.12em]',
                     recommend ? 'text-amber' : TONE_TEXT[opportunity.tone]
                   )}
                 >

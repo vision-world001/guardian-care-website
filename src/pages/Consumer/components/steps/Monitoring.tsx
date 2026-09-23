@@ -49,14 +49,14 @@ export default function Monitoring() {
           <Node glyph="grid" tone="blue" label="Grid" />
         </div>
 
-        <p className="mono mt-12 flex items-center justify-center gap-2.5 text-[9.5px] font-semibold uppercase tracking-[.14em] text-green min-[520px]:hidden">
+        <p className="mono mt-12 flex items-center justify-center gap-2.5 text-[11px] font-semibold uppercase tracking-[.12em] text-green min-[520px]:hidden">
           <span aria-hidden="true" className="block h-3 w-3 rounded-full border-2 border-green" />
           CT clamp, on the line to the grid
         </p>
       </div>
 
       {/* Estimates → readings, in one line. */}
-      <div className="mono flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-line-2 bg-bg/40 px-6 py-4 text-[10.5px] font-semibold uppercase tracking-[.16em]">
+      <div className="mono flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-line-2 bg-bg/40 px-6 py-4 text-[11.5px] font-semibold uppercase tracking-[.12em]">
         <span className="text-amber">Estimated</span>
         <span aria-hidden="true" className="text-faint">
           →
@@ -111,7 +111,7 @@ function Node({
       </Tile>
       <span
         className={cn(
-          'mono absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[.16em] text-muted',
+          'mono absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[.12em] text-muted',
           labelAbove ? 'bottom-full mb-2.5' : 'top-full mt-2.5'
         )}
       >
@@ -132,7 +132,7 @@ function Clamp() {
       />
       {/* On a phone the connector is shorter than the label, so the label moves
           into a legend under the diagram instead of sitting across two tiles. */}
-      <span className="mono absolute bottom-full left-1/2 mb-2.5 hidden -translate-x-1/2 whitespace-nowrap text-[9.5px] font-semibold uppercase tracking-[.14em] text-green min-[520px]:block">
+      <span className="mono absolute bottom-full left-1/2 mb-2.5 hidden -translate-x-1/2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[.12em] text-green min-[520px]:block">
         CT clamp
       </span>
     </span>

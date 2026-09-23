@@ -52,7 +52,7 @@ export default function Operations() {
                 >
                   <Counter value={kpi.value} />
                 </div>
-                <div className="mono mt-3 text-[10.5px] font-semibold uppercase tracking-[.18em] text-faint">
+                <div className="mono mt-3 text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
                   {kpi.label}
                 </div>
               </div>
@@ -61,7 +61,7 @@ export default function Operations() {
 
           {/* ---------- The queue ---------- */}
           <div className="border-t border-line-2 px-6 pb-2 pt-7 min-[760px]:px-9">
-            <div className="mono text-[10.5px] font-semibold uppercase tracking-[.2em] text-faint">
+            <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
               Priority events
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function Operations() {
 
                   <span
                     className={cn(
-                      'mono w-[76px] shrink-0 text-[10.5px] font-semibold uppercase tracking-[.14em]',
+                      'mono w-[76px] shrink-0 text-[11.5px] font-semibold uppercase tracking-[.12em]',
                       TONE_TEXT[tone]
                     )}
                   >
@@ -113,7 +113,7 @@ export default function Operations() {
 
           {/* ---------- What each level obliges ---------- */}
           <div className="border-t border-line-2 bg-bg/40 px-6 py-7 min-[760px]:px-9">
-            <div className="mono mb-5 text-[10.5px] font-semibold uppercase tracking-[.2em] text-faint">
+            <div className="mono mb-5 text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
               Priority levels
             </div>
 
@@ -131,7 +131,7 @@ export default function Operations() {
                   <span className="min-w-0">
                     <dt
                       className={cn(
-                        'mono text-[10.5px] font-semibold uppercase tracking-[.14em]',
+                        'mono text-[11.5px] font-semibold uppercase tracking-[.12em]',
                         TONE_TEXT[level.tone]
                       )}
                     >
@@ -149,7 +149,7 @@ export default function Operations() {
           <div className="border-t border-line-2 px-6 py-6 min-[760px]:px-9">
             <Link
               to="/business#portfolio"
-              className="mono inline-flex items-center gap-2.5 rounded-pill border border-line-2 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.14em] text-ink transition duration-200 hover:border-amber/50 hover:text-amber"
+              className="mono inline-flex items-center gap-2.5 rounded-pill border border-line-2 px-6 py-3 text-[11px] font-semibold uppercase tracking-[.12em] text-ink transition duration-200 hover:border-amber/50 hover:text-amber"
             >
               Command centre →
             </Link>

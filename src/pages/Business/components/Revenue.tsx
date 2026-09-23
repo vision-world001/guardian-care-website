@@ -107,7 +107,7 @@ function Bar({
         <span className="text-[14px] font-light text-muted">{label}</span>
         <span className="mono text-[19px] font-semibold" style={{color: colour}}>
           {value.toLocaleString('en-GB')}
-          <span className="mono ml-1.5 text-[10.5px] font-normal text-faint">kWh</span>
+          <span className="mono ml-1.5 text-[11.5px] font-normal text-faint">kWh</span>
         </span>
       </div>
 
@@ -118,7 +118,7 @@ function Bar({
         />
       </div>
 
-      <div className="mono mt-2 text-[10px] uppercase tracking-[.14em] text-faint">{note}</div>
+      <div className="mono mt-2 text-[11px] uppercase tracking-[.12em] text-faint">{note}</div>
     </div>
   );
 }
@@ -149,7 +149,7 @@ function Message({
         boxShadow: `inset 0 0 0 1px ${tint(tone, faded ? 14 : 26)}`
       }}
     >
-      <div className={cn(LABEL_BASE, 'text-[10px] tracking-[.18em]')} style={{color: tone}}>
+      <div className={cn(LABEL_BASE, 'text-[11px] tracking-[.13em]')} style={{color: tone}}>
         {label}
       </div>
       <p

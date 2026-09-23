@@ -58,9 +58,9 @@ function rowCentre(index: number): number {
 function tone(index: number): string {
   const t = index / (RECORD_SPINE.length - 1);
   if (t <= 0.5) {
-    return `color-mix(in oklab, var(--logo-green) ${Math.round((t / 0.5) * 100)}%, var(--logo-pale))`;
+    return `color-mix(in oklab, var(--ramp-mid) ${Math.round((t / 0.5) * 100)}%, var(--ramp-far))`;
   }
-  return `color-mix(in oklab, var(--color-blue) ${Math.round(((t - 0.5) / 0.5) * 100)}%, var(--logo-green))`;
+  return `color-mix(in oklab, var(--color-blue) ${Math.round(((t - 0.5) / 0.5) * 100)}%, var(--ramp-mid))`;
 }
 
 /** A tone at low strength, for tile fills and borders. */
@@ -124,8 +124,8 @@ export default function Record() {
               })}
 
               {/* Where every line starts: one point on the record. */}
-              <circle cx="0" cy={ORIGIN_Y} r="11" style={{fill: tint('var(--logo-green)', 16)}} />
-              <circle cx="0" cy={ORIGIN_Y} r="5" style={{fill: 'var(--logo-green)'}} />
+              <circle cx="0" cy={ORIGIN_Y} r="11" style={{fill: tint('var(--ramp-mid)', 16)}} />
+              <circle cx="0" cy={ORIGIN_Y} r="5" style={{fill: 'var(--ramp-mid)'}} />
             </svg>
           </Reveal>
 
@@ -178,7 +178,7 @@ export default function Record() {
 
                 <div className="min-w-0 flex-1 pb-7 pt-1.5">
                   <div className="flex items-baseline gap-3">
-                    <span className="mono text-[10px] text-faint">
+                    <span className="mono text-[11px] text-faint">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="font-display text-[19px] font-semibold uppercase leading-none text-ink">
@@ -206,7 +206,7 @@ export default function Record() {
             className="mx-auto mb-8 h-px max-w-[220px]"
             style={{
               background:
-                'linear-gradient(90deg, transparent, var(--logo-pale), var(--logo-green), var(--color-blue), transparent)'
+                'linear-gradient(90deg, transparent, var(--ramp-far), var(--ramp-mid), var(--color-blue), transparent)'
             }}
           />
           {/* The sentence itself sits back in the muted grey so the four nouns
@@ -280,21 +280,21 @@ function RecordCore() {
         className="h-full rounded-frame p-px"
         style={{
           background:
-            'linear-gradient(160deg, var(--logo-pale), var(--logo-green) 48%, var(--color-blue))'
+            'linear-gradient(160deg, var(--ramp-far), var(--ramp-mid) 48%, var(--color-blue))'
         }}
       >
         <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-6">
           {/* ---- Header ---- */}
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="mono text-[10.5px] font-semibold uppercase tracking-[.2em] text-amber">
+              <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-amber">
                  Customer record
               </div>
               <div className="mono mt-1.5 text-[13px] text-faint">GC-0418</div>
             </div>
             <span className="flex items-center gap-2">
               <LiveDot />
-              <span className="mono text-[10px] font-semibold uppercase tracking-[.16em] text-green">
+              <span className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-green">
                 Active
               </span>
             </span>
@@ -313,7 +313,7 @@ function RecordCore() {
                   <Glyph name={root.glyph} bold className="h-6 w-6" />
                 </SymbolTile>
                 <span className="min-w-0">
-                  <span className="mono block text-[11px] font-semibold uppercase tracking-[.18em] text-ink">
+                  <span className="mono block text-[11px] font-semibold uppercase tracking-[.13em] text-ink">
                     {root.name}
                   </span>
                   <span className="mt-0.5 block text-[12.5px] font-light leading-[1.4] text-muted">
@@ -335,7 +335,7 @@ function RecordCore() {
                 />
               ))}
             </div>
-            <span className="mono text-[10px] uppercase tracking-[.16em] text-faint">
+            <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">
               {RECORD_SPINE.length} / {RECORD_SPINE.length} linked
             </span>
           </div>
@@ -370,13 +370,13 @@ function Emblem() {
     <svg viewBox="0 0 160 160" className="h-36 w-36 min-[1180px]:h-40 min-[1180px]:w-40" aria-hidden="true">
       <defs>
         <radialGradient id={glowId}>
-          <stop offset="0%" stopColor="var(--logo-green)" stopOpacity="0.32" />
-          <stop offset="60%" stopColor="var(--logo-green)" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="var(--logo-green)" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--ramp-mid)" stopOpacity="0.32" />
+          <stop offset="60%" stopColor="var(--ramp-mid)" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="var(--ramp-mid)" stopOpacity="0" />
         </radialGradient>
         <linearGradient id={edgeId} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="var(--color-amber)" />
-          <stop offset="52%" stopColor="var(--logo-green)" />
+          <stop offset="52%" stopColor="var(--ramp-mid)" />
           <stop offset="100%" stopColor="var(--color-blue)" />
         </linearGradient>
       </defs>
@@ -390,14 +390,14 @@ function Emblem() {
           cy={C}
           r="72"
           fill="none"
-          stroke="var(--logo-green)"
+          stroke="var(--ramp-mid)"
           strokeWidth="1.6"
           strokeDasharray="2 8"
           strokeLinecap="round"
           opacity="0.5"
         />
         {/* One bright bead on it, so the turn is visible at all. */}
-        <circle cx={C} cy={C - 72} r="3" fill="var(--logo-green)" />
+        <circle cx={C} cy={C - 72} r="3" fill="var(--ramp-mid)" />
       </g>
 
       {/* Middle ring: finer, faster, the other way. */}
@@ -407,13 +407,13 @@ function Emblem() {
           cy={C}
           r="54"
           fill="none"
-          stroke="#ffd261"
+          stroke="var(--color-amber)"
           strokeWidth="1.3"
           strokeDasharray="1.5 6"
           strokeLinecap="round"
           opacity="0.55"
         />
-        <circle cx={C + 54} cy={C} r="2.4" fill="#ffd261" />
+        <circle cx={C + 54} cy={C} r="2.4" fill="var(--color-amber)" />
       </g>
 
       {/* Inner ring: still. */}
@@ -479,7 +479,7 @@ function StageRow({index}: {index: number}) {
  * nouns — gold for the site, lime for the system, blue beyond it — so the
  * record and the claim underneath it agree about what colour things are.
  */
-const ROOT_TONES = ['var(--logo-pale)', 'var(--logo-green)', 'var(--color-blue)'];
+const ROOT_TONES = ['var(--ramp-far)', 'var(--ramp-mid)', 'var(--color-blue)'];
 
 const TILE = {
   row: 'h-12 w-12 rounded-tile',
@@ -534,8 +534,8 @@ function dottedRail(colour: string) {
 
 /** The four things the sentence names, and the colour each one is lit in. */
 const NOUNS: Record<string, string> = {
-  site: 'var(--logo-pale)',
-  system: 'var(--logo-green)',
+  site: 'var(--ramp-far)',
+  system: 'var(--ramp-mid)',
   operator: 'var(--color-blue)',
   customer: 'var(--color-ink)'
 };

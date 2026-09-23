@@ -85,7 +85,7 @@ export default function Storage() {
           className="mt-4 rounded-frame p-px"
           style={{
             background:
-              'linear-gradient(100deg, var(--logo-pale), var(--logo-green) 46%, var(--color-purple))'
+              'linear-gradient(100deg, var(--ramp-far), var(--ramp-mid) 46%, var(--color-purple))'
           }}
         >
           <div className="flex flex-col gap-6 rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-7 min-[900px]:flex-row min-[900px]:items-center min-[900px]:gap-10 min-[900px]:px-9">
@@ -139,7 +139,7 @@ function Day({day, best}: {day: StorageDay; best: boolean}) {
     >
       <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-3.5 min-[520px]:px-6">
         <span className={cn(LABEL, best ? 'text-purple' : 'text-faint')}>{day.name}</span>
-        <span className="mono text-[10px] uppercase tracking-[.14em] text-faint">
+        <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">
           {STORAGE_GENERATED} kWh generated
         </span>
       </div>
@@ -186,7 +186,7 @@ function Day({day, best}: {day: StorageDay; best: boolean}) {
               className="h-1.5 w-1.5 rounded-full"
               style={{background: TONE_VAR.purple}}
             />
-            <span className="mono text-[10.5px] font-semibold uppercase tracking-[.14em]">
+            <span className="mono text-[11.5px] font-semibold uppercase tracking-[.12em]">
               Same panels · same weather · same house
             </span>
           </div>

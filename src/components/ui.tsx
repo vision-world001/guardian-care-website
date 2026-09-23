@@ -120,7 +120,7 @@ export function Eyebrow({
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[.22em]',
+        'inline-flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[.12em]',
         tone === 'blue' ? 'text-blue' : 'text-green',
         size === 'hero' ? 'mb-[26px]' : 'mb-[18px]',
         className
@@ -198,7 +198,7 @@ export function Estimated({
   return (
     <span
       className={cn(
-        'inline-flex shrink-0 items-center gap-1.5 rounded-pill border border-amber/40 bg-amber/10 px-2.5 py-1 text-[9.5px] font-bold uppercase tracking-[.16em] text-amber',
+        'inline-flex shrink-0 items-center gap-1.5 rounded-pill border border-amber/40 bg-amber/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[.12em] text-amber',
         className
       )}
     >
@@ -343,7 +343,7 @@ export function StatusChip({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-pill border border-current/25 px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-[.1em]",
+        "inline-flex items-center gap-1.5 rounded-pill border border-current/25 px-2.5 py-1 text-[11.5px] font-bold uppercase tracking-[.1em]",
         TONE_TEXT[tone],
         className
       )}
@@ -460,7 +460,7 @@ export function BrowserFrame({
           <i className="h-[9px] w-[9px] rounded-full bg-ink/15" />
         </div>
         <span className="mono ml-2 truncate text-[11.5px] text-faint">{url}</span>
-        <span className="ml-auto shrink-0 rounded-pill border border-line px-3 py-1 text-[10px] font-bold uppercase tracking-[.14em] text-green">
+        <span className="ml-auto shrink-0 rounded-pill border border-line px-3 py-1 text-[11px] font-bold uppercase tracking-[.12em] text-green">
           {badge}
         </span>
       </div>

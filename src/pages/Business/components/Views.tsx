@@ -35,7 +35,7 @@ export default function Views() {
           {/* ---------- The event ---------- */}
           <Reveal className="flex flex-col items-center">
             <span
-              className={cn(LABEL_BASE, 'rounded-pill px-4 py-2 text-[11px] tracking-[.18em] text-red')}
+              className={cn(LABEL_BASE, 'rounded-pill px-4 py-2 text-[11px] tracking-[.13em] text-red')}
               style={{
                 background: tint('var(--color-red)', 10),
                 boxShadow: `inset 0 0 0 1px ${tint('var(--color-red)', 30)}`

@@ -77,7 +77,7 @@ export default function Pipeline() {
               >
                 <div
                   className={cn(
-                    'mono text-[10.5px] font-semibold uppercase tracking-[.2em]',
+                    'mono text-[11.5px] font-semibold uppercase tracking-[.13em]',
                     TONE_TEXT[phase.tone]
                   )}
                 >
@@ -178,7 +178,7 @@ export default function Pipeline() {
                 delay={Number(stage.index) * 0.05}
                 className="pt-5 text-center"
               >
-                <div className="mono text-[10px] text-faint">{stage.index}</div>
+                <div className="mono text-[11px] text-faint">{stage.index}</div>
                 <div className="mt-1.5 font-display text-[19px] font-semibold uppercase leading-none text-ink">
                   {stage.name}
                 </div>
@@ -196,7 +196,7 @@ export default function Pipeline() {
               className="col-span-3 border-t pt-3"
               style={{borderColor: 'var(--color-line-2)'}}
             >
-              <span className="mono text-[10.5px] uppercase tracking-[.14em] text-faint">
+              <span className="mono text-[11.5px] uppercase tracking-[.12em] text-faint">
                 A conventional installation ends about here
               </span>
             </div>
@@ -204,7 +204,7 @@ export default function Pipeline() {
               className="col-span-5 border-t pt-3"
               style={{borderColor: `color-mix(in srgb, ${TONE_VAR.blue} 34%, transparent)`}}
             >
-              <span className="mono text-[10.5px] uppercase tracking-[.14em] text-blue">
+              <span className="mono text-[11.5px] uppercase tracking-[.12em] text-blue">
                 Guardian Care runs all of this
               </span>
             </div>
@@ -231,7 +231,7 @@ export default function Pipeline() {
                   >
                     <div
                       className={cn(
-                        'mono text-[10.5px] font-semibold uppercase tracking-[.2em]',
+                        'mono text-[11.5px] font-semibold uppercase tracking-[.13em]',
                         TONE_TEXT[phase.tone]
                       )}
                     >
@@ -273,7 +273,7 @@ export default function Pipeline() {
 
                   <div className="min-w-0 flex-1 pb-7">
                     <div className="flex items-baseline gap-3">
-                      <span className="mono text-[10px] text-faint">{stage.index}</span>
+                      <span className="mono text-[11px] text-faint">{stage.index}</span>
                       <span className="font-display text-[20px] font-semibold uppercase leading-none text-ink">
                         {stage.name}
                       </span>
@@ -307,7 +307,7 @@ export default function Pipeline() {
               <path d="M20 12a8 8 0 1 1-2.8-6.1" />
               <path d="M20 3v5h-5" />
             </svg>
-            <span className="mono whitespace-nowrap text-[10.5px] font-semibold uppercase tracking-[.18em]">
+            <span className="mono whitespace-nowrap text-[11.5px] font-semibold uppercase tracking-[.13em]">
               08 → 01
             </span>
           </span>

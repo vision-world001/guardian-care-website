@@ -48,7 +48,7 @@ export default function Assess({
             </p>
           </div>
 
-          <ul className="mono flex flex-col gap-2 text-[10.5px] uppercase tracking-[.14em] text-faint">
+          <ul className="mono flex flex-col gap-2 text-[11.5px] uppercase tracking-[.12em] text-faint">
             {[
               'Every question says why it is asked',
               'Blank fields fall back to averages',

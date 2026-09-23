@@ -108,8 +108,8 @@ export default function Why() {
                 );
               })}
 
-              <circle cx={FAN_W} cy={HUB_Y} r="11" style={{fill: tint('var(--logo-green)', 16)}} />
-              <circle cx={FAN_W} cy={HUB_Y} r="5" style={{fill: 'var(--logo-green)'}} />
+              <circle cx={FAN_W} cy={HUB_Y} r="11" style={{fill: tint('var(--ramp-mid)', 16)}} />
+              <circle cx={FAN_W} cy={HUB_Y} r="5" style={{fill: 'var(--ramp-mid)'}} />
             </svg>
           </Reveal>
 
@@ -136,7 +136,7 @@ export default function Why() {
           <div
             aria-hidden="true"
             className="mx-auto h-12 w-0.5"
-            style={dottedRail('var(--logo-green)')}
+            style={dottedRail('var(--ramp-mid)')}
           />
 
           <Reveal animation="animate-card-in" className="mx-auto max-w-[520px]">
@@ -151,7 +151,7 @@ export default function Why() {
             className="mx-auto mb-8 h-px max-w-[220px]"
             style={{
               background:
-                'linear-gradient(90deg, transparent, var(--logo-pale), var(--logo-green), var(--color-blue), transparent)'
+                'linear-gradient(90deg, transparent, var(--ramp-far), var(--ramp-mid), var(--color-blue), transparent)'
             }}
           />
           <p className="font-display text-[clamp(22px,3.2vw,36px)] font-medium uppercase leading-[1.16] tracking-[-0.005em] text-muted">
@@ -237,7 +237,7 @@ function Picture() {
         className="h-full rounded-frame p-px"
         style={{
           background:
-            'linear-gradient(160deg, var(--logo-pale), var(--logo-green) 48%, var(--color-blue))'
+            'linear-gradient(160deg, var(--ramp-far), var(--ramp-mid) 48%, var(--color-blue))'
         }}
       >
         <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-6 min-[520px]:px-7">
@@ -245,7 +245,7 @@ function Picture() {
             <span className={cn(LABEL, 'text-amber')}> Guardian Care</span>
             <span className="flex items-center gap-2">
               <LiveDot />
-              <span className="mono text-[10px] font-semibold uppercase tracking-[.16em] text-green">
+              <span className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-green">
                 Joined up
               </span>
             </span>
@@ -296,7 +296,7 @@ function Picture() {
 
           {/* What the seven readings add up to. 18 made = 9 used + 5 held +
               4 sent, which is the arithmetic the whole section is claiming. */}
-          <p className="mono mt-5 border-t border-line-2 pt-4 text-[11px] uppercase tracking-[.14em] text-faint">
+          <p className="mono mt-5 border-t border-line-2 pt-4 text-[11px] uppercase tracking-[.12em] text-faint">
             {DAY.generated} made = {DAY.used} used + {DAY.stored} held + {DAY.exported} sent
           </p>
         </div>

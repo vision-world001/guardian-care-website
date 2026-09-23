@@ -32,7 +32,7 @@ export default function SystemSummary({
       <dl className="grid gap-px bg-line-2 min-[520px]:grid-cols-2">
         {rows.map((row) => (
           <div key={row.key} className="bg-panel px-5 py-4 min-[520px]:px-6">
-            <dt className="mono text-[9.5px] font-semibold uppercase tracking-[.16em] text-faint">
+            <dt className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-faint">
               {row.label}
             </dt>
             <dd className="mono mt-2 text-[16.5px] font-semibold leading-tight text-ink">

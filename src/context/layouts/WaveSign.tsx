@@ -1,4 +1,5 @@
 import {useEffect, useRef} from 'react';
+import {useTheme} from '../../lib/theme';
 import Reveal from '../../components/Reveal';
 import {cn} from '../../lib/cn';
 
@@ -24,24 +25,38 @@ import {cn} from '../../lib/cn';
  * for reduced motion gets a single still frame.
  */
 
-/** The mark's three colours, left to right across the surface. */
-const RAMP: Array<[number, number, number]> = [
-  [255, 210, 97],
-  [113, 190, 19],
-  [61, 154, 232]
-];
+/* The mark's three colours, left to right across the surface — once per
+   ground. The points are painted onto a canvas rather than styled, so they
+   cannot inherit a token; the day ramp is the same three hues walked down
+   until they hold against a white page, where the dark one's amber lands at
+   about 1.4:1 and the surface reads as a smudge. */
+const RAMPS: Record<'night' | 'day', Array<[number, number, number]>> = {
+  night: [
+    [255, 210, 97],
+    [113, 190, 19],
+    [61, 154, 232]
+  ],
+  day: [
+    [176, 122, 0],
+    [69, 111, 6],
+    [10, 95, 181]
+  ]
+};
 
-function ramp(t: number): string {
+function ramp(stops: Array<[number, number, number]>, t: number): string {
   const seg = t <= 0.5 ? 0 : 1;
   const local = seg === 0 ? t / 0.5 : (t - 0.5) / 0.5;
-  const a = RAMP[seg];
-  const b = RAMP[seg + 1];
+  const a = stops[seg];
+  const b = stops[seg + 1];
   const c = a.map((v, k) => Math.round(v + (b[k] - v) * local));
   return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
 const SHADES = 128;
-const COLOURS = Array.from({length: SHADES}, (_, i) => ramp(i / (SHADES - 1)));
+const PALETTES = {
+  night: Array.from({length: SHADES}, (_, i) => ramp(RAMPS.night, i / (SHADES - 1))),
+  day: Array.from({length: SHADES}, (_, i) => ramp(RAMPS.day, i / (SHADES - 1)))
+};
 
 /** Rows beyond the bottom edge, so a near crest can rise into view. */
 const SPARE_ROWS = 4;
@@ -53,6 +68,8 @@ export default function WaveSign() {
   const backRef = useRef<HTMLCanvasElement>(null);
   const frontRef = useRef<HTMLCanvasElement>(null);
   const wordRef = useRef<HTMLDivElement>(null);
+  const {theme} = useTheme();
+  const colours = PALETTES[theme];
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -167,7 +184,7 @@ export default function WaveSign() {
           const dot = size + 0.8 * Math.max(0, crest);
 
           ctx.globalAlpha = rowAlpha * light;
-          ctx.fillStyle = COLOURS[shade[i]];
+          ctx.fillStyle = colours[shade[i]];
           ctx.fillRect(x0 + i * S - dot / 2, restY - h - dot / 2, dot, dot);
         }
       }
@@ -215,7 +232,7 @@ export default function WaveSign() {
       resize.disconnect();
       visible.disconnect();
     };
-  }, []);
+  }, [colours]);
 
   return (
     <section
@@ -242,8 +259,8 @@ export default function WaveSign() {
             <span
               className="block whitespace-nowrap font-display font-semibold uppercase leading-[0.78] tracking-[0.005em]"
               style={{
-                fontSize: 'clamp(50px, 13vw, 250px)',
-                background: 'linear-gradient(100deg, var(--logo-pale), var(--logo-green))',
+                fontSize: 'clamp(34px, 13vw, 250px)',
+                background: 'linear-gradient(100deg, var(--ramp-far), var(--ramp-mid))',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',

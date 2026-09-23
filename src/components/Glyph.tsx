@@ -51,7 +51,9 @@ export type GlyphName =
   | 'acquire'
   | 'capture'
   | 'retain'
-  | 'portfolio';
+  | 'portfolio'
+  /* The human on the other end of it. */
+  | 'call';
 
 const PATHS: Record<GlyphName, ReactNode> = {
   /* The sun, for what the roof makes. */
@@ -340,6 +342,20 @@ const PATHS: Record<GlyphName, ReactNode> = {
       <rect x="23" y="23" width="12" height="12" rx="2" />
       <path d="M8.5 13.5h5M26.5 13.5h5M8.5 29.5h5" strokeWidth="1.3" />
       <path d="M26.5 31.5 28.8 29l2.2 2 1.5-2.5" strokeWidth="1.4" />
+    </>
+  ),
+
+  /* A handset, for the one action on the site that reaches a person.
+
+     Drawn as the classic bent path rather than a rounded rectangle, because at
+     18px a smartphone outline and a battery outline are the same mark, and
+     this one sits on pages that also draw batteries. The two arcs off the
+     shoulder are the signal leaving it. */
+  call: (
+    <>
+      <path d="M13.4 8.5h-3.1a3.2 3.2 0 0 0-3.2 3.4c.5 6 3.2 11.5 7.4 15.7 4.2 4.2 9.7 6.9 15.7 7.4a3.2 3.2 0 0 0 3.4-3.2v-3.1a2.2 2.2 0 0 0-1.9-2.2 16 16 0 0 1-3.6-.9 2.2 2.2 0 0 0-2.3.5l-1.6 1.6a24 24 0 0 1-8.8-8.8l1.6-1.6a2.2 2.2 0 0 0 .5-2.3 16 16 0 0 1-.9-3.6 2.2 2.2 0 0 0-2.2-1.9Z" />
+      <path d="M25.2 7.4a8 8 0 0 1 6.6 6.6" strokeWidth="1.4" />
+      <path d="M24.4 12.6a3.6 3.6 0 0 1 2.6 2.6" strokeWidth="1.4" />
     </>
   )
 };

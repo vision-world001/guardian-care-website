@@ -47,7 +47,7 @@ export default function Hero() {
           {/* ---------- The words ---------- */}
           <div>
             <Reveal
-              className={cn(LABEL_BASE, 'inline-flex items-center text-[12px] tracking-[.22em] text-amber')}
+              className={cn(LABEL_BASE, 'inline-flex items-center text-[12px] tracking-[.12em] text-amber')}
             >
               Already have solar?
             </Reveal>
@@ -110,11 +110,11 @@ function TodayCard() {
       <div className="flex items-center justify-between gap-4 border-b border-line-2 px-6 py-4 min-[520px]:px-7">
         <span className="flex items-center gap-2.5">
           <LiveDot />
-          <span className={cn(LABEL_BASE, 'text-[10.5px] tracking-[.16em] text-green')}>
+          <span className={cn(LABEL_BASE, 'text-[11.5px] tracking-[.12em] text-green')}>
             Your system today
           </span>
         </span>
-        <span className="mono text-[10px] uppercase tracking-[.16em] text-faint">Example home</span>
+        <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">Example home</span>
       </div>
 
       {/* ---------- What it made ---------- */}
@@ -162,7 +162,7 @@ function TodayCard() {
               </dt>
               <dd className={cn('mono mt-1.5 text-[17px] font-semibold', TONE_TEXT[part.tone])}>
                 {part.value.toFixed(1)}
-                <span className="mono ml-1 text-[10.5px] font-normal text-faint">kWh</span>
+                <span className="mono ml-1 text-[11.5px] font-normal text-faint">kWh</span>
               </dd>
             </div>
           ))}
@@ -175,14 +175,14 @@ function TodayCard() {
           <dt className="text-[12.5px] font-light leading-tight text-muted">Bought from the grid</dt>
           <dd className="mono mt-2 text-[20px] font-semibold text-orange">
             {DAY.imported.toFixed(1)}
-            <span className="mono ml-1 text-[10.5px] font-normal text-faint">kWh</span>
+            <span className="mono ml-1 text-[11.5px] font-normal text-faint">kWh</span>
           </dd>
-          <dd className="mono mt-1 text-[10.5px] text-faint">Mostly after dark</dd>
+          <dd className="mono mt-1 text-[11.5px] text-faint">Mostly after dark</dd>
         </div>
         <div className="bg-panel px-6 py-5 min-[520px]:px-7">
           <dt className="text-[12.5px] font-light leading-tight text-muted">What that cost</dt>
           <dd className="mono mt-2 text-[20px] font-semibold text-ink">{pounds(GRID_COST)}</dd>
-          <dd className="mono mt-1 text-[10.5px] text-faint">At {HOME.importRate}p/kWh</dd>
+          <dd className="mono mt-1 text-[11.5px] text-faint">At {HOME.importRate}p/kWh</dd>
         </div>
       </dl>
 
@@ -190,7 +190,7 @@ function TodayCard() {
       <div className="border-t border-line-2 bg-bg/40 px-6 py-5 min-[520px]:px-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span className={cn(LABEL, 'text-amber')}> Guardian Care Intelligence</span>
-          <span className="mono inline-flex items-center gap-2 rounded-pill border border-amber/35 bg-amber/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[.14em] text-amber">
+          <span className="mono inline-flex items-center gap-2 rounded-pill border border-amber/35 bg-amber/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[.12em] text-amber">
             1 worth reviewing
           </span>
         </div>

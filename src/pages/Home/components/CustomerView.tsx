@@ -39,14 +39,14 @@ export default function CustomerView() {
             {/* ---------- Status ---------- */}
             <div className="flex items-center gap-2.5 border-b border-line-2 px-6 py-4 min-[520px]:px-8">
               <LiveDot />
-              <span className="mono text-[11px] font-semibold uppercase tracking-[.16em] text-green">
+              <span className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-green">
                 {TODAY.status}
               </span>
             </div>
 
             {/* ---------- The one figure ---------- */}
             <div className="px-6 py-9 text-center min-[520px]:px-8">
-              <div className="mono text-[10.5px] font-semibold uppercase tracking-[.2em] text-faint">
+              <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
                 Today’s solar
               </div>
               <div className="mono mt-4 text-[clamp(46px,10vw,76px)] font-semibold leading-none text-amber">
@@ -61,7 +61,7 @@ export default function CustomerView() {
                 {TODAY_ROWS.map((row) => (
                   <div key={row.label}>
                     <div className="mb-2 flex items-baseline justify-between gap-4">
-                      <span className="mono text-[11px] font-semibold uppercase tracking-[.16em] text-faint">
+                      <span className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-faint">
                         {row.label}
                       </span>
                       <span className={cn('mono text-[15px] font-semibold', TONE_TEXT[row.tone])}>
@@ -89,7 +89,7 @@ export default function CustomerView() {
 
             {/* ---------- What the platform made of it ---------- */}
             <div className="border-t border-line-2 bg-bg/40 px-6 py-6 min-[520px]:px-8">
-              <span className="mono block text-[10px] font-semibold uppercase tracking-[.2em] text-amber">
+              <span className="mono block text-[11px] font-semibold uppercase tracking-[.13em] text-amber">
                 Guardian Care Intelligence
               </span>
               <p className="mt-2.5 text-[15.5px] font-light leading-[1.55] text-ink/90">

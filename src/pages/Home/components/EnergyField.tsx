@@ -188,9 +188,9 @@ export default function EnergyField() {
       >
         <defs>
           <radialGradient id="ef-sun">
-            <stop offset="0%" stopColor="var(--logo-pale)" stopOpacity="0.36" />
-            <stop offset="42%" stopColor="var(--logo-pale)" stopOpacity="0.11" />
-            <stop offset="100%" stopColor="var(--logo-pale)" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--ramp-far)" stopOpacity="0.36" />
+            <stop offset="42%" stopColor="var(--ramp-far)" stopOpacity="0.11" />
+            <stop offset="100%" stopColor="var(--ramp-far)" stopOpacity="0" />
           </radialGradient>
         </defs>
 
@@ -200,13 +200,13 @@ export default function EnergyField() {
           cx={SUN.x}
           cy={SUN.y}
           r={SUN.r}
-          stroke="var(--logo-pale)"
+          stroke="var(--ramp-far)"
           strokeWidth="2.6"
           opacity="0.62"
           {...DOTS}
         />
         {SUN_SPOKES.map((d) => (
-          <path key={d} d={d} stroke="var(--logo-pale)" strokeWidth="2.6" opacity="0.44" {...DOTS} />
+          <path key={d} d={d} stroke="var(--ramp-far)" strokeWidth="2.6" opacity="0.44" {...DOTS} />
         ))}
 
         {/* ---- Sunlight arriving ---- */}
@@ -214,7 +214,7 @@ export default function EnergyField() {
           <path
             key={d}
             d={d}
-            stroke="var(--logo-pale)"
+            stroke="var(--ramp-far)"
             strokeWidth="2.4"
             opacity="0.42"
             style={{animation: `crawl ${2.4 + index * 0.18}s linear infinite`}}
@@ -237,7 +237,7 @@ export default function EnergyField() {
 
         {/* ---- The objects ---- */}
         {ARRAY_ART.map((d) => (
-          <path key={d} d={d} stroke="var(--logo-pale)" strokeWidth="2.6" opacity="0.58" {...DOTS} />
+          <path key={d} d={d} stroke="var(--ramp-far)" strokeWidth="2.6" opacity="0.58" {...DOTS} />
         ))}
         {/* Carried a little brighter than its neighbours. It is drawn in the ink
             colour rather than an accent, and a warm white at the same opacity as

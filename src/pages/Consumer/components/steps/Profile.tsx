@@ -16,7 +16,7 @@ export default function Profile() {
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
       <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-4 min-[520px]:px-6">
         <span className={cn(LABEL, 'text-amber')}> System profile</span>
-        <span className="mono text-[10px] uppercase tracking-[.16em] text-faint">
+        <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">
           {PROFILE_FIELDS.length} / {PROFILE_FIELDS.length} captured
         </span>
       </div>
@@ -24,7 +24,7 @@ export default function Profile() {
       <dl className="grid gap-px bg-line-2 min-[520px]:grid-cols-2">
         {PROFILE_FIELDS.map(([label, value]) => (
           <div key={label} className="bg-panel px-5 py-3.5 min-[520px]:px-6">
-            <dt className="mono text-[9.5px] font-semibold uppercase tracking-[.16em] text-faint">
+            <dt className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-faint">
               {label}
             </dt>
             <dd className="mt-1.5 text-[14.5px] font-medium leading-snug text-ink">{value}</dd>
@@ -47,7 +47,7 @@ export default function Profile() {
               <path d="M2 6.2 4.8 9 10 3.2" />
             </svg>
           </span>
-          <span className="mono text-[10.5px] font-semibold uppercase leading-snug tracking-[.14em] text-green">
+          <span className="mono text-[11.5px] font-semibold uppercase leading-snug tracking-[.12em] text-green">
             Initial profile created
           </span>
         </div>

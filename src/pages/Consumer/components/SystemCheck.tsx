@@ -58,7 +58,7 @@ export default function SystemCheck({
               }}
             />
             <div className="absolute inset-x-0 bottom-0 p-6 min-[760px]:p-12">
-              <div className={cn(LABEL_BASE, 'text-[11px] tracking-[.22em] text-amber')}>
+              <div className={cn(LABEL_BASE, 'text-[11px] tracking-[.12em] text-amber')}>
                  A long-term energy asset
               </div>
               <h2 className="mt-5 max-w-[680px] font-display text-[clamp(30px,4.6vw,54px)] font-semibold uppercase leading-[0.98] tracking-[-0.015em] text-ink">
@@ -88,7 +88,7 @@ export default function SystemCheck({
               </p>
             </div>
 
-            <ul className="mono flex flex-col gap-2 text-[10.5px] uppercase tracking-[.14em] text-faint">
+            <ul className="mono flex flex-col gap-2 text-[11.5px] uppercase tracking-[.12em] text-faint">
               {['Every question says why it is asked', '“I’m not sure” is always an answer', 'Nothing to download or sign'].map(
                 (line) => (
                   <li key={line} className="flex items-center gap-2.5">

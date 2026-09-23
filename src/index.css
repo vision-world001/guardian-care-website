@@ -236,6 +236,63 @@
      and restepped per theme, so the lift reads the same in both. */
   --btn-glow: rgba(122, 179, 0, 0.45);
 
+  /* ---- The light a surface is lit by -----------------------------------
+
+     Every one of these used to be written inline in the utility that needed
+     it, as a literal white or a literal black, which is the same as saying
+     "this site is dark" in eleven places at once. They are the *direction*
+     the light comes from, not colours: on the navy ground a raised object is
+     white along its top edge and casts black; on the white ground it is the
+     other way round, and a panel that keeps its white top edge there simply
+     disappears. Naming them is what makes one theme block enough. */
+
+  /* The inset highlight along a panel's top edge. */
+  --sheen: rgba(255, 255, 255, 0.07);
+  --sheen-strong: rgba(255, 255, 255, 0.11);
+
+  /* What a raised surface casts. */
+  --drop: rgba(0, 0, 0, 0.9);
+  --drop-strong: rgba(0, 0, 0, 0.95);
+
+  /* The four stops of a lit rim, top edge first. Brightest at the top here,
+     because the light is above. */
+  --rim-top: rgba(255, 255, 255, 0.24);
+  --rim-upper: rgba(255, 255, 255, 0.08);
+  --rim-lower: rgba(255, 255, 255, 0.045);
+  --rim-foot: rgba(255, 255, 255, 0.1);
+
+  /* The measured lattices under the home and business grounds. */
+  --grid-line: rgba(255, 255, 255, 0.028);
+  --grid-line-soft: rgba(255, 255, 255, 0.022);
+
+  /* The falloff that keeps type off a field or a photograph. Ink on the dark
+     theme; on the light one it has to be the page itself, or every hero gets
+     a navy bruise across it. */
+  --veil-heavy: rgba(0, 6, 15, 0.55);
+  --veil-mid: rgba(1, 18, 39, 0.42);
+  --veil-soft: rgba(1, 18, 39, 0.2);
+
+  /* The far end of the signature gradient. Pale against the navy; the mark's
+     blue against the white, which is the pairing the light theme is built
+     on — green into blue, both of them the logo's own. */
+  --gradient-far: var(--logo-pale);
+
+  /* The far end of the stage ramp — see `ramp()` in kit.tsx. Separate from
+     `--gradient-far` because that one is type and this one is what type sits
+     on, so they invert in opposite directions. */
+  --ramp-far: var(--logo-pale);
+
+  /* And its middle. `--logo-green` is the mark's own value, measured off the
+     artwork, and it stays that on the navy ground. On the day ground a stage
+     filled with it carries the page's own near-white at 2.1:1, so the middle
+     steps to the readable green the rest of the day theme uses. The mark is
+     not being restated here — the ramp is. */
+  --ramp-mid: var(--logo-green);
+
+  /* Daylight photography glares on a dark page and goes flat on a light one,
+     so the grade is per theme rather than baked into the utility. */
+  --img-grade: brightness(0.82) contrast(1.06) saturate(0.92);
+
   --scroll-track: #010d1e;
   --scroll-thumb: rgba(255, 255, 255, 0.14);
   --scroll-thumb-hover: rgba(255, 255, 255, 0.28);
@@ -365,6 +422,149 @@
 }
 
 /* ============================================================
+   Day
+   ------------------------------------------------------------
+   The same site with the light coming from the other side.
+
+   Nothing below re-describes the design. Every surface, rule, rim, shadow and
+   veil on this site already resolves through a token, so a theme is a list of
+   values and not a second stylesheet — which is the only version of this that
+   stays true a month from now.
+
+   Three things are genuinely different, and they are differences of physics
+   rather than of taste:
+
+   **The accents drop.** The vibrant pair is tuned to hold its own against
+   #011227 and measures 2.4:1 on white — visible as a block of colour, not
+   readable as a word. The hue is kept and the lightness is walked down until
+   it clears AA on the page *and* on a white panel: green #456f06 at 5.9:1,
+   blue #0a5fb5 at 6.3:1. Same two colours from the mark, same relationship,
+   legible in both rooms.
+
+   **The button inverts.** Everywhere else the brief was one CTA colour on both
+   grounds, and that held while the fill was a vivid green on navy. On white it
+   does not: #7ab300 against #f7fafc is 2.4:1, so the control's own edge fails
+   the 3:1 a UI component needs and the button stops looking like a button.
+   The fill steps to #3f6a00 with white on it — 6.1:1 for the edge, 6.4:1 for
+   the label — and the pill is still unmistakably the green one.
+
+   **The light flips.** A panel raised off a dark page is white along its top
+   edge; the same panel on a white page is defined by what it casts, so the
+   rim inverts to a dark hairline that strengthens toward the foot and the
+   drop shadow carries the lift. Without that a card on the day theme is a
+   white rectangle on a white rectangle.
+
+   Opt-in, never automatic. The dark theme is the product's own surface and
+   stays the default on a first visit whatever the operating system says; the
+   header toggle writes the choice to localStorage and `data-theme` lands on
+   <html> before first paint.
+   ============================================================ */
+:root[data-theme='day'] {
+  color-scheme: light;
+
+  /* Surfaces. The ramp inverts: the page is the light grey, a panel is the
+     white it steps up into, and the second step goes cooler rather than
+     brighter because on this ground "raised" cannot mean "lighter". */
+  --color-bg: #f7fafc;
+  --color-bg-2: #eef4f9;
+  --color-panel: #ffffff;
+  --color-panel-2: #f2f7fb;
+
+  --color-line: rgba(69, 111, 6, 0.32);
+  --color-line-2: rgba(6, 24, 44, 0.13);
+
+  /* Type. Navy rather than black — a true black on this palette reads as a
+     different brand — and the third step clears 4.8:1 on the page, so the
+     mono captions survive the move. */
+  --color-ink: #06182c;
+  --color-muted: #3d5468;
+  --color-faint: #5a7185;
+
+  /* Accents, walked down their own hue until they are readable. */
+  --color-green: #456f06;
+  --color-green-bright: #35590a;
+  --color-green-deep: #2b4700;
+  --color-green-glow: rgba(69, 111, 6, 0.12);
+  --color-blue: #0a5fb5;
+  --color-blue-bright: #084a8f;
+  --color-blue-glow: rgba(10, 95, 181, 0.1);
+  --color-amber: #8f6300;
+  --color-orange: #b4540a;
+  --color-red: #c23321;
+  --color-purple: #5b46c9;
+
+  /* Glass over a light ground is white, not slate. */
+  --color-glass: rgba(255, 255, 255, 0.74);
+  --color-glass-2: rgba(255, 255, 255, 0.93);
+
+  --btn-glow: rgba(63, 106, 0, 0.4);
+
+  /* The light, from the other side. */
+  --sheen: rgba(255, 255, 255, 0.8);
+  --sheen-strong: rgba(255, 255, 255, 0.95);
+  --drop: rgba(6, 24, 44, 0.18);
+  --drop-strong: rgba(6, 24, 44, 0.26);
+
+  /* Rim inverted: faintest at the top where the light lands, firmest at the
+     foot where the surface lifts away from the page. */
+  --rim-top: rgba(6, 24, 44, 0.06);
+  --rim-upper: rgba(6, 24, 44, 0.09);
+  --rim-lower: rgba(6, 24, 44, 0.11);
+  --rim-foot: rgba(6, 24, 44, 0.17);
+
+  --grid-line: rgba(6, 24, 44, 0.05);
+  --grid-line-soft: rgba(6, 24, 44, 0.038);
+
+  /* The veils become the page holding itself back over a field, instead of
+     ink laid across it. */
+  --veil-heavy: rgba(247, 250, 252, 0.82);
+  --veil-mid: rgba(247, 250, 252, 0.66);
+  --veil-soft: rgba(247, 250, 252, 0.4);
+
+  --gradient-far: var(--color-blue);
+  --ramp-far: #7a5200;
+  --ramp-mid: var(--color-green);
+  --img-grade: brightness(1) contrast(1.02) saturate(1.02);
+
+  --scroll-track: #eaf0f6;
+  --scroll-thumb: rgba(6, 24, 44, 0.2);
+  --scroll-thumb-hover: rgba(6, 24, 44, 0.36);
+
+  /* The handset stays a dark object — that is what makes it read as hardware
+     rather than as one more white card — but a white highlight down its rail
+     is invisible against a white page, so the rail becomes brushed steel and
+     the glare inverts into a faint cool shadow raking the same way. */
+  --device-rail: linear-gradient(
+    155deg,
+    rgba(6, 24, 44, 0.42),
+    rgba(6, 24, 44, 0.16) 26%,
+    rgba(6, 24, 44, 0.1) 62%,
+    rgba(6, 24, 44, 0.34)
+  );
+  --device-button: linear-gradient(
+    180deg,
+    rgba(6, 24, 44, 0.34),
+    rgba(6, 24, 44, 0.14) 40%,
+    rgba(6, 24, 44, 0.28)
+  );
+  --device-glare: linear-gradient(
+    118deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.06) 43%,
+    rgba(255, 255, 255, 0.1) 47%,
+    transparent 57%
+  );
+
+  /* One colour on both grounds was right while the fill was vivid green on
+     navy; on white the same fill is 2.4:1 and the control loses its own edge.
+     See the note above the block. */
+  --cta: #3f6a00;
+  --cta-hover: #2f5800;
+  --cta-strong: #24450a;
+  --cta-ink: #ffffff;
+}
+
+/* ============================================================
    Base
    ============================================================ */
 @layer base {
@@ -464,7 +664,7 @@
 
 /* The signature green-to-blue gradient, clipped to text. */
 @utility text-brand-gradient {
-  background: linear-gradient(100deg, var(--color-green), var(--logo-pale));
+  background: linear-gradient(100deg, var(--color-green), var(--gradient-far));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -472,7 +672,7 @@
 
 /* The same gradient as a fill, for buttons and rules. */
 @utility bg-brand-gradient {
-  background: linear-gradient(100deg, var(--color-green), var(--logo-pale));
+  background: linear-gradient(100deg, var(--color-green), var(--gradient-far));
 }
 
 /* Layered radial glows behind the entry splitter and the two journey heroes.
@@ -494,26 +694,26 @@
 @utility glass {
   background: var(--color-glass);
   backdrop-filter: blur(14px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 var(--sheen);
 }
 
 @utility glass-solid {
   background: var(--color-glass-2);
   backdrop-filter: blur(18px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 var(--sheen);
 }
 
 /* Elevation for the two surfaces a visitor is meant to reach for. */
 @utility shadow-lift {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.07),
-    0 18px 48px -24px rgba(0, 0, 0, 0.9);
+    inset 0 1px 0 var(--sheen),
+    0 18px 48px -24px var(--drop);
 }
 
 @utility shadow-lift-hover {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.11),
-    0 30px 70px -30px rgba(0, 0, 0, 0.95);
+    inset 0 1px 0 var(--sheen-strong),
+    0 30px 70px -30px var(--drop-strong);
 }
 
 /* ---- Entry solar field ---------------------------------------------------
@@ -522,8 +722,8 @@
    keeps the copy and the two cards off the brightest part of the field. */
 @utility bg-solar-veil {
   background:
-    radial-gradient(ellipse 640px 340px at 50% 26%, rgba(0, 6, 15, 0.55), transparent 74%),
-    radial-gradient(ellipse 900px 460px at 50% 78%, rgba(0, 6, 15, 0.4), transparent 76%);
+    radial-gradient(ellipse 640px 340px at 50% 26%, var(--veil-heavy), transparent 74%),
+    radial-gradient(ellipse 900px 460px at 50% 78%, var(--veil-mid), transparent 76%);
 }
 
 /* The falloff over the consumer journey's day-cycle field. Weaker than the
@@ -531,15 +731,15 @@
    has to leave charts and readouts legible for the length of a page. */
 @utility bg-home-veil {
   background:
-    radial-gradient(ellipse 900px 520px at 50% 34%, rgba(1, 18, 39, 0.42), transparent 76%),
-    radial-gradient(ellipse 1000px 560px at 50% 82%, rgba(1, 18, 39, 0.34), transparent 78%);
+    radial-gradient(ellipse 900px 520px at 50% 34%, var(--veil-mid), transparent 76%),
+    radial-gradient(ellipse 1000px 560px at 50% 82%, var(--veil-soft), transparent 78%);
 }
 
 /* Photographs sit on a dark page, so every one of them is graded down and
    cooled slightly before it lands — an untreated daylight photo dropped into
    this palette glares, and reads as stock art pasted onto a product. */
 @utility img-graded {
-  filter: brightness(0.82) contrast(1.06) saturate(0.92);
+  filter: var(--img-grade);
 }
 
 /* ---- Consumer hero: the sun on the page ----------------------------------
@@ -617,7 +817,7 @@
 
 /* The fade that marries a photograph to the page underneath it. */
 @utility bg-photo-veil {
-  background: linear-gradient(180deg, rgba(1, 18, 39, 0.15) 0%, rgba(1, 18, 39, 0.55) 62%, var(--color-bg) 100%);
+  background: linear-gradient(180deg, var(--veil-soft) 0%, var(--veil-heavy) 62%, var(--color-bg) 100%);
 }
 
 /* ---- Business journey: the console field -------------------------------
@@ -629,8 +829,8 @@
    it. */
 @utility bg-console-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
@@ -661,10 +861,10 @@
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.24),
-      rgba(255, 255, 255, 0.08) 26%,
-      rgba(255, 255, 255, 0.045) 64%,
-      rgba(255, 255, 255, 0.1)
+      var(--rim-top),
+      var(--rim-upper) 26%,
+      var(--rim-lower) 64%,
+      var(--rim-foot)
     );
     /* Longhands, not the `mask` shorthand: the shorthand resets
        `mask-composite` back to `add`, and the build reorders it after the
@@ -699,9 +899,9 @@
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.08),
-      rgba(255, 255, 255, 0.045) 55%,
-      rgba(255, 255, 255, 0.1)
+      var(--rim-upper),
+      var(--rim-lower) 55%,
+      var(--rim-foot)
     );
     /* Longhands, not the `mask` shorthand: the shorthand resets
        `mask-composite` back to `add`, and the build reorders it after the
@@ -729,8 +929,8 @@
    pinned to graph paper. */
 @utility bg-command-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    linear-gradient(var(--grid-line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-soft) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 
