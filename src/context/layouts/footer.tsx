@@ -45,8 +45,12 @@ export default function Footer() {
 
   return (
     <footer
+      /* `on-navy` keeps the night palette here on the day theme — see the note
+         beside that class in index.css. Not just a dark background: every rule,
+         heading and link below resolves through the same tokens as the page,
+         so without it this would be a navy band with near-black type on it. */
       className={cn(
-        'border-t border-line-2 bg-bg pb-9 pt-[50px]'
+        'on-navy border-t border-line-2 bg-bg pb-9 pt-[50px]'
       )}
     >
       <Wrap>

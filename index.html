@@ -2,7 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="https://res.cloudinary.com/maefwdv4/image/upload/f_auto,q_auto/logo2" />
+    <!-- The tab icon is the site's own mark, served from public/assets, not
+         the Cloudinary copy that used to sit here: that was a third-party
+         request on every page for a file already on disk, and it was the old
+         artwork, so the tab and the header had stopped agreeing.
+
+         Both variants, because a tab strip has a colour scheme of its own and
+         it is not the site's. The G is near-white in one file and brand navy
+         in the other, so whichever one matches the browser's chrome shows a
+         solid letterform and the other would show a green swoosh wrapped
+         around nothing. A browser that ignores `media` takes the last of
+         these, which is the light-chrome one — the commoner default. -->
+    <link rel="icon" type="image/png" href="/assets/logo-mark.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" href="/assets/logo-mark-day.png" media="(prefers-color-scheme: light)" />
+
+    <!-- iOS composites a home-screen icon onto black rather than honouring
+         its transparency, so this one is always the near-white G. -->
+    <link rel="apple-touch-icon" href="/assets/logo-mark.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guardian Care — Energy Intelligence Built Around the Customer</title>
     <meta

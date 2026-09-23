@@ -564,6 +564,64 @@
   --cta-ink: #ffffff;
 }
 
+/* ---- Chrome that stays night ------------------------------------------
+
+   The bar and the footer keep the navy on the day theme: they are the frame
+   the page sits in rather than part of the page, and a light site bookended
+   by two dark bands is a stronger object than one that fades out at both
+   ends. It is also where the mark lives, and the mark was drawn for navy.
+
+   Setting a dark background alone would not do it — everything inside those
+   two elements resolves through the same tokens as the page, so a navy footer
+   would be navy with #06182c type on it. This puts the night palette back for
+   the subtree, which is why it is a list of values and not `background: navy`.
+
+   The values mirror the @theme block above. That duplication is the cost of
+   CSS having no way to say "this group of declarations, again" — if a night
+   value is retuned up there, its twin here has to follow. Only the tokens the
+   two bands actually draw with are listed, which keeps that list short.
+
+   Specificity: :root[data-theme='day'] .on-navy is (0,2,1) against the day
+   block's (0,1,1), so this wins wherever both apply. */
+:root[data-theme='day'] .on-navy {
+  color-scheme: dark;
+
+  --color-bg: #011227;
+  --color-bg-2: #081729;
+  --color-panel: #101d2b;
+  --color-panel-2: #17222d;
+
+  --color-line: rgba(122, 179, 0, 0.24);
+  --color-line-2: rgba(255, 255, 255, 0.1);
+
+  --color-ink: #ffffff;
+  --color-muted: #d5dee5;
+  --color-faint: #7e97a9;
+
+  --color-green: #7ab300;
+  --color-green-bright: #93d600;
+  --color-green-deep: #629100;
+  --color-blue: #0092f9;
+  --color-blue-bright: #3fa3ff;
+
+  --gradient-far: var(--logo-pale);
+  --ramp-far: var(--logo-pale);
+  --ramp-mid: var(--logo-green);
+
+  /* The light comes from above again, so the rim and the cast shadow flip
+     back with everything else. */
+  --sheen: rgba(255, 255, 255, 0.07);
+  --drop: rgba(0, 0, 0, 0.9);
+
+  /* And the button goes back to the vivid green with navy cut out of it —
+     the pairing that was only ever a problem on a white ground. */
+  --btn-glow: rgba(122, 179, 0, 0.45);
+  --cta: #7ab300;
+  --cta-hover: #93d600;
+  --cta-strong: #629100;
+  --cta-ink: #011227;
+}
+
 /* ============================================================
    Base
    ============================================================ */

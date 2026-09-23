@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Link, useLocation} from 'react-router';
 import Lockup from '../../components/Lockup';
+import {useTheme} from '../../lib/theme';
 import ThemeToggle from '../../components/ThemeToggle';
 import {cn} from '../../lib/cn';
 
@@ -108,16 +109,25 @@ export default function Header() {
   const {pathname} = useLocation();
   const journey = JOURNEYS[pathname];
   const scrolled = useScrolled();
+  const {theme} = useTheme();
 
   if (!journey) return null;
+
+  /* At rest the bar is part of the hero behind it, which only works while
+     there *is* a dark hero behind it. On the day theme the page underneath is
+     white and the bar is a navy object sitting on it, so there is nothing to
+     dissolve into — it carries its ground at every scroll position, and the
+     scroll state is left to say what it still can: the padding, the rule and
+     the shadow. Solid rather than the night theme's 85%, because 85% navy
+     over a white page is a washed slate, not the mark's colour. */
+  const grounded = scrolled || theme === 'day';
 
   return (
     <nav
       className={cn(
-        'sticky top-0 z-90 border-b transition-[background-color,border-color,box-shadow] duration-300 ease-brand',
-        scrolled
-          ? 'border-line-2 bg-bg/85 shadow-[0_10px_30px_-18px_var(--drop)] backdrop-blur-xl'
-          : 'border-transparent bg-transparent'
+        'on-navy sticky top-0 z-90 border-b transition-[background-color,border-color,box-shadow] duration-300 ease-brand',
+        grounded ? 'border-line-2 shadow-[0_10px_30px_-18px_var(--drop)]' : 'border-transparent bg-transparent',
+        grounded && (theme === 'day' ? 'bg-bg' : 'bg-bg/85 backdrop-blur-xl')
       )}
     >
       <div

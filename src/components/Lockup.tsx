@@ -41,11 +41,23 @@ import {useTheme} from '../lib/theme';
  * it out of the layout, which is exactly the distinction the two utilities
  * exist to make.
  */
+/**
+ * `navy` is whether this lockup sits on the brand ground rather than on the
+ * page, and it decides which of the two files is used regardless of theme.
+ *
+ * The bar and the footer stay navy on the day theme — they are the frame the
+ * page sits in — so the mark in them wants the near-white G at every setting.
+ * Only the entry lockup is on the page itself and follows the theme. Getting
+ * this backwards is not subtle: the day file's G is the brand navy, and on a
+ * navy band that is 1.01:1, the exact disappearing act both files exist to
+ * prevent.
+ */
 const SIZES = {
   entry: {
     mark: 'h-16 w-16',
     gap: 'gap-[13px]',
     words: '',
+    navy: false,
     name: 'text-[22px] tracking-[.32em]',
     sub: 'text-[15px] tracking-[.42em]'
   },
@@ -53,6 +65,7 @@ const SIZES = {
     mark: 'h-10 w-10',
     gap: 'gap-0 min-[400px]:gap-[13px]',
     words: 'sr-only min-[400px]:not-sr-only',
+    navy: true,
     name: 'text-[15px] tracking-[.26em]',
     sub: 'text-[11px] tracking-[.36em]'
   },
@@ -60,6 +73,7 @@ const SIZES = {
     mark: 'h-11 w-11',
     gap: 'gap-[13px]',
     words: '',
+    navy: true,
     name: 'text-[15px] tracking-[.32em]',
     sub: 'text-[11px] tracking-[.42em]'
   }
@@ -77,7 +91,9 @@ export default function Lockup({size = 'nav', className}: LockupProps) {
   return (
     <div className={cn('flex items-center', s.gap, className)}>
       <img
-        src={theme === 'day' ? '/assets/logo-mark-day.png' : '/assets/logo-mark.png'}
+        src={
+          theme === 'day' && !s.navy ? '/assets/logo-mark-day.png' : '/assets/logo-mark.png'
+        }
         alt=""
         aria-hidden="true"
         width={256}
