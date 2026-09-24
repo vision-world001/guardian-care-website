@@ -249,7 +249,7 @@ export default function WaveSign() {
         className="pointer-events-none absolute left-1/2 top-[56%] h-[60%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px]"
         style={{
           background:
-            'radial-gradient(ellipse, color-mix(in srgb, var(--color-green) 13%, transparent), color-mix(in srgb, var(--color-amber) 5%, transparent) 45%, transparent 72%)'
+            'radial-gradient(ellipse, color-mix(in srgb, var(--wash-green) 13%, transparent), color-mix(in srgb, var(--wash-amber) 5%, transparent) 45%, transparent 72%)'
         }}
       />
 

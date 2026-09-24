@@ -32,13 +32,24 @@
   --color-line: rgba(122, 179, 0, 0.24);
   --color-line-2: rgba(255, 255, 255, 0.1);
 
-  /* Type, straight off the brand sheet: white headings and the supporting
-     grey it names. `faint` is derived — the sheet gives no third step — and
-     held at 5.6:1 on the panel so the mono captions this site leans on stay
-     readable. */
+  /* Type: white headings, and two supporting steps off the brand sheet.
+     ------------------------------------------------------------
+     Both supporting steps are grey — near enough to neutral that they read as
+     quiet rather than as a second colour. They were blue-greys, 43 points of
+     chroma on the faint step, which was fine on a still navy ground and is
+     not once that ground carries light in the mark's own green and blue:
+     supporting type in the same family as the light behind it competes with
+     it. About 10 points of chroma settles it back down, titles untouched.
+
+     `faint` is derived — the sheet gives no third step — and it is the token
+     that sets how bright the ground is allowed to be. It has the least
+     headroom of the three by a wide margin, so it is the first thing to fail
+     over a lit ground and the reason the array and its glint are set where
+     they are rather than louder. See the array tokens for the other half of
+     that trade. */
   --color-ink: #ffffff;
-  --color-muted: #d5dee5;
-  --color-faint: #7e97a9;
+  --color-muted: #d6d9dc;
+  --color-faint: #949a9e;
 
   /* Accents — the mark's blue and green, at the chroma they can actually hold.
      ------------------------------------------------------------
@@ -130,11 +141,6 @@
      dash pattern's period, so the loop has no seam. */
   --animate-flow: flow 3.4s linear infinite;
 
-  /* The hero's fan of rays, turning about the sun. Two and a half minutes for
-     a revolution: fast enough that the frame is never quite the same twice,
-     slow enough that nobody catches it moving. */
-  --animate-sunspin: sunspin 150s linear infinite;
-
   /* The core bloom, breathing. Deliberately out of step with the rotation so
      the two never resolve into a pattern. */
   --animate-bloom: bloom 19s ease-in-out infinite;
@@ -185,18 +191,6 @@
   @keyframes flow {
     to {
       stroke-dashoffset: -100;
-    }
-  }
-
-  /* The translate is carried through the keyframe because the element is
-     centred on the sun by transform, not by layout — drop it and the fan
-     jumps to the corner on the first frame. */
-  @keyframes sunspin {
-    from {
-      transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-      transform: translate(-50%, -50%) rotate(360deg);
     }
   }
 
@@ -261,9 +255,58 @@
   --rim-lower: rgba(255, 255, 255, 0.045);
   --rim-foot: rgba(255, 255, 255, 0.1);
 
-  /* The measured lattices under the home and business grounds. */
-  --grid-line: rgba(255, 255, 255, 0.028);
-  --grid-line-soft: rgba(255, 255, 255, 0.022);
+  /* The measured lattices under the journey and console grounds.
+     ------------------------------------------------------------
+     Hairlines, which is what they always were. A stronger version of this was
+     tried in colour and a photovoltaic array was tried in its place; both were
+     wrong in the same direction. The ground's job is to stop a flat page
+     reading as an empty document, and a rule that a reader can just about
+     feel is the whole of that job. Anything with enough presence to be looked
+     at is competing with the thing it sits behind.
+
+     The colour is white here, not green: the light on this page comes from
+     the blooms, which are coloured, and a grid that is also coloured makes
+     the two read as one busy surface rather than as a lit texture. */
+  --grid-line: rgba(255, 255, 255, 0.16);
+  --grid-glow: rgba(255, 255, 255, 0.055);
+
+  /* And where the lattice steps back.
+     ------------------------------------------------------------
+     Pinned to the content column, not to the viewport. The obvious version of
+     this is a percentage — full value in the outer twelve per cent, dim
+     across the middle — and it is wrong, because the column it is protecting
+     is a fixed 1220px centred in whatever width the window happens to be. At
+     1920px the outer twelve per cent is genuinely empty page; at 1280px it is
+     240px of margin against a 34px gutter, so it lands squarely on the first
+     words of every line.
+
+     In calc against the centre it cannot drift: the dimmed band is always the
+     column plus a little, wherever the column is. Below about 1280px the two
+     offsets cross and the whole width dims, which is the right answer — on a
+     narrow screen the text spans everything, so there is no margin left to
+     put texture in. */
+  --grid-reading-mask: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(50% - 660px),
+    rgba(0, 0, 0, 0.38) calc(50% - 570px),
+    rgba(0, 0, 0, 0.38) calc(50% + 570px),
+    #000 calc(50% + 660px),
+    #000 100%
+  );
+  --shine-core: 8%;
+
+  /* The colours the big soft washes behind the page are mixed from.
+     ------------------------------------------------------------
+     Separate from the accents because they are light, not ink. An accent has
+     to be readable, which on a white page means walking it down until it is
+     nearly a dark; a wash at 6–13% of that dark is not a tint of the brand,
+     it is a grey-green haze. These stay vivid on both grounds — nothing is
+     ever set in them — so the day theme gets the same lit page the night one
+     has rather than a dusty version of it. */
+  --wash-amber: var(--color-amber);
+  --wash-green: var(--color-green);
+  --wash-blue: var(--color-blue);
 
   /* The falloff that keeps type off a field or a photograph. Ink on the dark
      theme; on the light one it has to be the page itself, or every hero gets
@@ -477,17 +520,17 @@
      different brand — and the third step clears 4.8:1 on the page, so the
      mono captions survive the move. */
   --color-ink: #06182c;
-  --color-muted: #3d5468;
-  --color-faint: #5a7185;
+  --color-muted: #4e5358;
+  --color-faint: #666b70;
 
   /* Accents, walked down their own hue until they are readable. */
   --color-green: #456f06;
   --color-green-bright: #35590a;
   --color-green-deep: #2b4700;
-  --color-green-glow: rgba(69, 111, 6, 0.12);
+  --color-green-glow: rgba(138, 200, 0, 0.17);
   --color-blue: #0a5fb5;
   --color-blue-bright: #084a8f;
-  --color-blue-glow: rgba(10, 95, 181, 0.1);
+  --color-blue-glow: rgba(34, 163, 255, 0.15);
   --color-amber: #8f6300;
   --color-orange: #b4540a;
   --color-red: #c23321;
@@ -512,14 +555,35 @@
   --rim-lower: rgba(6, 24, 44, 0.11);
   --rim-foot: rgba(6, 24, 44, 0.17);
 
-  --grid-line: rgba(6, 24, 44, 0.05);
-  --grid-line-soft: rgba(6, 24, 44, 0.038);
+  /* Bolder than the night values, not weaker. On navy a lime stripe at 30%
+     is already a bright line, because the ground is nearly black and any
+     light at all is an event; on #f7fafc the same mix is most of the way
+     back to the page.
+
+     Only about 1.5x, though — the lattice these replaced needed two and a
+     half, and that was the tell. What made the old ground weak on white was
+     never its alpha, which was already 0.44: it was that 0.44 landed on one
+     pixel in every sixty-four, about 1.5% of the field. A fan of rays covers
+     nearer 15%. The boldness comes from area, and area is free — alpha is
+     the part that costs legibility, so it barely has to move. */
+  /* Roughly twice the night values, and not because white and ink are
+     symmetrical. A hairline at 5% of white on navy is a visible edge, because
+     the ground is nearly black and any light on it is an event; the same
+     alpha of ink on #f7fafc is a smudge you are not sure you can see, which
+     is more tiring to look at than either a clear line or no line at all. */
+  --grid-line: rgba(6, 24, 44, 0.2);
+  --grid-glow: rgba(6, 24, 44, 0.07);
+  --shine-core: 8%;
 
   /* The veils become the page holding itself back over a field, instead of
      ink laid across it. */
   --veil-heavy: rgba(247, 250, 252, 0.82);
   --veil-mid: rgba(247, 250, 252, 0.66);
   --veil-soft: rgba(247, 250, 252, 0.4);
+
+  --wash-amber: #ffb02e;
+  --wash-green: #8ac800;
+  --wash-blue: #22a3ff;
 
   --gradient-far: var(--color-blue);
   --ramp-far: #7a5200;
@@ -595,8 +659,8 @@
   --color-line-2: rgba(255, 255, 255, 0.1);
 
   --color-ink: #ffffff;
-  --color-muted: #d5dee5;
-  --color-faint: #7e97a9;
+  --color-muted: #d6d9dc;
+  --color-faint: #949a9e;
 
   --color-green: #7ab300;
   --color-green-bright: #93d600;
@@ -737,8 +801,8 @@
    Kept as utilities because the multi-stop values are unreadable inline. */
 @utility bg-entry-glow {
   background:
-    radial-gradient(ellipse 800px 560px at 22% 20%, color-mix(in srgb, var(--color-green) 12%, transparent), transparent 60%),
-    radial-gradient(ellipse 860px 600px at 80% 60%, color-mix(in srgb, var(--color-blue) 13%, transparent), transparent 62%),
+    radial-gradient(ellipse 800px 560px at 22% 20%, color-mix(in srgb, var(--wash-green) 12%, transparent), transparent 60%),
+    radial-gradient(ellipse 860px 600px at 80% 60%, color-mix(in srgb, var(--wash-blue) 13%, transparent), transparent 62%),
     linear-gradient(180deg, var(--color-bg), var(--color-bg-2));
 }
 
@@ -800,96 +864,58 @@
   filter: var(--img-grade);
 }
 
-/* ---- Consumer hero: the sun on the page ----------------------------------
+/* ---- The measured grounds ----------------------------------------------
 
-   The sky the hero sits in. Warm and open at the top right where the sun is,
-   cooling down and to the left into the page's own white, so the frame reads
-   as one continuous piece of daylight rather than as a panel with a gradient
-   on it. */
-@utility bg-hero-sky {
-  background:
-    radial-gradient(ellipse 900px 620px at 78% 8%, rgba(255, 226, 168, 0.85), transparent 62%),
-    radial-gradient(ellipse 1100px 700px at 92% 22%, rgba(255, 198, 120, 0.42), transparent 66%),
-    radial-gradient(ellipse 900px 560px at 6% 82%, rgba(150, 205, 255, 0.34), transparent 68%),
-    linear-gradient(168deg, #fffaf1 0%, #f9fbfe 52%, #f2f7fc 100%);
+   A lattice of hairlines, and a mask that takes it out of the way of the
+   words.
+
+   The mask is the part worth explaining. A grid strong enough to be felt at
+   the margins is too strong directly behind a paragraph, and the two demands
+   cannot be met by one alpha — which is what every previous attempt at this
+   ground was really failing at. So the strength is not uniform: full value
+   down both outer edges of the page, falling to under half across the middle,
+   where the reading column is. The texture survives where there is nothing to
+   read, and gets out of the way where there is.
+
+   Horizontal only, because the constraint is horizontal: the content column
+   is centred and fixed-width at every scroll position, so the band to protect
+   is a vertical strip, not a region.
+
+   Unguarded, deliberately. Without mask support the grid simply paints at
+   full strength all the way across, which is the plain lattice and perfectly
+   acceptable — unlike the array that briefly stood here, whose failure mode
+   was a solid veil over the page. */
+/* Each rule is a bright 1px core with a soft fall-off under it, rather than a
+   flat hairline. That is the whole of the difference between a line that was
+   drawn on the page and one that is lit: a pencil line has an edge on both
+   sides, and light does not. Two stops do it — solid to 1px, then the glow
+   colour fading out by 3.5 — and it costs no extra layers, because the core
+   and its halo are stops in the same gradient.
+
+   The two grounds share their strength now and differ only in pitch. The
+   character is in the spacing: 64px reads as domestic, 56px as an instrument.
+   Making the journey pages quieter as well was doing the same job twice. */
+@utility bg-console-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px),
+    linear-gradient(90deg, var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px);
+  background-size: 56px 56px;
+  mask-image: var(--grid-reading-mask);
+  -webkit-mask-image: var(--grid-reading-mask);
 }
 
-/* The shine itself: two fans of rays at different periods, so the spacing
-   reads as light rather than as a wheel. Both are painted on one square
-   element centred on the sun, which is what lets the whole thing turn about
-   the sun rather than about the middle of the screen. */
-@utility bg-hero-rays {
-  background:
-    repeating-conic-gradient(
-      rgba(255, 176, 64, 0.2) 0deg 1.4deg,
-      transparent 1.4deg 11deg
-    ),
-    repeating-conic-gradient(
-      from 4deg,
-      rgba(255, 214, 140, 0.16) 0deg 2.6deg,
-      transparent 2.6deg 17deg
-    );
-}
-
-/* Rays have to dissolve with distance or they read as a printed starburst. */
-@utility mask-sun {
-  mask-image: radial-gradient(
-    closest-side,
-    rgba(0, 0, 0, 0.15) 0%,
-    rgba(0, 0, 0, 0.95) 22%,
-    rgba(0, 0, 0, 0.5) 44%,
-    transparent 66%
-  );
-}
-
-/* Holds the fan off the headline. Heaviest on the left where the words are,
-   and landing on the page's own ground at the bottom edge so the hero has no
-   seam under it. */
-@utility bg-hero-veil {
-  background: linear-gradient(
-    180deg,
-    rgba(247, 249, 251, 0.34) 0%,
-    rgba(247, 249, 251, 0.2) 44%,
-    rgba(247, 249, 251, 0.72) 88%,
-    var(--color-bg) 100%
-  );
-
-  @media (min-width: 1000px) {
-    background:
-      linear-gradient(
-        96deg,
-        rgba(247, 249, 251, 0.86) 0%,
-        rgba(247, 249, 251, 0.62) 30%,
-        rgba(247, 249, 251, 0.16) 58%,
-        transparent 100%
-      ),
-      linear-gradient(
-        180deg,
-        transparent 0%,
-        transparent 58%,
-        rgba(247, 249, 251, 0.66) 90%,
-        var(--color-bg) 100%
-      );
-  }
+@utility bg-command-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px),
+    linear-gradient(90deg, var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px);
+  background-size: 64px 64px;
+  mask-image: var(--grid-reading-mask);
+  -webkit-mask-image: var(--grid-reading-mask);
 }
 
 /* The fade that marries a photograph to the page underneath it. */
 @utility bg-photo-veil {
   background: linear-gradient(180deg, var(--veil-soft) 0%, var(--veil-heavy) 62%, var(--color-bg) 100%);
-}
-
-/* ---- Business journey: the console field -------------------------------
-
-   A faint measured grid with two slow glows behind it. The consumer page is
-   lit like a house at midday; this one is lit like an instrument — the grid
-   is the difference, and it is what stops six sections of #050e1a reading as
-   an empty document. Held far enough back that no readout ever competes with
-   it. */
-@utility bg-console-grid {
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 56px 56px;
 }
 
 /* ---- Lit borders --------------------------------------------------------
@@ -977,19 +1003,6 @@
     -webkit-mask-clip: content-box, border-box;
     -webkit-mask-composite: xor;
   }
-}
-
-/* ---- Command surface ---------------------------------------------------
-
-   The home page's ground. A finer lattice than the business console's, held
-   even further back, because this page carries large type and one bright object
-   at a time — anything more assertive underneath turns the hero into a poster
-   pinned to graph paper. */
-@utility bg-command-grid {
-  background-image:
-    linear-gradient(var(--grid-line-soft) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line-soft) 1px, transparent 1px);
-  background-size: 64px 64px;
 }
 
 /* ---- Conduits ----------------------------------------------------------
@@ -1099,60 +1112,6 @@
     transform: scale(0.82);
   }
 }
-
-/* ---- Grid traces -------------------------------------------------------
-
-   Deliberately declared here rather than in @theme. Tailwind only emits a
-   theme keyframe when a utility references its --animate-* token, and these
-   are driven from an inline animation shorthand — inside the theme block they
-   compiled to nothing at all. */
-/* A charge running along one grid line and then resting. Travel happens in
-   the first third of the cycle and the pulse is dark for the rest, which is
-   what makes a field of them read as occasional rather than as a running
-   animation — with a dozen on random delays, most are unlit at any moment.
-   The distance is per-element so each one covers a different run of cells. */
-@keyframes trace-y {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  28% {
-    opacity: 1;
-  }
-  35% {
-    transform: translateY(var(--travel));
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(var(--travel));
-    opacity: 0;
-  }
-}
-
-@keyframes trace-x {
-  0% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  28% {
-    opacity: 1;
-  }
-  35% {
-    transform: translateX(var(--travel));
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(var(--travel));
-    opacity: 0;
-  }
-}
-
 
 /* ---- Steps -------------------------------------------------------------
 

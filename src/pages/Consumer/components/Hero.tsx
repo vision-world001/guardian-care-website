@@ -39,7 +39,7 @@ export default function Hero() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-[12%] -top-[18%] -z-10 h-[70vw] w-[70vw] rounded-full blur-[140px] min-[1000px]:h-[52vw] min-[1000px]:w-[52vw]"
-        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-amber) 12%, transparent), transparent 64%)'}}
+        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--wash-amber) 12%, transparent), transparent 64%)'}}
       />
 
       <Wrap>

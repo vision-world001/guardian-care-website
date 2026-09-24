@@ -1,45 +1,92 @@
+import SolarShine, {type Shine} from '../../../components/SolarShine';
+
 /**
- * The ground the home page stands on.
+ * The ground the journey pages stand on.
  *
- * Deliberately quieter than the business journey's console field. That page is
- * six sections of readouts and needs texture underneath them; this one carries
- * very large type and exactly one bright object at a time, and a busy ground
- * turns the hero into a poster pinned to graph paper.
+ * Two things, in this order: a 64px lattice of white hairlines, and three
+ * soft blooms behind it carrying the mark's amber, green and blue.
  *
- * So: a fine lattice at barely over 2% white, one warm bloom behind the hero
- * where the live system sits, and a second much further down so the lower half
- * of the page is not unlit. Nothing moves. The motion budget on this page is
- * spent entirely on the diagrams, which is the point — intelligence is the
- * animation here, not the background.
+ * The division of labour is the point. The grid is structure and is not
+ * coloured; the blooms are colour and have no structure. Both were tried the
+ * other way round — a grid lit in green and blue, then a photovoltaic array
+ * of cells and busbars — and both times the ground stopped being a ground and
+ * started being a thing to look at. Behind body copy that is simply a fault.
+ *
+ * The lattice is also masked back across the middle of the page, where the
+ * reading column sits, so it is a texture at the margins and almost nothing
+ * behind a paragraph. See `--grid-reading-mask` for why one alpha could never
+ * have served both.
+ *
+ * A 64px pitch here against the console field's 56px: this is the domestic
+ * half of the site and the coarser rule is the quieter one.
+ *
+ * Shared by three routes — Home, Consumer and Plan — so a mistake here is
+ * site-wide minus one page.
  *
  * Entirely presentational: `aria-hidden`, no pointer events, negative
  * z-index, bounded to the page rather than the viewport so it stops at the
  * footer instead of running underneath it.
  */
+
+/**
+ * Where the light comes from.
+ *
+ * **The first is in `vh`, and that is not a style choice.** This field is
+ * `absolute inset-0` inside the page's `<main>`, so a percentage here resolves
+ * against the height of the *whole page*, not the screen. On a seven-section
+ * home page that is around 5400px — so the `-top-[22%]` the old amber blob
+ * carried put it about 1190px above the page, and since the blob was only
+ * ~1120px tall, it never appeared at all. Anything meant to sit in the hero
+ * has to be pinned in viewport units. The lower two are genuinely
+ * percent-of-page and stay that way.
+ *
+ * Top sun on the left, for two reasons. `EnergyField` draws a literal dotted
+ * sun at the top left of the home hero, and a ground lit from the right would
+ * contradict it — two light sources in one view. And the Consumer and Plan
+ * heroes each paint their own amber blob at `-right-[14%]`, which a fourth
+ * light on that side would turn into a hotspot.
+ *
+ * The three breaths are coprime-ish, so the blooms never resolve into one
+ * pulse.
+ */
+const SUNS: Shine[] = [
+  {
+    top: '34vh',
+    side: 'left',
+    offset: '6%',
+    tone: 'var(--wash-amber)',
+    under: 'var(--wash-green)',
+    core: 'min(46vmax, 460px)',
+    blur: 90,
+    breath: 19
+  },
+  {
+    top: '30%',
+    side: 'right',
+    offset: '-12%',
+    tone: 'var(--wash-green)',
+    under: 'var(--wash-blue)',
+    core: 'min(38vmax, 380px)',
+    blur: 90,
+    breath: 23
+  },
+  {
+    top: '66%',
+    side: 'left',
+    offset: '-16%',
+    tone: 'var(--wash-blue)',
+    under: 'var(--wash-green)',
+    core: 'min(42vmax, 420px)',
+    blur: 90,
+    breath: 29
+  }
+];
+
 export default function CommandField() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <div className="bg-command-grid absolute inset-0" />
-
-      {/* Behind the hero, in the mark's gold. Warm, because the subject
-          directly on top of it is the sun arriving at somebody's roof. */}
-      <div
-        className="absolute -top-[22%] left-1/2 h-[80vw] w-[80vw] -translate-x-1/2 rounded-full blur-[140px]"
-        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-amber) 9%, transparent), transparent 66%)'}}
-      />
-
-      {/* A lime wash where the journeys sit, so the middle of the page is lit
-          by the other half of the wordmark. */}
-      <div
-        className="absolute top-[26%] -left-[18%] h-[56vw] w-[56vw] rounded-full blur-[150px]"
-        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-green) 5.5%, transparent), transparent 68%)'}}
-      />
-
-      {/* And the panel blue, far enough down to light the operations half. */}
-      <div
-        className="absolute top-[62%] -right-[20%] h-[64vw] w-[64vw] rounded-full blur-[150px]"
-        style={{background: 'radial-gradient(circle, color-mix(in srgb, var(--color-blue) 8.5%, transparent), transparent 68%)'}}
-      />
+      <SolarShine suns={SUNS} />
 
       {/* Sides down, and the last few per cent held for the handoff to the
           footer. Linear passes rather than a vignette: the element is many

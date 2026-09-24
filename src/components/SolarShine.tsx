@@ -1,61 +1,71 @@
 /**
- * The sun, on the page.
+ * The light behind the page.
  *
- * The business journey opens in a dark room. This one opens outdoors at
- * midday, because that is when the thing it describes is happening: the roof
- * is producing right now, and the reader is standing under the same sun doing
- * it. A photograph would state that; light *is* it, and light does not date,
- * does not need a licence, and does not put somebody else's house in front of
- * a reader looking at their own.
+ * Soft blooms breathing at the points each page needs lighting, in the mark's
+ * amber, green and blue. They are the whole of the colour on the ground — the
+ * lattice in front of them is plain white, because a coloured grid over
+ * coloured light reads as one busy surface rather than as a lit texture.
  *
- * Three layers, in the order light actually arrives:
+ * No wrapper, no grid, no veil. Each field owns those: the grid is a CSS
+ * utility because it is a tiling pattern rather than an element, and the veils
+ * are page-specific and already correct. A second `-z-10` nested inside the
+ * field's own would be noise.
  *
- *   1. The sky — a warm opening at the top right cooling into the page's white,
- *      so the hero is a continuous piece of daylight rather than a panel with a
- *      gradient on it.
- *   2. The fan — two sets of rays at different angular periods, so the spacing
- *      reads as light through air rather than as a printed starburst. Painted
- *      on one square element *centred on the sun*, which is the whole trick:
- *      the element's own centre is the sun, so rotating it about itself turns
- *      the fan about the right point. Sized in `vmax` and masked to a soft
- *      circle, it never shows a corner however the hero is proportioned.
- *   3. The core — the bloom the rays come out of, breathing on a cycle
- *      deliberately out of step with the rotation so the two never resolve.
+ * **Cost.** One element per bloom. The blur is static — a moving blur
+ * repaints, where a moving element does not — so the only animated properties
+ * are transform and opacity, which the compositor handles. There is
+ * deliberately no `will-change`: the transform promotes the layer anyway, and
+ * on an element this size that declaration is a permanent memory reservation
+ * rather than a hint.
  *
- * Then a veil, weighted to the left where the headline sits, landing on the
- * page's own ground at the bottom edge so the hero has no seam under it.
+ * **Reduced motion.** The base stylesheet collapses every loop to a single
+ * iteration, so `bloom` rests on its 100% stop — the quiet end of the breath,
+ * a complete composition rather than a half-drawn one. The still frame is the
+ * finished picture and the motion only stirs it.
  *
- * Entirely presentational: `aria-hidden`, no pointer events, negative
- * z-index inside the hero's own stacking context. Both animations are
- * pure transform and opacity — no layout, no paint — and the base stylesheet's
- * reduced-motion rule stops them at a frame that is a complete composition on
- * its own, not a half-drawn one.
+ * Each bloom also carries `-translate-x-1/2 -translate-y-1/2` in its base
+ * styles, which is not redundant with the translate inside the keyframes.
+ * `bloom` sets no fill mode, so while it is `infinite` it never ends and the
+ * keyframe transform always applies — but the reduced-motion rule gives it one
+ * iteration and a duration of 0.01ms, so it *does* end, and the element falls
+ * back to its base transform. Without one, every bloom would jump to a corner
+ * for exactly the reader who asked for less motion.
  */
 
-/** Where the sun sits in the frame. Referenced by every layer, so it moves once. */
-const SUN = {x: '78%', y: '14%'};
+export type Shine = {
+  /** Down the page. See the note on units in each field's SUNS table. */
+  top: string;
+  side: 'left' | 'right';
+  offset: string;
+  /** The bloom's own colour and the one under it. Always a --wash-* token. */
+  tone: string;
+  under: string;
+  /** Diameter. Capped in px as well as vmax so a phone is not asked for more. */
+  core: string;
+  /** Static, never animated. */
+  blur: number;
+  /** Seconds. Kept coprime-ish across a set so the blooms never share a phase. */
+  breath: number;
+};
 
-export default function SolarShine() {
+export default function SolarShine({suns}: {suns: Shine[]}) {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <div className="bg-hero-sky absolute inset-0" />
-
-      <div
-        className="bg-hero-rays mask-sun animate-sunspin absolute h-[190vmax] w-[190vmax] rounded-full"
-        style={{left: SUN.x, top: SUN.y}}
-      />
-
-      <div
-        className="animate-bloom absolute h-[46vmax] w-[46vmax] rounded-full blur-[70px]"
-        style={{
-          left: SUN.x,
-          top: SUN.y,
-          background:
-            'radial-gradient(circle, rgba(255,246,225,0.95) 0%, rgba(255,214,138,0.6) 34%, rgba(255,186,92,0.22) 58%, transparent 74%)'
-        }}
-      />
-
-      <div className="bg-hero-veil absolute inset-0" />
-    </div>
+    <>
+      {suns.map((sun) => (
+        <div
+          key={`${sun.top}-${sun.side}`}
+          className="animate-bloom absolute -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            top: sun.top,
+            [sun.side]: sun.offset,
+            height: sun.core,
+            width: sun.core,
+            filter: `blur(${sun.blur}px)`,
+            animationDuration: `${sun.breath}s`,
+            background: `radial-gradient(circle, color-mix(in srgb, ${sun.tone} var(--shine-core), transparent) 0%, color-mix(in srgb, ${sun.under} calc(var(--shine-core) * 0.5), transparent) 38%, transparent 72%)`
+          }}
+        />
+      ))}
+    </>
   );
 }
