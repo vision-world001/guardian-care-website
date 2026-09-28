@@ -6,21 +6,6 @@ import {WATCH} from '../../../data/businessFlow';
 import {TONE_TEXT, TONE_VAR} from '../../../data/command';
 import {cn} from '../../../lib/cn';
 
-/**
- * What it watches, so that nobody has to.
- *
- * Six conditions, five words each. The specification behind this page lists
- * ten and explains each one, which is correct for a specification and wrong
- * here — a reader scanning six short lines takes in the shape of the whole
- * rules engine in about four seconds, and a reader given ten paragraphs takes
- * in none of it.
- *
- * The second half of every tile is the half that matters. Detection on its own
- * moves work from the customer to the operator rather than removing it, so
- * each condition names what the platform does about it, and two of the six
- * resolve without anybody leaving the office — which is the line an operations
- * manager will actually repeat to their finance director.
- */
 export default function Watch() {
   return (
     <Section id="watch" hairline className="py-16 min-[760px]:py-24">

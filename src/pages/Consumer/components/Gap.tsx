@@ -5,22 +5,6 @@ import {Section, Wrap} from '../../../components/ui';
 import {GAP} from '../../../data/guardian';
 import {cn} from '../../../lib/cn';
 
-/**
- * The gap, and the whole page in one number.
- *
- * This is the app's own worked example: a system generating 62% of the figure
- * it was sold on, twelve years after anybody last compared the two. It is the
- * most persuasive thing Guardian Care has, and the site had never said it.
- *
- * Deliberately almost wordless. A homeowner does not need the mechanism
- * explained — they need to see the two bars at the same scale and feel the
- * distance between them. Everything the page says afterwards is downstream of
- * that feeling, so nothing here competes with it.
- *
- * No money figure. The shortfall is worth a different amount at every tariff,
- * and inventing an average pound sign here would trade the one number that is
- * real for one that is not.
- */
 export default function Gap() {
   return (
     <Section id="gap" hairline className="py-16 min-[760px]:py-24">
@@ -33,7 +17,6 @@ export default function Gap() {
         />
 
         <Reveal className="mx-auto max-w-[760px]">
-          {/* ---------- Promised ---------- */}
           <Bar
             label="What it was sold on"
             percent={GAP.expected}
@@ -42,7 +25,6 @@ export default function Gap() {
             tone="text-faint"
           />
 
-          {/* ---------- Actual ---------- */}
           <div className="mt-8">
             <Bar
               label="What it actually makes"
@@ -54,7 +36,6 @@ export default function Gap() {
             />
           </div>
 
-          {/* ---------- The part that stings ---------- */}
           <div
             className="mt-10 rounded-frame px-6 py-6 text-center min-[760px]:px-10 min-[760px]:py-8"
             style={{
@@ -78,12 +59,6 @@ export default function Gap() {
   );
 }
 
-/**
- * One bar, drawn to the same scale as the other.
- *
- * The comparison only works if both tracks are full width and only the fill
- * differs — a bar sized to its own value is a bar that has hidden the point.
- */
 function Bar({
   label,
   percent,

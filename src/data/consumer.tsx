@@ -4,28 +4,6 @@ import {numberOf} from '../components/Assessment/types';
 import type {GlyphName} from '../components/Glyph';
 import type {StatusTone} from './command';
 
-/* ============================================================
-   "I already have solar." — the consumer journey.
-
-   The system check, the summary it produces, and one example household
-   followed through every step of the service. Every figure the page prints
-   comes from here, so the page cannot contradict itself: the hero card, the
-   bird's-eye view, the insight and the dashboard are all the same day at the
-   same house.
-   ============================================================ */
-
-/* ---------- The system check ---------- */
-
-/**
- * Defaults used where a rate was left blank, so no figure is ever missing.
- *
- * Declared up here, above the questions, and that position is load-bearing. The
- * tariff step prints these same three numbers as the assumption it is about to
- * make, and a step that advertised one figure and then calculated with another
- * would be lying in the one place the page asks to be trusted. One object, read
- * twice — by the question on the way in and by `readPosition` on the way out —
- * so the two cannot drift apart.
- */
 export const DEFAULT_RATES = {
   importRate: 29,
   exportRate: 15,
@@ -219,13 +197,6 @@ export const EXISTING_STEPS: Step[] = [
   }
 ];
 
-/* ---------- Reading the answers ---------- */
-
-/**
- * Panel output by era. A 2011 module and a 2023 module are not the same object,
- * and using one average across fifteen years of hardware would put an old
- * system's estimate out by a third.
- */
 const KW_PER_PANEL: Record<string, number> = {
   '2010-2011': 0.19,
   '2012-2015': 0.25,
@@ -234,7 +205,6 @@ const KW_PER_PANEL: Record<string, number> = {
   unsure: 0.28
 };
 
-/** The middle of each installation band, for an age the page can actually print. */
 const ERA_YEAR: Record<string, number> = {
   '2010-2011': 2011,
   '2012-2015': 2013,
@@ -268,15 +238,8 @@ export const ERA_LABEL: Record<string, string> = {
   unsure: 'Not known'
 };
 
-/** The year the site's figures are stated against. */
 export const ASSESSMENT_YEAR = 2026;
 
-/**
- * UK yield per installed kWp, annualised. Deliberately a single conservative
- * national figure rather than a modelled one: the page is estimating from a
- * panel count and an era, and a four-decimal irradiance model layered on top of
- * that would be precision the inputs cannot support.
- */
 const KWH_PER_KWP = 970;
 
 export type ExistingPosition = {
@@ -288,7 +251,6 @@ export type ExistingPosition = {
   annualKwh: number | null;
   hasBattery: boolean;
   batteryKwh: number | null;
-  /** Eligible installations predate the scheme closing to new applications. */
   potentialFit: boolean;
   monthlyBill: number | null;
   annualSpend: number | null;
@@ -296,7 +258,6 @@ export type ExistingPosition = {
   exportRate: number;
   standingCharge: number;
   fitRate: number | null;
-  /** Whether the visitor has said where their surplus goes. */
   surplusKnown: boolean;
   exporting: boolean;
 };
@@ -316,8 +277,6 @@ export function readPosition(answers: Answers): ExistingPosition {
   const perPanel = era ? KW_PER_PANEL[era] : KW_PER_PANEL.unsure;
   const systemKw = panels ? Math.round(panels * perPanel * 10) / 10 : null;
 
-  /* A battery may have arrived after the original install, so both questions
-     can put one on the profile. */
   const hasBattery =
     answers.choice.battery === 'yes' || answers.choice.original === 'battery-added';
 
@@ -368,22 +327,8 @@ export function readPosition(answers: Answers): ExistingPosition {
   };
 }
 
-/* ---------- What the answers add up to ---------- */
-
 export type SummaryRow = {key: string; label: string; value: string; note: string};
 
-/**
- * The system summary, as seven lines.
- *
- * One function for both places it appears: the illustration in step 02 is this
- * function run over the example household, and the result under the system
- * check is the same function run over the visitor's own answers. So the page
- * never promises a summary that looks different from the one it delivers.
- *
- * Grid dependency is stated as a band rather than a percentage. Nothing in the
- * questionnaire measures consumption, and a precise-looking figure built from
- * a bill band would be precision the inputs cannot support.
- */
 export function summaryOf(position: ExistingPosition): SummaryRow[] {
   const {hasBattery, exporting} = position;
 
@@ -446,23 +391,8 @@ export function summaryOf(position: ExistingPosition): SummaryRow[] {
   ];
 }
 
-/* ---------- What the answers mean ---------- */
-
 export type Observation = {headline: string; body: string; next: string};
 
-/**
- * The one paragraph the check exists to produce.
- *
- * Three cases rather than one generic sentence, because a household with no
- * storage, one whose battery still lets surplus go, and one that looks complete
- * on paper are not looking at the same question — and a page that tells them all
- * the same thing has told none of them anything.
- *
- * It sits in the data rather than in the panel that first drew it because it is
- * now read twice: by the summary on the page, and by the message that summary
- * can be sent as. Two copies would eventually be two different findings for the
- * same household, arriving by two different routes.
- */
 export function observe(position: ExistingPosition): Observation {
   const buying = position.monthlyBill !== null && position.monthlyBill > 0;
 
@@ -491,27 +421,10 @@ export function observe(position: ExistingPosition): Observation {
   };
 }
 
-/* ---------- The same finding, as something you can keep ---------- */
-
-/**
- * The household's summary, in both lengths.
- *
- * The rows are `summaryOf` — the identical seven lines drawn on the page, not a
- * second table assembled from the same position. That is the whole point of
- * routing it through here: what arrives in somebody's inbox is what they were
- * looking at when they asked for it, down to the wording of every caption.
- *
- * The SMS is written separately rather than derived. A text message is read once,
- * in a notification, so it gets the finding and the two numbers the finding turns
- * on, and drops the table entirely. Truncating the email would produce something
- * that reads as a cut-off email, which is how it would be treated.
- */
 export function consumerSummary(position: ExistingPosition): Summary {
   const finding = observe(position);
   const rows: Row[] = summaryOf(position).map((row) => [row.label, row.value, row.note]);
 
-  /* Plain ASCII throughout, and deliberately: a single curly quote or dash drops
-     the whole message from GSM-7 to UCS-2 and halves what fits in a segment. */
   const size = position.systemKw === null ? '' : ` (~${position.systemKw} kWp)`;
   const yearly =
     position.annualKwh === null
@@ -536,19 +449,6 @@ export function consumerSummary(position: ExistingPosition): Summary {
   };
 }
 
-/* ---------- One household, followed all the way through ----------
-
-   The page makes several claims about what Guardian Care sees, and claims told
-   with unrelated examples read as a list of assertions. Told about one house
-   they read as one story: this is what we learned about it, this is what we
-   connected, this is what its day looked like, and this is what we told the
-   people living in it.
-
-   The house is a 2014 install with 14 panels — squarely in the Feed-in Tariff
-   era the product is built for, which is why the same figures carry the
-   bird's-eye view, the insight and the dashboard. */
-
-/** The example home. Installed 2014, battery added 2022. */
 export const HOME = {
   installed: 2014,
   era: '2012-2015',
@@ -562,13 +462,6 @@ export const HOME = {
 
 const HOME_KW = Math.round(HOME.panels * KW_PER_PANEL[HOME.era] * 10) / 10;
 
-/**
- * The example home, as the system check would read it.
- *
- * Built from the constants above rather than typed as a second set, then run
- * through `summaryOf` for step 02 — so the illustration and a visitor's real
- * result are produced by the same arithmetic.
- */
 export const HOME_POSITION: ExistingPosition = {
   era: HOME.era,
   installYear: HOME.installed,
@@ -589,14 +482,6 @@ export const HOME_POSITION: ExistingPosition = {
   exporting: true
 };
 
-/**
- * One sunny day at that home, in kWh.
- *
- * Generation splits exactly: 9 used as it was made, 5 into the battery and 4
- * out to the grid is all 18 off the roof. The battery's 5 went back into the
- * house that evening and 2 more had to be bought, so the house used 16 in total
- * and bought one eighth of it.
- */
 export const DAY = {
   generated: 18,
   used: 9,
@@ -605,26 +490,16 @@ export const DAY = {
   imported: 2
 };
 
-/** Everything the house used: solar as it was made, the battery, and the grid. */
 export const HOME_USE = DAY.used + DAY.stored + DAY.imported;
 
-/** What the day's grid import cost, in pounds. Energy only. */
 export const GRID_COST = (DAY.imported * HOME.importRate) / 100;
 
-/** "£0.60" — money as a household reads it. */
 export function pounds(value: number): string {
   return `£${value.toFixed(2)}`;
 }
 
-/* ---------- Why Guardian Care ---------- */
-
 export type Part = {name: string; says: string; glyph: GlyphName};
 
-/**
- * The parts a solar household already has, and what each one actually tells
- * them. Every line is true, and none of them answers the question the household
- * is really asking: is the whole thing working for me?
- */
 export const PARTS: Part[] = [
   {name: 'Solar panels', says: 'Generating, quietly, on the roof', glyph: 'solarRoof'},
   {name: 'An inverter', says: 'A number on a screen in the loft', glyph: 'inverter'},
@@ -635,23 +510,6 @@ export const PARTS: Part[] = [
   {name: 'Monitoring apps', says: 'Graphs you are left to interpret', glyph: 'portfolio'}
 ];
 
-/**
- * The same seven parts, answered.
- *
- * Printed in `PARTS` order and against the same row heights, so the fan's
- * seven lines land on the seven things they resolve: the left column is what
- * each part tells you on its own, and this is what it says once they are
- * joined up.
- *
- * This replaced four sentences claiming the parts had been joined — *every
- * part of your system in one place*, and so on. Claims about a picture, where
- * the picture would have gone. The readings are the claim, and they are the
- * example household's own, so they cannot disagree with the hero.
- *
- * Two of the seven are not quantities, because two of the seven were never
- * about a number. A meter you no longer have to go and read, and one screen
- * instead of four logins, are the answers to those rows.
- */
 export const JOINED: Array<{reading: string; tone: StatusTone}> = [
   {reading: `${DAY.generated.toFixed(1)} kWh made`, tone: 'amber'},
   {reading: 'No faults', tone: 'green'},
@@ -662,10 +520,6 @@ export const JOINED: Array<{reading: string; tone: StatusTone}> = [
   {reading: 'One screen', tone: 'green'}
 ];
 
-
-/* ---------- Step 01: the profile ---------- */
-
-/** Everything the profile holds, filled in for the example home. */
 export const PROFILE_FIELDS: Array<[string, string]> = [
   ['Installation date', String(HOME.installed)],
   ['Number of panels', String(HOME.panels)],
@@ -679,8 +533,6 @@ export const PROFILE_FIELDS: Array<[string, string]> = [
   ['Export rate', `${HOME.exportRate}p/kWh`],
   ['FIT information', 'Eligible · to confirm']
 ];
-
-/* ---------- Step 04: what gets tracked ---------- */
 
 export type Tracked = {
   key: string;
@@ -735,28 +587,18 @@ export const TRACKED: Tracked[] = [
   }
 ];
 
-/* ---------- Steps 06 and 07: opportunities, explained ---------- */
-
 export type Opportunity = {
   key: string;
   name: string;
-  /** What the household may be experiencing. */
   seen: string;
-  /** The short suggestion, as the card states it. */
   suggest: string;
   tone: StatusTone;
   glyph: GlyphName;
-  /** The full explanation step 07 gives for it. */
   identified: string;
   matters: string;
   recommend: string;
 };
 
-/**
- * Four patterns, each carrying the three-part explanation that has to arrive
- * with it. The first is the example household's own day, so its figures are the
- * day's figures; the other three are illustrations of the same shape.
- */
 export const OPPORTUNITIES: Opportunity[] = [
   {
     key: 'export',
@@ -813,8 +655,6 @@ export const OPPORTUNITIES: Opportunity[] = [
   }
 ];
 
-/* ---------- Our aim ---------- */
-
 export const AIMS: Array<{line: string; glyph: GlyphName}> = [
   {line: 'Use more of the electricity you generate', glyph: 'consumption'},
   {line: 'Reduce unnecessary grid consumption', glyph: 'import'},
@@ -824,10 +664,7 @@ export const AIMS: Array<{line: string; glyph: GlyphName}> = [
   {line: 'Identify changes in system performance', glyph: 'health'}
 ];
 
-/** The seventh aim, which is the sum of the other six. */
 export const AIM_SUM = 'Take better advantage of the solar system you already own';
-
-/* ---------- After the system check ---------- */
 
 export const NEXT_STEPS: Array<{index: string; name: string; line: string}> = [
   {index: '01', name: 'Your system summary', line: 'Built from your answers. You are here.'},

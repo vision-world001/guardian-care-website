@@ -5,21 +5,6 @@ import {Section, Wrap} from '../../../components/ui';
 import {NOT_SURE, PRICE, PROVIDES} from '../../../data/guardian';
 import {cn} from '../../../lib/cn';
 
-/**
- * Stage ten: the point at which the assessment ends and the watching starts.
- *
- * Seven things, four words each, and then the price — stated, not requested.
- * A monitoring subscription whose cost a visitor has to ask for is one they
- * assume they cannot afford, and "£69.99 a month after thirty free days" is
- * both the truth and an easier sentence to say out loud than any euphemism for
- * it.
- *
- * The "not sure" line closes the section because it closes the objection
- * underneath every other one on this page: that the reader will be exposed as
- * not understanding their own roof. The app takes "not sure" as an answer to
- * every single question it asks, and saying so is worth more than another
- * feature.
- */
 export default function Activation() {
   return (
     <Section id="activate" hairline className="py-16 min-[760px]:py-24">
@@ -32,7 +17,6 @@ export default function Activation() {
         />
 
         <div className="grid gap-4 min-[980px]:grid-cols-[1.25fr_0.75fr]">
-          {/* ---------- What it does ---------- */}
           <ul className="grid gap-px overflow-hidden rounded-frame bg-line-2 ring-1 ring-line-2 min-[620px]:grid-cols-2">
             {PROVIDES.map((item, index) => (
               <Reveal
@@ -56,7 +40,6 @@ export default function Activation() {
             ))}
           </ul>
 
-          {/* ---------- What it costs ---------- */}
           <Reveal
             delay={0.12}
             className="flex flex-col rounded-frame p-6 min-[760px]:p-8"
@@ -87,7 +70,6 @@ export default function Activation() {
           </Reveal>
         </div>
 
-        {/* ---------- And the thing nobody else says ---------- */}
         <Reveal
           delay={0.2}
           className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-frame px-6 py-5 text-center"

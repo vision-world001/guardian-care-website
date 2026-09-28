@@ -3,35 +3,10 @@ import {numberOf} from '../components/Assessment/types';
 import type {GlyphName} from '../components/Glyph';
 import type {StatusTone} from './command';
 
-/* ============================================================
-   "I'm looking for solar, battery or energy storage."
-
-   This journey deliberately does not start with panels. It starts with what
-   the property already pays the grid, because that — not a system size — is
-   the number solar has to change. Everything below is either a question about
-   that position or a consequence of it.
-   ============================================================ */
-
-/* ---------- What the visitor is here for ---------- */
-
-/**
- * The seven outcomes somebody arrives with.
- *
- * Declared above the assessment because the assessment's goal question is
- * built from this list rather than repeating it — the same seven appear in the
- * picker near the top of the page and in question three, and a reader who
- * chose one at the top should find it already chosen further down. Two lists
- * that have to agree eventually stop agreeing.
- *
- * `answer` is what the platform says back. One line — never two — and specific
- * enough to be worth the click: a picker that responds to every choice with
- * the same reassurance has not listened to any of them.
- */
 export type Goal = {
   key: string;
   glyph: GlyphName;
   label: string;
-  /** The picked state's headline — two or three words, set large. */
   short: string;
   tone: StatusTone;
   answer: string;
@@ -101,8 +76,6 @@ export const GOAL_BY_KEY = Object.fromEntries(GOALS.map((goal) => [goal.key, goa
   string,
   Goal
 >;
-
-/* ---------- The energy assessment ---------- */
 
 export const PLAN_STEPS: Step[] = [
   {
@@ -231,8 +204,6 @@ export const PLAN_STEPS: Step[] = [
   }
 ];
 
-/* ---------- Reading the answers ---------- */
-
 const MONTHLY_BILL: Record<string, number> = {
   'under-75': 60,
   '75-125': 100,
@@ -248,33 +219,14 @@ const ROOF_PANELS: Record<string, number> = {
   '16-plus': 18
 };
 
-/** A current-generation module, in kW. */
 const KW_PER_PANEL = 0.44;
 
-/** UK yield per installed kWp for a new, well-sited array. */
 const KWH_PER_KWP = 900;
 
-/**
- * How much of what a system generates the household actually uses itself.
- *
- * These are the two numbers the entire saving rests on, so they are stated
- * plainly and kept conservative. Published UK self-consumption for solar
- * without storage sits around 30–50%; with a correctly sized battery it rises
- * to roughly 60–80%. Guardian Care estimates at the lower-middle of both bands,
- * because a figure the installation then beats is a better product than one it
- * has to apologise for.
- */
 export const SELF_USE = {without: 0.42, with: 0.68};
 
 export const DEFAULT_RATES = {importRate: 29, exportRate: 15, standingCharge: 58};
 
-/**
- * A whole-pound figure, grouped.
- *
- * `toFixed(0)` alone prints £1180, which is the only number on the page not
- * wearing a separator — and a money figure typeset differently from the
- * kilowatt-hour figures beside it reads as a different kind of quantity.
- */
 export function money(value: number | null): string {
   return value === null ? '—' : `£${Math.round(value).toLocaleString('en-GB')}`;
 }
@@ -285,9 +237,7 @@ export type PlanPosition = {
   importRate: number;
   standingCharge: number;
   offPeakRate: number | null;
-  /** The part of the bill that is standing charge, which solar cannot touch. */
   annualStanding: number;
-  /** The part solar can influence. */
   annualEnergy: number | null;
   annualKwh: number | null;
   goal: string | null;
@@ -300,12 +250,10 @@ export type PlanPosition = {
   batteryExtraKwh: number | null;
   batteryExtraValue: number | null;
   combinedValue: number | null;
-  /** Recommended storage, in kWh, sized to the surplus rather than to a menu. */
   batteryKwh: number | null;
   equipment: string[];
 };
 
-/** The profile's short form of a goal — the picker's headline, not its label. */
 export const GOAL_LABEL: Record<string, string> = Object.fromEntries(
   GOALS.map((goal) => [goal.key, goal.short])
 );
@@ -325,17 +273,12 @@ export function readPlan(answers: Answers): PlanPosition {
 
   const annualSpend = monthlyBill ? Math.round(monthlyBill * 12) : null;
   const annualStanding = Math.round((standingCharge * 365) / 100);
-  /* Standing charge first, because dividing a whole bill by a unit rate
-     silently credits solar with a cost it can never remove. */
   const annualEnergy = annualSpend ? Math.max(0, annualSpend - annualStanding) : null;
   const annualKwh = annualEnergy ? Math.round((annualEnergy / importRate) * 100) : null;
 
   const roofChoice = answers.choice.roof ?? null;
   const roofPanels = roofChoice && roofChoice !== 'unknown' ? ROOF_PANELS[roofChoice] : null;
 
-  /* With no roof answer, the system is sized to the consumption it is meant to
-     offset rather than left blank — capped at a capacity a domestic roof can
-     plausibly carry. */
   const impliedKw = annualKwh ? Math.min(6.5, Math.round((annualKwh / KWH_PER_KWP) * 10) / 10) : null;
   const systemKw = roofPanels
     ? Math.round(roofPanels * KW_PER_PANEL * 10) / 10
@@ -344,8 +287,6 @@ export function readPlan(answers: Answers): PlanPosition {
 
   const annualGeneration = systemKw ? Math.round((systemKw * KWH_PER_KWP) / 50) * 50 : null;
 
-  /* Self-consumption cannot exceed what the property actually uses — a large
-     array on a small household is capped by the house, not by the roof. */
   const directKwh =
     annualGeneration && annualKwh
       ? Math.round(Math.min(annualGeneration * SELF_USE.without, annualKwh))
@@ -362,8 +303,6 @@ export function readPlan(answers: Answers): PlanPosition {
 
   const wantsBattery = answers.choice.storage === 'yes' || answers.choice.goal === 'battery';
 
-  /* Storage sized to a day's worth of the surplus it would be catching, rounded
-     to something a manufacturer actually sells. */
   const batteryKwh = batteryExtraKwh
     ? Math.max(5, Math.min(15, Math.round((batteryExtraKwh / 365) * 2.2)))
     : null;
@@ -393,12 +332,6 @@ export function readPlan(answers: Answers): PlanPosition {
   };
 }
 
-/* ---------- What solar actually changes ---------- */
-
-/**
- * The teaching example, at one slice of one day. Deliberately small numbers:
- * the mechanism is what has to land, and an annual figure hides it.
- */
 export const SWAP = {
   usage: 10,
   solarSupplies: 6,
@@ -406,22 +339,10 @@ export const SWAP = {
   rate: DEFAULT_RATES.importRate
 };
 
-/**
- * The same day with and without a battery — the document's central comparison.
- *
- * Fifteen kilowatt-hours generated on both sides, because the single most
- * common misunderstanding this page has to clear is that a battery makes a
- * system produce more. It does not. Everything that differs below is where the
- * same fifteen ended up, and the row that matters is the last one.
- *
- * Every `where` splits the generation exactly, so the two can be drawn as the
- * same fifteen squares redistributed rather than as two unrelated charts.
- */
 export type StorageDay = {
   key: string;
   name: string;
   where: Array<{label: string; value: number; tone: StatusTone}>;
-  /** What the property still has to buy back that evening. */
   later: number;
   line: string;
 };
@@ -450,36 +371,17 @@ export const STORAGE_COMPARISON: StorageDay[] = [
   }
 ];
 
-/** What the day generated — the same on both sides of the comparison. */
 export const STORAGE_GENERATED = STORAGE_COMPARISON[0].where.reduce(
   (total, part) => total + part.value,
   0
 );
 
-/* ---------- What the proposal contains ---------- */
-
-/**
- * The six things a Guardian Care quotation is made of.
- *
- * `does` is one line, because a reader scanning six tiles will read six short
- * lines and none of six paragraphs. `why` is the part almost no quotation
- * carries: every item states the reason it is on the list, so the document
- * argues for itself rather than presenting a priced bill of materials and
- * hoping.
- *
- * The last two are not hardware, and that is the point. A system installed and
- * then never looked at again is the failure this whole platform exists to
- * prevent, so monitoring and intelligence appear on the same list as the
- * panels rather than in an appendix about aftercare.
- */
 export type QuoteItem = {
   key: string;
   glyph: GlyphName;
   name: string;
-  /** Three or four words, set large — what this thing is for. */
   does: string;
   tone: StatusTone;
-  /** Filled from the visitor's own position where one exists. */
   value: (position: PlanPosition) => string;
   why: string;
 };
@@ -543,17 +445,8 @@ export const QUOTE: QuoteItem[] = [
   }
 ];
 
-/* ---------- Ask Guardian Care ---------- */
-
 export type Question = {q: string; a: string};
 
-/**
- * Answers, not essays.
- *
- * Two sentences each at the outside. Somebody opening one of these wants the
- * answer, not the reasoning behind the answer — and a panel that unfolds into
- * a paragraph is the wall of prose the accordion existed to avoid.
- */
 export const QUESTIONS: Question[] = [
   {
     q: 'How much could solar reduce my electricity bill?',
@@ -585,11 +478,6 @@ export const QUESTIONS: Question[] = [
   }
 ];
 
-/* ---------- The complete energy journey ---------- */
-
-
-/* ---------- The dashboard that arrives afterwards ---------- */
-
 export type DashReading = {
   key: string;
   glyph: GlyphName;
@@ -599,11 +487,6 @@ export type DashReading = {
   tone: StatusTone;
 };
 
-/**
- * One day on a system with storage. Generated splits exactly across used,
- * stored and exported — 9.6 + 5.1 + 3.7 — and the cost is the import priced at
- * the same rate the rest of the journey quotes.
- */
 export const DASHBOARD: DashReading[] = [
   {key: 'generated', glyph: 'generation', label: 'Generated', value: '18.4', unit: 'kWh', tone: 'green'},
   {key: 'free', glyph: 'consumption', label: 'Used free', value: '9.6', unit: 'kWh', tone: 'ink'},
@@ -613,22 +496,12 @@ export const DASHBOARD: DashReading[] = [
   {key: 'cost', glyph: 'cost', label: 'Grid energy cost', value: '£0.52', unit: 'at 29p/kWh', tone: 'orange'}
 ];
 
-/* ---------- What Guardian Care notices afterwards ---------- */
-
-/**
- * The auto-suggestions, in the platform's own two-part voice: what was seen,
- * then what should be looked at. Never a conclusion, and never a product —
- * the whole credibility of this section rests on it reading as an observation
- * somebody would make about your system rather than as a reason to call you.
- */
 export type Suggestion = {
   key: string;
   name: string;
   glyph: GlyphName;
   tone: StatusTone;
-  /** What the data showed. */
   says: string;
-  /** What Guardian Care would look at because of it. */
   review: string;
 };
 
@@ -667,31 +540,16 @@ export const SUGGESTIONS: Suggestion[] = [
   }
 ];
 
-/* ---------- The example household ---------- */
-
-/**
- * One property, carried through the hero and the comparison.
- *
- * The same device the consumer journey uses: a reader who meets £165 four
- * times is being shown one house rather than four unrelated claims. Every
- * figure here is derived from the two the visitor would actually know — the
- * monthly bill and the unit rate — so nothing in the card is a number somebody
- * chose because it looked good.
- */
 const EXAMPLE_BILL = 165;
 
 export const EXAMPLE = {
   monthlyBill: EXAMPLE_BILL,
   annualSpend: EXAMPLE_BILL * 12,
   importRate: DEFAULT_RATES.importRate,
-  /* The bill less its standing charge, converted at the unit rate. Solar can
-     never touch a standing charge, so it is taken off before the division. */
   annualKwh: Math.round(
     ((EXAMPLE_BILL * 12 - (DEFAULT_RATES.standingCharge * 365) / 100) /
       DEFAULT_RATES.importRate) *
       100
   )
 };
-
-/* ---------- Where it leaves you ---------- */
 

@@ -11,19 +11,6 @@ import {
   type BusinessPosition
 } from '../../../data/businessFlow';
 
-/**
- * The same assessment the two consumer journeys run, pointed at a company.
- *
- * That is not a saving in code so much as a statement about the product: a
- * business is profiled the way a property is, and the answers feed the same
- * intelligence loop. The questions are about a portfolio and a process rather
- * than a roof and a tariff, and nothing else about the mechanism changes.
- *
- * It sits here, after the console rather than before it, because the order is
- * the argument. Six questions asked of somebody who has not yet seen what they
- * are for is a form; the same six asked of somebody who has just operated the
- * thing are the obvious next click.
- */
 export default function Assess({
   answers,
   position,

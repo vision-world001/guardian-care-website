@@ -6,23 +6,6 @@ import {Section, Wrap} from '../../../components/ui';
 import {ERAS, JOIN} from '../../../data/businessFlow';
 import {cn} from '../../../lib/cn';
 
-/**
- * How you join.
- *
- * Four steps, because the honest answer is four steps. A page that has spent
- * six sections showing an operations platform has by now raised the only
- * objection that matters — *this is going to take my team a year* — and the
- * answer to it cannot be another paragraph about the platform.
- *
- * Each step therefore carries the objection it removes rather than a
- * description of itself: no rebuild, your branding, day one. Those three
- * phrases are what an installer repeats to whoever has to approve it, and
- * putting them in the drawing rather than in prose is the difference between
- * being remembered and being read.
- *
- * Lit down the brand ramp, the same sequence the home page's record diagram
- * runs — so arriving at the last step arrives at the platform's own colour.
- */
 export default function Join() {
   return (
     <Section id="join" hairline className="py-16 min-[760px]:py-24">
@@ -83,9 +66,6 @@ export default function Join() {
                   {step.note}
                 </span>
 
-                {/* The connector, on the one breakpoint where the four sit in
-                    a single row and a gap between them would read as four
-                    products rather than one sequence. */}
                 {index < JOIN.length - 1 ? (
                   <span
                     aria-hidden="true"
@@ -98,7 +78,6 @@ export default function Join() {
           })}
         </ol>
 
-        {/* ---------- Where it runs ---------- */}
         <Reveal delay={0.24} className="mt-4 overflow-hidden rounded-frame ring-1 ring-line-2">
           <div className="flex items-center gap-3 border-b border-line-2 px-5 py-3.5">
             <span aria-hidden="true" className="h-4 w-px" style={dottedRail('var(--color-green)')} />
@@ -117,12 +96,6 @@ export default function Join() {
           </dl>
         </Reveal>
 
-        {/* ---------- And the way in ----------
-
-            The four steps above describe joining; this is the click that
-            starts it. A route rather than an anchor, because the form is its
-            own page — a visitor who has read four steps and decided should
-            not have to hunt for where to say so. */}
         <Reveal delay={0.3} className="mt-16 flex justify-center min-[760px]:mt-24">
           <Link to="/start" className={PRIMARY}>
             Go to dashboard &#8594;

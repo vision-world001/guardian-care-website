@@ -3,43 +3,16 @@ import Glyph from '../Glyph';
 import {cn} from '../../lib/cn';
 import {visibleSteps, type Answers, type Estimate, type ProfileLine, type Step} from './types';
 
-/**
- * The guided assessment, shared by all three journeys.
- *
- * One question on screen at a time rather than a form. A form is a thing you
- * fill in; this is a conversation the platform is having, and every document it
- * was built from makes the same move — ask, then immediately explain why the
- * answer matters, then show the profile growing. Seven questions laid out at
- * once would be scrolled past; seven asked one at a time, each with its reason
- * printed beside it, get answered.
- *
- * Answers live with the caller, not here. The frame owns which question is on
- * screen and nothing else, because the page around it has to derive an entire
- * result from the same answers — and a component that both owns state and hands
- * it out is a component two things disagree about.
- *
- * Choices advance on their own. There is no Next button on a single-answer
- * question, because the answer *is* the intent, and asking somebody to confirm
- * a choice they just made is a click that buys nothing. Multi-select and rate
- * entry keep an explicit Continue, since neither has a moment where the visitor
- * is unambiguously finished.
- */
-
-/** Long enough for the chosen card to register, short enough not to feel slow. */
 const ADVANCE_MS = 260;
 
 type AssessmentProps = {
   steps: Step[];
   answers: Answers;
   onChange: (next: Answers) => void;
-  /** Fired when the last visible step is answered. */
   onComplete: () => void;
-  /** Whether the caller is already showing a result below. */
   done: boolean;
-  /** The label on the button that finishes the sequence. */
   finishLabel: string;
   profile: {heading: string; lines: ProfileLine[]};
-  /** Reset back to an empty assessment. */
   onReset: () => void;
 };
 
@@ -54,29 +27,16 @@ export default function Assessment({
   onReset
 }: AssessmentProps) {
   const [at, setAt] = useState(0);
-  /* Which optional field sets the visitor has chosen to open. Kept as a list
-     rather than a single flag so going Back to a step that was unfolded finds
-     it unfolded — re-folding a question somebody has already answered would
-     hide what they typed behind a link they would have no reason to press
-     twice. */
   const [opened, setOpened] = useState<string[]>([]);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const visible = visibleSteps(steps, answers);
-  /* Answering can remove a step from the sequence — saying "no battery" takes
-     the capacity question out from under the cursor — so the index is clamped
-     at render rather than trusted. */
   const index = Math.min(at, visible.length - 1);
   const step = visible[index];
   const last = index === visible.length - 1;
 
-  /**
-   * Moves on, re-deriving the sequence from the answers being committed rather
-   * than from the ones on screen: a question that only exists because of the
-   * answer just given has to be in the list before we can land on it.
-   */
   function advance(next: Answers) {
     const list = visibleSteps(steps, next);
     const here = list.findIndex((item) => item.key === step.key);
@@ -93,8 +53,6 @@ export default function Assessment({
     const next: Answers = {...answers, choice: {...answers.choice, [step.key]: value}};
     onChange(next);
 
-    /* "Enter my exact figure" opens an input instead of moving on — advancing
-       would take away the control it just revealed. */
     if (option?.input) return;
 
     clearTimeout(timer.current);
@@ -133,10 +91,6 @@ export default function Assessment({
       : undefined;
   const multiPicked = step?.kind === 'multi' ? (answers.multi[step.key] ?? []) : [];
 
-  /* Open because it was asked for, or open because there is already something
-     in it. The second half matters after a reset-and-return, and after the
-     browser restores a form: a step holding values it will not show is a step
-     that silently discards them. */
   const unfolded =
     step?.kind === 'fields' &&
     (opened.includes(step.key) ||
@@ -144,7 +98,6 @@ export default function Assessment({
 
   return (
     <div className="grid gap-px overflow-hidden rounded-panel bg-line-2 ring-1 ring-line-2 min-[980px]:grid-cols-[1fr_306px]">
-      {/* ---------- The question ---------- */}
       <div className="bg-panel p-6 min-[760px]:p-9">
         {done ? (
           <Complete count={visible.length} onRestart={restart} />
@@ -253,9 +206,6 @@ export default function Assessment({
                 </div>
               )}
 
-              {/* The escape hatch, opened. Its own row rather than nested in the
-                  card above, because an input inside a button is not a control
-                  anybody can reliably operate. */}
               {openInput ? (
                 <div className="mt-3 flex flex-wrap items-center gap-3 rounded-card bg-bg-2 p-4 ring-1 ring-green/40">
                   <label className="flex flex-1 items-baseline gap-2">
@@ -277,7 +227,6 @@ export default function Assessment({
               ) : null}
             </div>
 
-            {/* ---------- Why we ask ---------- */}
             <div className="mt-7 rounded-card border-l-2 border-green/45 bg-bg-2/70 px-5 py-4">
               <div className="text-[11.5px] font-bold uppercase tracking-[.13em] text-green">
                 {step.why.heading}
@@ -287,7 +236,6 @@ export default function Assessment({
               </div>
             </div>
 
-            {/* ---------- Moving on ---------- */}
             <div className="mt-7 flex flex-wrap items-center gap-3">
               {index > 0 ? (
                 <button
@@ -318,7 +266,6 @@ export default function Assessment({
         )}
       </div>
 
-      {/* ---------- The profile, filling in ---------- */}
       <aside className="bg-bg-2 p-6 min-[760px]:p-7">
         <div className="text-[11.5px] font-bold uppercase tracking-[.13em] text-green">
           {profile.heading}
@@ -361,8 +308,6 @@ export default function Assessment({
   );
 }
 
-/* ---------- Pieces ---------- */
-
 function Progress({at, total}: {at: number; total: number}) {
   return (
     <div>
@@ -375,8 +320,6 @@ function Progress({at, total}: {at: number; total: number}) {
         </span>
       </div>
 
-      {/* One bar per question rather than a single filled track: the visitor can
-          see how many are left, which a percentage never quite says. */}
       <div className="mt-2.5 flex gap-1.5">
         {Array.from({length: total}, (_, slot) => (
           <span
@@ -392,20 +335,6 @@ function Progress({at, total}: {at: number; total: number}) {
   );
 }
 
-/**
- * The step, folded.
- *
- * What it prints is the assumption itself, not a reassurance about it. "We will
- * use a national average" is a sentence a reader has to take on trust; the three
- * figures that average actually is, with where they came from underneath, is
- * something they can disagree with — and the link to disagree is right there.
- * That is the whole design: the default answer is visible, so accepting it is a
- * decision rather than a shrug.
- *
- * The opening control is a button, not a link. It changes what is on this screen
- * rather than going anywhere, and an anchor that navigates nowhere is a promise
- * to a screen reader that the page then breaks.
- */
 function Assumed({estimate, onOpen}: {estimate: Estimate; onOpen: () => void}) {
   return (
     <div className="rounded-card bg-bg-2 p-5 ring-1 ring-line-2">

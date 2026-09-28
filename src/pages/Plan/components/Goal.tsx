@@ -6,26 +6,6 @@ import {TONE_TEXT, TONE_VAR} from '../../../data/command';
 import {GOALS, GOAL_BY_KEY} from '../../../data/plan';
 import {cn} from '../../../lib/cn';
 
-/**
- * What are you here for?
- *
- * The one section on the page that asks before it tells, and it is placed
- * second on purpose: the reader has just been shown their own starting
- * position, and the natural next thought is *and what do I want to do about
- * it*. Answering it costs one click and immediately produces a sentence about
- * their situation rather than about solar in general.
- *
- * The choice is not decoration. It is written straight into the assessment's
- * answers, so question three further down arrives already answered and the
- * page behaves like one conversation instead of two forms that happen to sit
- * on the same route. A visitor who changes their mind down there changes it
- * up here too — there is one answer, held in one place.
- *
- * The seventh option sits on its own row because it is a different kind of
- * answer. Six are destinations; "I'm not sure" is a request for a map, and
- * burying it as the last cell of a grid makes it look like the one nobody
- * picks. It is, in fact, the most honest thing most people could click.
- */
 export default function Goal({
   goal,
   onPick
@@ -68,13 +48,6 @@ export default function Goal({
             />
           </Reveal>
 
-          {/* ---------- What the platform says back ----------
-
-              Nothing is drawn until something is picked. An empty answer panel
-              is a large box explaining that it has nothing to say, and a reader
-              who has not clicked yet has no use for it; the slim prompt does
-              the same job in one line. The panel arriving on click is also the
-              clearest possible confirmation that the click registered. */}
           {picked ? (
             <>
               <Reveal
@@ -111,7 +84,6 @@ export default function Goal({
                 className="mono mt-5 flex flex-wrap items-center justify-center gap-2.5 text-[11.5px] uppercase tracking-[.12em] text-faint"
               >
                 <span aria-hidden="true" className={TONE_TEXT[picked.tone]}>
-                  
                 </span>
                 Carried into your assessment
                 <a
@@ -128,8 +100,6 @@ export default function Goal({
     </Section>
   );
 }
-
-/* ---------- One option ---------- */
 
 function Choice({
   option,
@@ -164,10 +134,6 @@ function Choice({
           : undefined
       }
     >
-      {/* Unselected, the chip still carries a trace of its own colour. Seven
-          identical grey squares read as one undifferentiated list; seven quiet
-          tints read as seven different things, and picking one simply turns
-          the volume up on the one already there. */}
       <span
         className={cn(
           'grid h-10 w-10 shrink-0 place-items-center rounded-tile transition-colors duration-250',

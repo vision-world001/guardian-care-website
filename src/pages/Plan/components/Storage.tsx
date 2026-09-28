@@ -13,20 +13,6 @@ import {
 import {cn} from '../../../lib/cn';
 import {Figure, UnitKey, Units, type Segment} from './parts';
 
-/**
- * The same day, twice.
- *
- * Fifteen kilowatt-hours generated on both sides, drawn as the same fifteen
- * squares rearranged. Setting the two columns against an identical top line is
- * what makes storage legible as a redistribution rather than as extra
- * production, which is the single most common misunderstanding this page has
- * to clear — and squares clear it in about a second, where two paragraphs and
- * a bar chart do not.
- *
- * The row that actually decides it is the last one: five kilowatt-hours bought
- * back that evening, or one. Everything above it is arrangement; that row is
- * money.
- */
 export default function Storage() {
   const [without, with_] = STORAGE_COMPARISON;
   const avoided = ((without.later - with_.later) * DEFAULT_RATES.importRate) / 100;
@@ -40,7 +26,6 @@ export default function Storage() {
           body="A battery does not produce more. It changes when you can use what you already produce."
         />
 
-        {/* ---------- The hour the argument is about ---------- */}
         <Reveal animation="animate-card-in" className="ring-lit overflow-hidden rounded-frame">
           <Photo
             src="/assets/photos/evening.jpg"
@@ -70,7 +55,6 @@ export default function Storage() {
           </Photo>
         </Reveal>
 
-        {/* ---------- The same day, twice ---------- */}
         <div className="mt-4 grid gap-4 min-[980px]:grid-cols-2">
           {STORAGE_COMPARISON.map((day, index) => (
             <Reveal key={day.key} delay={index * 0.08} className="min-w-0">
@@ -79,7 +63,6 @@ export default function Storage() {
           ))}
         </div>
 
-        {/* ---------- What the difference is worth ---------- */}
         <Reveal
           delay={0.16}
           className="mt-4 rounded-frame p-px"
@@ -117,8 +100,6 @@ export default function Storage() {
   );
 }
 
-/* ---------- One version of the day ---------- */
-
 function Day({day, best}: {day: StorageDay; best: boolean}) {
   const segments: Segment[] = day.where.map((part) => ({
     tone: part.tone,
@@ -145,14 +126,12 @@ function Day({day, best}: {day: StorageDay; best: boolean}) {
       </div>
 
       <div className="flex flex-1 flex-col px-5 py-6 min-[520px]:px-6">
-        {/* Where the day's generation ended up. */}
         <div>
           <div className={cn(LABEL, 'text-faint')}>Where it went</div>
           <Units segments={segments} className="mt-4" />
           <UnitKey segments={segments} className="mt-4" />
         </div>
 
-        {/* And what the property still had to buy. */}
         <div className="mt-7 border-t border-line-2 pt-6">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="min-w-0">

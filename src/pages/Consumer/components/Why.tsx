@@ -7,33 +7,6 @@ import {cn} from '../../../lib/cn';
 import {LiveDot} from '../../Home/components/Conduit';
 import {Heading, LABEL, dottedRail, ramp, tint} from '../../../components/kit';
 
-/**
- * Why Guardian Care.
- *
- * Most solar households have every piece of an energy system and no picture of
- * it. That is hard to feel in a paragraph and obvious in a drawing, so the
- * section is a drawing: seven parts down the left in grey, each with the one
- * thing it actually tells its owner — and a dotted line from every one of them
- * into a single lit record on the right.
- *
- * The parts are quiet rather than unlit. They are not broken; they are simply
- * not talking to anybody — so the rows stay muted and the lit card on the
- * right remains the one bright object. Only each row's symbol carries colour,
- * and it carries the colour of its own curve, which is what makes seven lines
- * followable as seven.
- *
- * It is the home page's record diagram turned round: there, one record fans
- * out into everything that happens to it; here, everything a household already
- * owns fans in.
- */
-
-/* ---------- Geometry ----------
-
-   The fan is drawn at true pixel size beside rows of fixed height, so every
-   curve leaves from the centre of the row it belongs to. Fixed height is safe
-   only because the drawn layout starts at 1100px, where the longest line has
-   room to spare; below that, the stacked layout lets rows grow freely. */
-
 const ROW_H = 62;
 const ROW_GAP = 10;
 const FAN_W = 150;
@@ -55,7 +28,6 @@ export default function Why() {
           body="Several parts, each reporting its own small piece. None of them tells you how the system is doing."
         />
 
-        {/* ---------- Wide: the parts, the fan, the picture ---------- */}
         <div
           className="hidden min-[1100px]:grid"
           style={{gridTemplateColumns: `minmax(0,1fr) ${FAN_W}px minmax(0,440px)`}}
@@ -74,8 +46,6 @@ export default function Why() {
             ))}
           </ol>
 
-          {/* Every part wired into the one picture. The dots travel inward, in
-              the direction the information now goes. */}
           <Reveal delay={0.3}>
             <svg
               width={FAN_W}
@@ -118,7 +88,6 @@ export default function Why() {
           </Reveal>
         </div>
 
-        {/* ---------- Narrow: the parts, then the picture beneath them ---------- */}
         <div className="min-[1100px]:hidden">
           <ol className="grid gap-2.5 min-[620px]:grid-cols-2">
             {PARTS.map((part, index) => (
@@ -144,7 +113,6 @@ export default function Why() {
           </Reveal>
         </div>
 
-        {/* ---------- The claim ---------- */}
         <Reveal className="mx-auto mt-20 max-w-[820px] text-center">
           <div
             aria-hidden="true"
@@ -165,27 +133,12 @@ export default function Why() {
   );
 }
 
-/* ---------- A part ---------- */
-
 function PartRow({index}: {index: number}) {
   const part = PARTS[index];
   const colour = ramp(index, PARTS.length);
 
   return (
     <>
-      {/* The tile wears the colour of the line that leaves this row.
-
-          It used to be a grey glyph in a barely-there box — `text-faint` at
-          3.6:1 inside a 5%-white tile — on the reasoning that the parts are
-          unlit until something joins them. The reasoning was sound and the
-          result was a smudge: seven identical grey shapes, none of them
-          readable as the thing it names.
-
-          Colouring each tile to match its own curve fixes both at once. The
-          symbol becomes legible, and the fan stops being a tangle of seven
-          lines and becomes seven lines you can follow one at a time. The rows
-          themselves stay quiet, so the lit card on the right is still the one
-          bright object in the section. */}
       <span
         className="grid h-10 w-10 shrink-0 place-items-center rounded-tile"
         style={{
@@ -206,21 +159,6 @@ function PartRow({index}: {index: number}) {
   );
 }
 
-/* ---------- The one picture ---------- */
-
-/**
- * The single bright object in the section: a gradient rim in the mark's three
- * colours, and inside it the seven parts from the left column, answered.
- *
- * It used to hold a decorative  turning inside dotted rings, which took the
- * largest area of the card and said nothing — in the one section whose whole
- * argument is that the scattered parts add up to a picture. The picture was
- * the only thing the picture did not contain.
- *
- * Seven rows against seven rows, at matching heights, is also what makes the
- * fan between them mean something: each curve now lands on the row that
- * answers the one it left.
- */
 function Picture() {
   return (
     <div className="relative h-full">
@@ -255,15 +193,6 @@ function Picture() {
             One view of your whole system
           </div>
 
-          {/* ---------- The seven parts, answered ----------
-
-              A decorative  in turning rings used to occupy this space — the
-              largest area of the card, in the section whose entire argument is
-              that the parts add up to one picture. It showed nothing, so the
-              picture was the one thing the picture did not contain.
-
-              Each row answers the row at the same height in the left column,
-              which is what the fan between them is drawing. */}
           <ul className="mt-6 flex flex-1 flex-col justify-center gap-px overflow-hidden rounded-card">
             {PARTS.map((part, index) => {
               const joined = JOINED[index];
@@ -294,8 +223,6 @@ function Picture() {
             })}
           </ul>
 
-          {/* What the seven readings add up to. 18 made = 9 used + 5 held +
-              4 sent, which is the arithmetic the whole section is claiming. */}
           <p className="mono mt-5 border-t border-line-2 pt-4 text-[11px] uppercase tracking-[.12em] text-faint">
             {DAY.generated} made = {DAY.used} used + {DAY.stored} held + {DAY.exported} sent
           </p>

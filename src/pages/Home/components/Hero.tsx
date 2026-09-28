@@ -8,13 +8,6 @@ import {cn} from '../../../lib/cn';
 import {LiveDot} from './Conduit';
 import EnergyField from './EnergyField';
 
-/**
- * One column per verb: what happens to a unit of electricity, what the system
- * is doing about it right now, and which object is doing it. The verbs come
- * from the platform's own vocabulary so they stay in step with every later
- * section; the readings come from the same live figures the background is
- * drawn from, so the two cannot disagree.
- */
 const READINGS: Array<{
   verb: string;
   value: string;
@@ -28,24 +21,6 @@ const READINGS: Array<{
   {verb: VERBS[3], value: LIVE.grid.toFixed(1), unit: 'kW', name: 'Grid', tone: 'blue'}
 ];
 
-/**
- * Two words, one sentence, and the whole system behind them.
- *
- * The energy graph used to be a card under the headline. It is now the ground
- * the headline stands on — drawn across the full width in dotted line, at a
- * scale where the array, the house, the battery and the pylon are objects
- * rather than icons. That trade is worth making: a card is something a visitor
- * reads after the words, and a background is something they have already
- * understood by the time they finish reading them.
- *
- * What the card carried that the background cannot is the platform's voice, so
- * that survives as one line under the action — a live dot, a status and a
- * sentence. It is the smallest possible version of the thing, and it is still
- * the thing.
- *
- * `isolate` keeps the field's negative z-index inside the hero rather than
- * letting it slide under the page's own ground.
- */
 export default function Hero() {
   return (
     <header className="relative isolate overflow-hidden">
@@ -88,8 +63,6 @@ export default function Hero() {
             </a>
           </Reveal>
 
-          {/* The platform, speaking. All that is left of the card, and the only
-              part of it the background could not carry. */}
           <Reveal
             delay={0.24}
             className="mx-auto mt-12 flex max-w-[620px] flex-col items-center gap-3 rounded-frame border border-line-2 bg-bg/55 px-6 py-4 backdrop-blur-[6px] min-[680px]:flex-row min-[680px]:gap-5"
@@ -114,22 +87,12 @@ export default function Hero() {
             </span>
           </Reveal>
 
-          {/* The four things that happen to a unit of electricity, each one
-              carrying what the system is doing about it right now.
-
-              This is where the readings live. They were SVG text beside each
-              object in the background and they collided with the button and the
-              status strip — the predictable result of putting two kinds of type
-              in the same place. The drawing behind carries the objects; this
-              carries the numbers, and the verb row it replaces is folded in
-              rather than lost. */}
           <Reveal
             delay={0.3}
             className="mx-auto mt-14 grid w-full max-w-[680px] grid-cols-2 gap-x-6 gap-y-7 min-[620px]:grid-cols-4 min-[620px]:gap-x-4"
           >
             {READINGS.map((reading, index) => (
               <div key={reading.verb} className="relative">
-                {/* The arrow between columns, on the row it belongs to. */}
                 {index > 0 ? (
                   <span
                     aria-hidden="true"

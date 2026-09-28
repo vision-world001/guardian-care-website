@@ -1,4 +1,3 @@
-/** Status colours map to the palette tokens defined in index.css. */
 export type StatusTone = 'green' | 'blue' | 'amber' | 'orange' | 'red' | 'purple' | 'ink';
 
 export const TONE_TEXT: Record<StatusTone, string> = {
@@ -21,7 +20,6 @@ export const TONE_BG: Record<StatusTone, string> = {
   ink: 'bg-ink'
 };
 
-/** The same palette as a raw value, for SVG `stroke` and `fill` attributes. */
 export const TONE_VAR: Record<StatusTone, string> = {
   green: 'var(--color-green)',
   blue: 'var(--color-blue)',
@@ -36,14 +34,6 @@ export type StatusGlyph = 'tick' | 'eye' | 'bang' | 'spanner' | 'rise' | 'alert'
 
 export type Kpi = {value: string; label: string; tone: StatusTone};
 
-/**
- * The portfolio, as the platform specification states it.
- *
- * Shared with the home page rather than restated there. The two pages describe
- * the same company on the same day, and a site whose landing page and product
- * page disagree about how many customers exist has told the reader something
- * about how carefully the rest of it was assembled.
- */
 export const CC_KPIS: Kpi[] = [
   {value: '1,245', label: 'Customers', tone: 'ink'},
   {value: '1,036', label: 'Monitored', tone: 'green'},
@@ -132,13 +122,6 @@ export const CC_ROWS: AttentionRow[] = [
   }
 ];
 
-/**
- * Six statuses is more than colour can carry. Checked against the palette:
- * blue and purple sit at ΔE 1.1 under protanopia and 12.6 for normal vision —
- * below the floor at which two hues can be told apart at all — and Technical
- * and Urgent were literally the same red. So every status ships with a glyph,
- * and colour is the second channel rather than the only one.
- */
 export type StatusDefinition = {
   name: string;
   tone: StatusTone;
@@ -170,20 +153,6 @@ export const STATUSES: StatusDefinition[] = [
   }
 ];
 
-/**
- * The same portfolio as a population rather than as six counters.
- *
- * `CC_KPIS` answers "how many are there"; this answers "what does the whole
- * customer base look like at once", which is the only thing the business page's
- * opening has to say. One dot is one customer, so the figures have to reconcile
- * exactly — and the healthy count is therefore derived rather than typed. A
- * literal 1,036 here would be a second copy of a number that already exists,
- * free to drift the moment either is edited.
- *
- * The residual — customers captured but not yet connected — is deliberately
- * drawn hollow. They are the reason a company signs up: records it owns and
- * cannot currently see.
- */
 export type PortfolioBand = {label: string; tone: StatusTone; count: number; hollow?: boolean};
 
 const CC_TOTAL = 1245;
@@ -205,17 +174,8 @@ export const CC_MIX: PortfolioBand[] = [
   ...CC_ATTENTION_BANDS
 ];
 
-/** One dot per customer, so the hero's field and the console's counters agree. */
 export const CC_CUSTOMERS = CC_TOTAL;
 
-/**
- * How many of them want something from an operator today.
- *
- * Everything that is neither healthy nor merely waiting to be onboarded —
- * derived, because the hero prints it beside the field and the console prints
- * it above the queue, and the one number both pages lead on is the last one
- * that should exist twice.
- */
 export const CC_ATTENTION = CC_ATTENTION_BANDS.filter((band) => !band.hollow).reduce(
   (total, band) => total + band.count,
   0

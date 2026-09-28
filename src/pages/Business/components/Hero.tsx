@@ -7,27 +7,11 @@ import {cn} from '../../../lib/cn';
 import {LiveDot} from '../../Home/components/Conduit';
 import {Portfolio, PortfolioKey} from './parts';
 
-/**
- * The opening.
- *
- * The reader installs solar for a living. They do not need solar explained,
- * they need one question answered — what happens to a customer after the
- * handover — and they have about a second to decide whether this page is going
- * to answer it.
- *
- * So the page does not open with a claim. It opens with their portfolio drawn
- * out in full: 1,245 dots, one per customer, mostly steady, forty-two of them
- * blipping. Nothing on the page has to argue that visibility is worth having
- * after somebody has looked at that for two seconds, which is the only reason
- * the headline can afford to be four words and the paragraph one sentence.
- */
-
 export default function Hero() {
   return (
     <header className="relative isolate overflow-hidden">
       <Wrap>
         <div className="grid items-center gap-14 py-20 min-[760px]:py-24 min-[1000px]:min-h-[86vh] min-[1000px]:grid-cols-[0.92fr_1.08fr] min-[1000px]:gap-12 min-[1180px]:gap-16">
-          {/* ---------- The words ---------- */}
           <div>
             <Reveal
               className={cn(
@@ -67,10 +51,8 @@ export default function Hero() {
                 See the console
               </a>
             </Reveal>
-
           </div>
 
-          {/* ---------- The portfolio ---------- */}
           <Reveal animation="animate-card-in" delay={0.2} className="w-full">
             <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
               <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-3.5 min-[520px]:px-6">
@@ -90,7 +72,6 @@ export default function Hero() {
                     </div>
                   </div>
 
-                  {/* The one number the console exists to produce. */}
                   <div className="text-right">
                     <div className={cn(LABEL, 'text-faint')}>Need you today</div>
                     <div className="mono mt-3 text-[clamp(28px,4.4vw,38px)] font-semibold leading-none text-amber">

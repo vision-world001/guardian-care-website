@@ -8,27 +8,6 @@ import {EXAMPLE} from '../../../data/plan';
 import {cn} from '../../../lib/cn';
 import {Figure, UnitKey, Units, type Segment} from './parts';
 
-/**
- * The opening.
- *
- * Deliberately not a solar page. It opens on the electricity bill, because
- * that is the number the decision actually turns on and the only one the
- * reader already knows — and because a package offered before anybody has
- * established what the property currently pays is a quotation wearing the
- * clothes of advice.
- *
- * The four questions the journey asks are shown as four marks rather than four
- * sentences. A visitor decides whether to scroll in about a second, and four
- * symbols with two words under them are read in that second; four questions
- * with question marks on the end are not read at all.
- *
- * The card is the page's thesis in one object: ten squares, every one of them
- * hollow, because today every unit this property uses is bought. Nothing else
- * on the page has to argue for solar after that — the rest of the journey is
- * just filling the squares in.
- */
-
-/** What the assessment is built from, as four marks. */
 const ASKS: Array<{glyph: GlyphName; label: string}> = [
   {glyph: 'cost', label: 'What you pay'},
   {glyph: 'grid', label: 'Grid dependence'},
@@ -36,13 +15,11 @@ const ASKS: Array<{glyph: GlyphName; label: string}> = [
   {glyph: 'storage', label: 'Storage value'}
 ];
 
-/** Ten units of household electricity, all of them purchased. */
 const TODAY: Segment[] = [{tone: 'orange', count: 10, hollow: true, label: 'Bought from the grid'}];
 
 export default function Hero() {
   return (
     <header className="relative isolate overflow-hidden">
-      {/* Warm above, because the thing being offered is daylight. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-[14%] -top-[20%] -z-10 h-[72vw] w-[72vw] rounded-full blur-[150px] min-[1000px]:h-[54vw] min-[1000px]:w-[54vw]"
@@ -51,7 +28,6 @@ export default function Hero() {
 
       <Wrap>
         <div className="grid items-center gap-14 py-20 min-[760px]:py-24 min-[1000px]:min-h-[88vh] min-[1000px]:grid-cols-[1.04fr_0.96fr] min-[1000px]:gap-12 min-[1180px]:gap-20">
-          {/* ---------- The words ---------- */}
           <div>
             <Reveal
               className={cn(
@@ -84,11 +60,6 @@ export default function Hero() {
               <em className="not-italic text-ink">that</em>, not around a package.
             </Reveal>
 
-            {/* ---------- The four questions, as four marks ----------
-
-                A fixed two-by-two rather than a wrapping row: at this column
-                width four across does not fit and `flex-wrap` settles on three
-                and a widow, which reads as a layout that ran out of room. */}
             <Reveal
               delay={0.16}
               as="ul"
@@ -113,13 +84,6 @@ export default function Hero() {
               </a>
             </Reveal>
 
-            {/* ---------- Or just talk to somebody ----------
-
-                Plenty of people looking at solar do not want to answer four
-                questions on a website, and the ones who do want to talk are
-                the warmest leads on the page. The number is set as an action
-                rather than printed as a detail, and it is a real `tel:` link
-                so a thumb on a phone dials it. */}
             <Reveal delay={0.28} className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <span className="text-[14.5px] font-light text-muted">Rather speak to someone?</span>
               <a
@@ -135,7 +99,6 @@ export default function Hero() {
             </Reveal>
           </div>
 
-          {/* ---------- Where you are standing ---------- */}
           <Reveal animation="animate-card-in" delay={0.2} className="mx-auto w-full max-w-[520px]">
             <StartingCard />
           </Reveal>
@@ -145,13 +108,6 @@ export default function Hero() {
   );
 }
 
-/**
- * One household's position before anything is installed.
- *
- * Every figure is derived from the two a reader would actually know — the
- * monthly bill and the unit rate — so nothing here is a number somebody picked
- * because it flattered the argument.
- */
 function StartingCard() {
   return (
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
@@ -160,7 +116,6 @@ function StartingCard() {
         <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">Example home</span>
       </div>
 
-      {/* ---------- What it costs ---------- */}
       <div className="px-6 pb-7 pt-7 min-[520px]:px-7">
         <div className="flex items-end justify-between gap-4">
           <div>
@@ -179,7 +134,6 @@ function StartingCard() {
           <Glyph name="cost" className="mb-1 h-10 w-10 shrink-0 text-orange/70" />
         </div>
 
-        {/* ---------- And where every unit of it comes from ---------- */}
         <div className="mt-9">
           <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
             <span className="text-[14px] font-medium text-muted">Where your electricity comes from</span>
@@ -193,7 +147,6 @@ function StartingCard() {
         </div>
       </div>
 
-      {/* ---------- The facts underneath it ---------- */}
       <dl className="grid grid-cols-3 gap-px border-t border-line-2 bg-line-2">
         {[
           {label: 'You pay', value: `${EXAMPLE.importRate}p`, note: 'for every unit'},
@@ -208,7 +161,6 @@ function StartingCard() {
         ))}
       </dl>
 
-      {/* ---------- What happens next ---------- */}
       <div className="flex flex-wrap items-center gap-3 border-t border-line-2 bg-bg/40 px-6 py-5 min-[520px]:px-7">
         <Estimated label="Estimated from your bill" />
         <p className="min-w-[200px] flex-1 text-[14.5px] font-light leading-[1.55] text-ink/90">

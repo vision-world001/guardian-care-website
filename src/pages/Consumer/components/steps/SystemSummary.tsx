@@ -3,14 +3,6 @@ import {summaryOf, type ExistingPosition} from '../../../../data/consumer';
 import {cn} from '../../../../lib/cn';
 import {LABEL} from '../../../../components/kit';
 
-/**
- * Step 02: the system summary — and, further down, the visitor's own.
- *
- * Seven lines from `summaryOf`, every one of them wearing the estimate mark.
- * The same component renders the example in the explanation and the real
- * result under the system check, so the page can say "this is what you will
- * receive" and mean it literally.
- */
 export default function SystemSummary({
   position,
   caption,

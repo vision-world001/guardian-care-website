@@ -3,33 +3,6 @@ import {useTheme} from '../../lib/theme';
 import Reveal from '../../components/Reveal';
 import {cn} from '../../lib/cn';
 
-/**
- * The site's sign-off, just before the footer: the name rising out of a
- * surface of water drawn as a lattice of small points.
- *
- * The lattice is square — at rest every point is exactly the same distance
- * from its four neighbours, left, right, above and below. The waves are a
- * height field over that lattice, and the surface is seen from the front: each
- * point is lifted by its height, so a row of points becomes one wave line and
- * the rows together become the surface. Nothing is foreshortened toward a
- * horizon; the depth comes from the surface itself — waves grow toward the
- * viewer, crests catch the light, faces turned toward the viewer are lit and
- * faces turned away fall into shadow, and the far rows fade out.
- *
- * The name sits inside the water, not over it: the surface is drawn on two
- * canvases split at the name's baseline, so the rows in front of the word
- * pass over its foot while the rows behind it show between the letters.
- *
- * Canvas rather than SVG: several thousand points redrawn every frame. The
- * loop runs only while the section is on screen, and a reader who has asked
- * for reduced motion gets a single still frame.
- */
-
-/* The mark's three colours, left to right across the surface — once per
-   ground. The points are painted onto a canvas rather than styled, so they
-   cannot inherit a token; the day ramp is the same three hues walked down
-   until they hold against a white page, where the dark one's amber lands at
-   about 1.4:1 and the surface reads as a smudge. */
 const RAMPS: Record<'night' | 'day', Array<[number, number, number]>> = {
   night: [
     [255, 210, 97],
@@ -58,7 +31,6 @@ const PALETTES = {
   day: Array.from({length: SHADES}, (_, i) => ramp(RAMPS.day, i / (SHADES - 1)))
 };
 
-/** Rows beyond the bottom edge, so a near crest can rise into view. */
 const SPARE_ROWS = 4;
 
 const clamp = (v: number, lo: number, hi: number) => (v < lo ? lo : v > hi ? hi : v);
@@ -85,7 +57,6 @@ export default function WaveSign() {
 
     let W = 0;
     let H = 0;
-    /** Spacing between neighbouring points — the same across and down. */
     let S = 12;
     let cols = 0;
     let rows = 0;
@@ -118,9 +89,6 @@ export default function WaveSign() {
       x0 = (W - (cols - 1) * S) / 2;
       heights = new Float32Array(cols * rows);
 
-      /* A gentle parabola across the whole surface, so every row bows up
-         toward the middle: the surface swells under the name. The same lift
-         for every row, so the rows stay parallel and evenly spaced. */
       arch = new Float32Array(cols);
       shade = new Uint8Array(cols);
       for (let i = 0; i < cols; i++) {
@@ -132,7 +100,6 @@ export default function WaveSign() {
       waterline = word!.getBoundingClientRect().bottom - box.top;
     }
 
-    /** Wave amplitude for a row: small in the distance, large up close. */
     const amplitude = (j: number) => S * (1 + 4 * clamp(j / (rows - SPARE_ROWS), 0, 1.15));
 
     function draw(time: number) {
@@ -140,9 +107,6 @@ export default function WaveSign() {
       fctx!.clearRect(0, 0, W, H);
       if (!cols) return;
 
-      /* Heights first, so each point can be shaded from its neighbours. Three
-         swells in three directions at three speeds: one alone is a sine
-         sheet, three together are water. */
       for (let j = 0; j < rows; j++) {
         const amp = amplitude(j);
         for (let i = 0; i < cols; i++) {
@@ -156,10 +120,8 @@ export default function WaveSign() {
 
       for (let j = 0; j < rows; j++) {
         const restY = j * S;
-        /* Rows nearer than the name's baseline are drawn in front of it. */
         const ctx = restY > waterline ? fctx! : bctx!;
         const depth = clamp(restY / H, 0, 1);
-        /* The far rows fade out, like water running into haze. */
         const rowAlpha = Math.min(1, (depth / 0.36) ** 1.4);
         if (rowAlpha < 0.02) continue;
         const amp = amplitude(j);
@@ -172,8 +134,6 @@ export default function WaveSign() {
           const h = heights[k];
           const crest = (h - arch[i]) / amp;
 
-          /* Slope toward the viewer: a face whose far side is higher than its
-             near side is turned toward us and catches the light. */
           const slopeY = (heights[up * cols + i] - heights[down * cols + i]) / (2 * S);
           const left = i > 0 ? heights[k - 1] : h;
           const right = i < cols - 1 ? heights[k + 1] : h;
@@ -216,7 +176,6 @@ export default function WaveSign() {
 
     redraw();
 
-    /* The web font arriving late resizes the name, and with it the waterline. */
     const resize = new ResizeObserver(redraw);
     resize.observe(section);
     resize.observe(word);
@@ -244,7 +203,6 @@ export default function WaveSign() {
     >
       <canvas ref={backRef} className="pointer-events-none absolute inset-0 h-full w-full" />
 
-      {/* Light on the water where the name breaks the surface. */}
       <div
         className="pointer-events-none absolute left-1/2 top-[56%] h-[60%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px]"
         style={{
@@ -264,7 +222,6 @@ export default function WaveSign() {
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                /* The foot of the word dissolves into the water. */
                 maskImage: 'linear-gradient(180deg, #000 38%, rgba(0,0,0,0.12) 100%)',
                 WebkitMaskImage: 'linear-gradient(180deg, #000 38%, rgba(0,0,0,0.12) 100%)'
               }}
@@ -275,7 +232,6 @@ export default function WaveSign() {
         </Reveal>
       </div>
 
-      {/* The near water, over the foot of the name. */}
       <canvas
         ref={frontRef}
         className="pointer-events-none absolute inset-0 z-20 h-full w-full"

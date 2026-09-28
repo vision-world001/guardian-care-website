@@ -7,27 +7,6 @@ import {DEFAULT_RATES, SWAP} from '../../../data/plan';
 import {cn} from '../../../lib/cn';
 import {Caption, Figure, Panel, UnitKey, Units, type Segment} from './parts';
 
-/**
- * What solar actually changes, at the scale of one hour.
- *
- * Deliberately small numbers. The mechanism is the only thing that has to land
- * here — electricity made at the property is electricity not bought at the
- * property — and an annual figure hides it behind four digits. Ten
- * kilowatt-hours, two rows of squares and one subtraction is the entire idea,
- * and once a reader has it every larger number later on follows without being
- * explained again.
- *
- * The top row is the hero's card, unchanged: ten hollow squares. The row under
- * it is the same ten with six filled in. Nothing else on the page needs to
- * argue that solar reduces a bill.
- *
- * Beside it, the part almost every solar conversation skips: a generated unit
- * is not worth a fixed amount. It is worth whatever it saved you buying, which
- * makes a unit used at home worth roughly twice a unit exported — and that
- * single comparison is the whole argument for storage, made before storage has
- * even been mentioned.
- */
-
 const WITHOUT: Segment[] = [
   {tone: 'orange', count: SWAP.usage, hollow: true, label: 'Bought from the grid'}
 ];
@@ -37,7 +16,6 @@ const WITH: Segment[] = [
   {tone: 'orange', count: SWAP.gridWithSolar, hollow: true, label: 'Still bought'}
 ];
 
-/** Where a generated unit can go, in the order the electricity itself tries. */
 const DESTINATIONS: Array<{
   name: string;
   glyph: GlyphName;
@@ -84,7 +62,6 @@ export default function Mechanism() {
         />
 
         <div className="grid gap-4 min-[1080px]:grid-cols-[1.25fr_0.75fr]">
-          {/* ---------- The swap ---------- */}
           <Reveal className="min-w-0">
             <Panel
               title={`One hour · ${SWAP.usage} kWh of household usage`}
@@ -104,7 +81,6 @@ export default function Mechanism() {
 
               <Row label="With solar" units={WITH} cost={with_} tone="green" />
 
-              {/* ---------- And what that is worth ---------- */}
               <div className="mt-8 flex flex-wrap items-end justify-between gap-4 border-t border-line-2 pt-7">
                 <div>
                   <div className={cn(LABEL, 'text-green')}>Not bought, that hour</div>
@@ -117,7 +93,6 @@ export default function Mechanism() {
             </Panel>
           </Reveal>
 
-          {/* ---------- Where a generated unit goes ---------- */}
           <Reveal delay={0.08} className="min-w-0">
             <Panel
               title="What one unit is worth"
@@ -184,8 +159,6 @@ export default function Mechanism() {
     </Section>
   );
 }
-
-/* ---------- One row of the swap ---------- */
 
 function Row({
   label,

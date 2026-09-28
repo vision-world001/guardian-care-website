@@ -8,35 +8,6 @@ import {RECORD_CLAIM, RECORD_ROOTS, RECORD_SPINE} from '../../../data/platform';
 import {cn} from '../../../lib/cn';
 import {LiveDot} from './Conduit';
 
-/**
- * One customer. One system record.
- *
- * Drawn as a hub rather than as a chain, and that is the whole redesign. The
- * earlier version stacked seven identical boxes and joined each one to the one
- * above it — which says every stage depends on the stage before it. The
- * platform's actual claim is different: *everything links back to the
- * customer*. So the record sits on the left as the one bright object on the
- * canvas, and a dotted line runs from it to every one of the seven stages. The
- * order is still legible from the numbering and the top-to-bottom reading; the
- * connection to the record is what the geometry now says.
- *
- * The three founding fields — property, system, energy — live inside the
- * record rather than above it. They are not a first step; they are what the
- * record *is* before anything happens to it.
- *
- * Colour runs down the seven stages as one continuous ramp through the mark's
- * own colours, gold to lime to blue. Seven arbitrary tones would read as seven
- * categories; one ramp reads as time passing, which is what the order means.
- */
-
-/* ---------- Geometry ----------
-
-   The fan is an SVG drawn at true pixel size beside rows of fixed height, so
-   every curve lands on the centre of the row it belongs to. Fixed height is
-   safe here only because the layout that uses it starts at 1180px, where the
-   longest line in the data has twice the width it needs; below that, the
-   stacked layout lets rows grow freely. */
-
 const ROW_H = 72;
 const ROW_GAP = 12;
 const FAN_W = 120;
@@ -47,14 +18,6 @@ function rowCentre(index: number): number {
   return index * (ROW_H + ROW_GAP) + ROW_H / 2;
 }
 
-/**
- * The stage's place on the gold → lime → blue ramp, resolved by the browser.
- *
- * Mixed from the theme's own variables rather than from hex values computed
- * here, so the ramp cannot drift from the palette it is supposed to be a
- * reading of. Mixed in OKLab so the midpoints stay saturated — the same
- * interpolation in sRGB greys out between lime and blue.
- */
 function tone(index: number): string {
   const t = index / (RECORD_SPINE.length - 1);
   if (t <= 0.5) {
@@ -63,7 +26,6 @@ function tone(index: number): string {
   return `color-mix(in oklab, var(--color-blue) ${Math.round(((t - 0.5) / 0.5) * 100)}%, var(--ramp-mid))`;
 }
 
-/** A tone at low strength, for tile fills and borders. */
 function tint(colour: string, percent: number): string {
   return `color-mix(in srgb, ${colour} ${percent}%, transparent)`;
 }
@@ -80,7 +42,6 @@ export default function Record() {
           </h2>
         </Reveal>
 
-        {/* ---------- Wide: the record, the fan, the stages ---------- */}
         <div
           className="hidden min-[1180px]:grid min-[1180px]:items-stretch"
           style={{gridTemplateColumns: `360px ${FAN_W}px 1fr`}}
@@ -89,9 +50,6 @@ export default function Record() {
             <RecordCore />
           </Reveal>
 
-          {/* Every stage wired straight back to the record — not to the stage
-              before it. `overflow: visible` so the nodes at both ends can sit
-              across the edges of the things they join. */}
           <Reveal delay={0.25}>
             <svg
               width={FAN_W}
@@ -123,7 +81,6 @@ export default function Record() {
                 );
               })}
 
-              {/* Where every line starts: one point on the record. */}
               <circle cx="0" cy={ORIGIN_Y} r="11" style={{fill: tint('var(--ramp-mid)', 16)}} />
               <circle cx="0" cy={ORIGIN_Y} r="5" style={{fill: 'var(--ramp-mid)'}} />
             </svg>
@@ -144,19 +101,16 @@ export default function Record() {
           </ol>
         </div>
 
-        {/* ---------- Narrow: the record, then the stages beneath it ---------- */}
         <div className="mx-auto max-w-[560px] min-[1180px]:hidden">
           <Reveal animation="animate-card-in">
             <RecordCore />
           </Reveal>
 
-          {/* The line out of the record, into the first stage. */}
           <div className="ml-[19px] h-10 w-0.5" style={dottedRail(tone(0))} aria-hidden="true" />
 
           <ol>
             {RECORD_SPINE.map((node, index) => (
               <Reveal key={node.name} as="li" delay={0.04} className="flex gap-4">
-                {/* The rail runs through every stage and stops at the last. */}
                 <div className="relative flex w-10 shrink-0 justify-center">
                   {index < RECORD_SPINE.length - 1 ? (
                     <span
@@ -194,12 +148,6 @@ export default function Record() {
           </ol>
         </div>
 
-        {/* ---------- The claim ----------
-
-            The four things the sentence names are lit in the order the page has
-            introduced them: gold for the site, lime for the system, blue for
-            the operator, warm white for the customer. The words are unchanged;
-            only the four nouns carry colour. */}
         <Reveal className="mx-auto mt-20 max-w-[820px] text-center">
           <div
             aria-hidden="true"
@@ -209,23 +157,11 @@ export default function Record() {
                 'linear-gradient(90deg, transparent, var(--ramp-far), var(--ramp-mid), var(--color-blue), transparent)'
             }}
           />
-          {/* The sentence itself sits back in the muted grey so the four nouns
-              can come forward. Set in ink it left "customer" — lit in the same
-              warm white — indistinguishable from the words around it, and the
-              one noun the whole page is about read as the only one not lit. */}
           <p className="font-display text-[clamp(22px,3.2vw,36px)] font-medium uppercase leading-[1.16] tracking-[-0.005em] text-muted">
             <Claim text={RECORD_CLAIM} />
           </p>
         </Reveal>
 
-        {/* ---------- And so: pick one ----------
-
-            The page's last word is an argument, and an argument with no way
-            out of it is a dead end — the visitor agrees and then has nowhere
-            to go but the footer. This sends them back up to the three
-            journeys, which is where the home page has always wanted them; it
-            carries the header's own label so the two read as the same button
-            rather than as two different offers. */}
         <Reveal delay={0.1} className="mt-16 flex justify-center min-[760px]:mt-24">
           <a href="#journeys" className={PRIMARY}>
             Choose your journey &#8594;
@@ -236,20 +172,9 @@ export default function Record() {
   );
 }
 
-/* ---------- The record ---------- */
-
-/**
- * The one bright object in the section.
- *
- * A gradient rim in the mark's three colours, an emblem made of the site's own
- *  inside slowly turning rings, and the three founding fields. It is a picture
- * of a record rather than a card of information — the fields are what make it
- * readable, the emblem is what makes it the centre.
- */
 function RecordCore() {
   return (
     <div className="relative h-full">
-      {/* Light the record gives off. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -inset-10 -z-10 rounded-full blur-[60px]"
@@ -259,23 +184,6 @@ function RecordCore() {
         }}
       />
 
-      {/* The rim: a 1px gradient border, drawn as padding round the panel.
-
-          The panel runs `panel -> bg-2`, which is the navy half of the surface
-          ramp, and that is deliberate. The ramp drops chroma as it lifts —
-          measured against the page: bg 100%, bg-2 83%, panel 65%, panel-2 52%
-          — so a flat card separates from the ground by going quieter rather
-          than bluer.
-
-          That is the wrong half for this card. It is the one bright object in
-          its section, inside a saturated brand rim with a coloured glow behind
-          it, and filling it from panel-2 put the greyest surface on the site
-          in the middle of all that. Running down toward bg-2 instead keeps it
-          lifted (L .226 over .202, against the page's .181) while getting more
-          navy toward the bottom rather than greyer toward the top.
-
-          Four sibling cards — Why, Aim, Goal, Storage — are the same object
-          and carry the same pair. */}
       <div
         className="h-full rounded-frame p-px"
         style={{
@@ -284,7 +192,6 @@ function RecordCore() {
         }}
       >
         <div className="flex h-full flex-col rounded-[5px] bg-[linear-gradient(180deg,var(--color-panel),var(--color-bg-2))] px-6 py-6">
-          {/* ---- Header ---- */}
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-amber">
@@ -300,12 +207,10 @@ function RecordCore() {
             </span>
           </div>
 
-          {/* ---- Emblem ---- */}
           <div className="flex flex-1 items-center justify-center py-4">
             <Emblem />
           </div>
 
-          {/* ---- What the record is made of ---- */}
           <ul className="space-y-px overflow-hidden rounded-card border border-line-2">
             {RECORD_ROOTS.map((root, index) => (
               <li key={root.name} className="flex items-center gap-3.5 bg-bg/50 px-4 py-3">
@@ -324,7 +229,6 @@ function RecordCore() {
             ))}
           </ul>
 
-          {/* ---- The stages it holds, as a strip of the ramp ---- */}
           <div className="mt-5 flex items-center justify-between gap-3">
             <div className="flex gap-1.5" aria-hidden="true">
               {RECORD_SPINE.map((node, index) => (
@@ -345,16 +249,6 @@ function RecordCore() {
   );
 }
 
-/**
- * The site's , inside rings turning in opposite directions.
- *
- * Gradient IDs are generated per instance. The emblem renders twice — once in
- * the wide layout, once in the narrow — and `url(#id)` resolves to the *first*
- * element in the document with that ID. With a fixed ID, the phone layout's 
- * was pointing at the gradient inside the wide layout, which is `display:
- * none` at that width, so its edge, core and glow all silently painted as
- * nothing.
- */
 function Emblem() {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const glowId = `rec-core-glow-${uid}`;
@@ -383,7 +277,6 @@ function Emblem() {
 
       <circle cx={C} cy={C} r="62" fill={`url(#${glowId})`} />
 
-      {/* Outer ring: dotted, slow, clockwise. */}
       <g style={spin(60)}>
         <circle
           cx={C}
@@ -396,11 +289,9 @@ function Emblem() {
           strokeLinecap="round"
           opacity="0.5"
         />
-        {/* One bright bead on it, so the turn is visible at all. */}
         <circle cx={C} cy={C - 72} r="3" fill="var(--ramp-mid)" />
       </g>
 
-      {/* Middle ring: finer, faster, the other way. */}
       <g style={spin(38, true)}>
         <circle
           cx={C}
@@ -416,10 +307,8 @@ function Emblem() {
         <circle cx={C + 54} cy={C} r="2.4" fill="var(--color-amber)" />
       </g>
 
-      {/* Inner ring: still. */}
       <circle cx={C} cy={C} r="36" fill="none" stroke="var(--color-blue)" strokeWidth="1" opacity="0.35" />
 
-      {/* The . */}
       <rect
         x={C - 17}
         y={C - 17}
@@ -443,8 +332,6 @@ function Emblem() {
     </svg>
   );
 }
-
-/* ---------- A stage ---------- */
 
 function StageRow({index}: {index: number}) {
   const node = RECORD_SPINE[index];
@@ -472,13 +359,6 @@ function StageRow({index}: {index: number}) {
   );
 }
 
-/* ---------- Symbols ---------- */
-
-/**
- * The three founding fields, in the order the closing sentence lights its
- * nouns — gold for the site, lime for the system, blue beyond it — so the
- * record and the claim underneath it agree about what colour things are.
- */
 const ROOT_TONES = ['var(--ramp-far)', 'var(--ramp-mid)', 'var(--color-blue)'];
 
 const TILE = {
@@ -487,17 +367,6 @@ const TILE = {
   rail: 'relative mt-1 h-11 w-11 rounded-full'
 } as const;
 
-/**
- * A symbol set into a solid tile of its own colour.
- *
- * The earlier marks were a thin coloured line on a barely-tinted tile — a
- * one-pixel stroke on a ground at 8% of its own colour, which is two faint
- * things on top of each other. Reversed, the tile carries the colour at full
- * strength and the mark is cut out of it in the page's own near-black: the
- * contrast is the strongest the palette can make, and the shape reads at a
- * glance. The lit top edge and the cast glow are what keep a flat coloured
- * square from looking like a sticker.
- */
 function SymbolTile({
   colour,
   size,
@@ -520,9 +389,6 @@ function SymbolTile({
   );
 }
 
-/* ---------- Pieces ---------- */
-
-/** A dotted vertical rail, crawling downward, in one stage's colour. */
 function dottedRail(colour: string) {
   return {
     backgroundImage: `linear-gradient(180deg, ${colour} 0 2px, transparent 2px)`,
@@ -532,7 +398,6 @@ function dottedRail(colour: string) {
   };
 }
 
-/** The four things the sentence names, and the colour each one is lit in. */
 const NOUNS: Record<string, string> = {
   site: 'var(--ramp-far)',
   system: 'var(--ramp-mid)',
@@ -540,12 +405,6 @@ const NOUNS: Record<string, string> = {
   customer: 'var(--color-ink)'
 };
 
-/**
- * The claim, with its four nouns lit.
- *
- * Split from the data string rather than retyped as JSX, so the sentence can
- * be edited in one place and the highlighting follows it.
- */
 function Claim({text}: {text: string}) {
   const parts = text.split(/\b(site|system|operator|customer)\b/);
 

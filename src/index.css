@@ -1,79 +1,18 @@
 @import 'tailwindcss';
 
-/* ============================================================
-   Guardian Care — design tokens
-   Ported 1:1 from the original brand stylesheet.
-   ============================================================ */
 @theme {
-  /* The ground, and the mark's own navy.
-     ------------------------------------------------------------
-     The site is dark, as it has always been. What changed is that the dark is
-     no longer a charcoal or a blue-black chosen to sit near the logo — it is
-     #011227, the brand navy itself.
-
-     Stated here rather than under a class so that no-class means the site, and
-     the ground never shifts between first paint and React mounting. */
-
-  /* Surfaces: navy on the floor, slate at the top.
-     ------------------------------------------------------------
-     The four steps used to be one hue — #011227 lifted toward a brighter navy
-     — which made a panel read as a lit patch of the page rather than as an
-     object on it. Stepping toward #17222d instead drops the saturation from
-     95% to 32% on the way up, so a card separates from the ground by going
-     quieter rather than bluer, and the two colours at the ends of the ramp are
-     both brand colours rather than one brand colour and three tints of it. */
   --color-bg: #011227;
   --color-bg-2: #081729;
   --color-panel: #101d2b;
   --color-panel-2: #17222d;
 
-  /* Hairlines: the green at low strength where a rule is brand, white where
-     it is only structure. */
   --color-line: rgba(122, 179, 0, 0.24);
   --color-line-2: rgba(255, 255, 255, 0.1);
 
-  /* Type: white headings, and two supporting steps off the brand sheet.
-     ------------------------------------------------------------
-     Both supporting steps are grey — near enough to neutral that they read as
-     quiet rather than as a second colour. They were blue-greys, 43 points of
-     chroma on the faint step, which was fine on a still navy ground and is
-     not once that ground carries light in the mark's own green and blue:
-     supporting type in the same family as the light behind it competes with
-     it. About 10 points of chroma settles it back down, titles untouched.
-
-     `faint` is derived — the sheet gives no third step — and it is the token
-     that sets how bright the ground is allowed to be. It has the least
-     headroom of the three by a wide margin, so it is the first thing to fail
-     over a lit ground and the reason the array and its glint are set where
-     they are rather than louder. See the array tokens for the other half of
-     that trade. */
   --color-ink: #ffffff;
   --color-muted: #d6d9dc;
   --color-faint: #949a9e;
 
-  /* Accents — the mark's blue and green, at the chroma they can actually hold.
-     ------------------------------------------------------------
-     Both hues come straight off the artwork: the C's swoosh measures hue 129
-     and the G's lit edge hue 250, 121° apart. What the pair needed was not
-     new hues but the saturation the old tokens were leaving on the table —
-     #70a914 sat at C 0.16 where that hue reaches 0.21.
-
-     So each is set to the most saturated colour sRGB can show at its hue and
-     a lightness that clears contrast on the navy. The useful accident is that
-     they land level: green C 0.185, blue C 0.184 — two thousandths apart. It
-     matters because chroma is what the eye reads as loudness, so neither
-     colour dominates the other and the pair genuinely buzzes instead of one
-     of them simply looking brighter.
-
-     Green keeps climbing in chroma as it lightens and blue falls away — an
-     sRGB fact, not a choice — which is why the two bright variants are not
-     symmetrical: #93d600 gains saturation, #3fa3ff loses it.
-
-     Contrast on #011227: green 7.4:1, blue 5.8:1, bright green 10.6:1,
-     bright blue 7.1:1, deep green 5.0:1. All clear AA at any size.
-
-     The other four are the status tones, which have no colour in the mark and
-     are held at the brightness this ground needs. */
   --color-green: #7ab300;
   --color-green-bright: #93d600;
   --color-green-deep: #629100;
@@ -86,63 +25,31 @@
   --color-red: #ff6b5a;
   --color-purple: #9d8cff;
 
-  /* Panels let the ground through: a solid fill would punch a hole in the
-     light behind it. */
   --color-glass: rgba(23, 34, 45, 0.60);
   --color-glass-2: rgba(23, 34, 45, 0.82);
 
-  /* Corner radii, named by the thing they belong to rather than by size, so a
-     card and a tile stay distinguishable if either is retuned later. */
   --radius-tile: 10px;
   --radius-card: 14px;
   --radius-frame: 18px;
-  /* The assessment's outer shell — larger than a frame on the journeys, where
-     it is the one soft object on the page. */
   --radius-panel: 22px;
   --radius-pill: 999px;
 
-  /* Typefaces */
   --font-sans: 'Barlow', sans-serif;
   --font-display: 'Barlow Condensed', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Motion */
   --ease-brand: cubic-bezier(0.19, 1, 0.22, 1);
-  /* `both`, not `forwards`.
-     ------------------------------------------------------------
-     Anything given an `animation-delay` renders in its *natural* state while
-     that delay runs — so a staggered element appears at full opacity, then
-     snaps to invisible the instant its animation starts, then fades in. The
-     flash is brief and looks exactly like a rendering fault. `both` adds the
-     backwards fill, holding the `from` keyframe through the delay, which is
-     what every staggered reveal on this site has always meant. */
   --animate-fadeup: fadeup 0.7s cubic-bezier(0.19, 1, 0.22, 1) both;
   --animate-blip: blip 1.6s ease-in-out infinite;
 
-  /* A card arriving, as opposed to a paragraph arriving.
-     ------------------------------------------------------------
-     The site-wide fadeup is tuned for type: short, and a lift small enough
-     that a line of copy does not appear to jump. A 470px card needs longer
-     travel and longer duration or the movement reads as a flicker rather than
-     as an entrance — and the barely-there scale is what makes it feel like the
-     card is settling into place instead of sliding up a track. */
   --animate-card-in: card-in 0.9s cubic-bezier(0.19, 1, 0.22, 1) both;
 
-  /* The footer wordmark surfacing. Long and heavily eased so it reads as
-     buoyancy — the word coming up out of the water and slowing as it clears
-     it — rather than as another element sliding into place. */
   --animate-rise: rise 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  /* Entry-page solar field. Everything here is slow on purpose: a background
-     that resolves in under a few seconds reads as a loading state. */
   --animate-drift: drift 26s ease-in-out infinite;
 
-  /* One dash travelling the length of a flow path. The offset matches the
-     dash pattern's period, so the loop has no seam. */
   --animate-flow: flow 3.4s linear infinite;
 
-  /* The core bloom, breathing. Deliberately out of step with the rotation so
-     the two never resolve into a pattern. */
   --animate-bloom: bloom 19s ease-in-out infinite;
 
   @keyframes fadeup {
@@ -215,93 +122,25 @@
       transform: translate3d(2.5%, -3%, 0) scale(1.08);
     }
   }
-
 }
 
-
-/* Handset chrome. A phone is a dark object in both themes — that is what makes
-   it read as hardware rather than as another panel — but its rail has to
-   separate from the page behind it, and a white highlight on a white page does
-   not. On the day theme the rail becomes brushed steel instead. */
 :root {
-  /* The glow under a gradient button. Deliberately not the green-glow token:
-     that one is tuned for washes behind panels, and at 13% it disappears
-     entirely under a button on a white page. This is sized for a cast shadow
-     and restepped per theme, so the lift reads the same in both. */
   --btn-glow: rgba(122, 179, 0, 0.45);
 
-  /* ---- The light a surface is lit by -----------------------------------
-
-     Every one of these used to be written inline in the utility that needed
-     it, as a literal white or a literal black, which is the same as saying
-     "this site is dark" in eleven places at once. They are the *direction*
-     the light comes from, not colours: on the navy ground a raised object is
-     white along its top edge and casts black; on the white ground it is the
-     other way round, and a panel that keeps its white top edge there simply
-     disappears. Naming them is what makes one theme block enough. */
-
-  /* The inset highlight along a panel's top edge. */
   --sheen: rgba(255, 255, 255, 0.07);
   --sheen-strong: rgba(255, 255, 255, 0.11);
 
-  /* The well an input sits in.
-     ------------------------------------------------------------
-     A tint of whatever is behind it, never a colour of its own. Form fields
-     used `--color-bg-2` here, which is an opaque #081729 — and a panel is
-     `--color-glass`, a translucent slate at 60%. So every field was three things
-     its own panel was not: solid where the panel was see-through, darker, and a
-     different hue. They read as holes cut in the surface rather than as wells
-     pressed into it, and on a page with a photograph behind it they punched that
-     photograph out entirely.
-
-     A few per cent of white on the dark theme and of ink on the light one keeps
-     the field the same material as the panel and lets whatever is behind carry
-     on through it. The delineation is the ring, not the fill — a hairline is
-     enough to say "type here" and costs nothing in contrast. */
   --field: rgba(255, 255, 255, 0.055);
   --field-lit: rgba(255, 255, 255, 0.085);
 
-  /* What a raised surface casts. */
   --drop: rgba(0, 0, 0, 0.9);
   --drop-strong: rgba(0, 0, 0, 0.95);
 
-  /* The four stops of a lit rim, top edge first. Brightest at the top here,
-     because the light is above. */
   --rim-top: rgba(255, 255, 255, 0.24);
   --rim-upper: rgba(255, 255, 255, 0.08);
   --rim-lower: rgba(255, 255, 255, 0.045);
   --rim-foot: rgba(255, 255, 255, 0.1);
 
-  /* The charge on the ground.
-     ------------------------------------------------------------
-     There is no lattice here any more, at any weight. A grid is a drawn thing,
-     and what it was standing behind is a page about electricity moving through
-     a house — so the ground became the current instead: short beams that strike
-     at a random point, run out in a random direction and go, and every so often
-     a warm flare where the light the whole product is about comes off something.
-
-     A beam takes one of the mark's three colours. A flare is always amber,
-     because a flare is the sun and the sun is not up for negotiation.
-
-     `--arc-hot` is what the core of a beam tends towards and `--arc-hot-mix` is
-     how far it gets. On navy that is most of the way to white: a discharge
-     against a dark ground is white in the middle and coloured at its edges, and
-     inverting that is the difference between a live wire and a coloured stick.
-     `--arc-halo` is the alpha of the glow around the core, which is always the
-     beam's own colour, and `--arc-halo-soft` is the same glow spread down the
-     length at about half strength.
-
-     `--arc-peak` is the master. Every keyframe multiplies its opacity by it, so
-     a ground that comes out too loud on one theme is one number to change
-     rather than twelve. */
-  /* What a beam is actually made of, as opposed to what a bloom is.
-     ------------------------------------------------------------
-     These are separate from the washes and they have to be. A wash is 400px of
-     soft light and can afford to be a pale, vivid colour; a beam is a 2px
-     filament, and 2px of the same pale colour on a pale ground is nothing at
-     all. On navy the two can still be the same value, because anything at all
-     is bright against near-black — so here they are literally the washes. The
-     day block is where they part company, and the note there explains why. */
   --bolt-amber: var(--wash-amber);
   --bolt-green: var(--wash-green);
   --bolt-blue: var(--wash-blue);
@@ -316,35 +155,6 @@
   --flare-halo: 42%;
   --flare-peak: 1;
 
-  /* And where the ground steps back.
-     ------------------------------------------------------------
-     Pinned to the content column, not to the viewport. The obvious version of
-     this is a percentage — full value in the outer twelve per cent, dim
-     across the middle — and it is wrong, because the column it is protecting
-     is a fixed 1220px centred in whatever width the window happens to be. At
-     1920px the outer twelve per cent is genuinely empty page; at 1280px it is
-     240px of margin against a 34px gutter, so it lands squarely on the first
-     words of every line.
-
-     In calc against the centre it cannot drift: the dimmed band is always the
-     column plus a little, wherever the column is. Below about 1280px the two
-     offsets cross and the whole width dims, which is the right answer — on a
-     narrow screen the text spans everything, so there is no margin left to
-     put light in.
-
-     This matters more than it did under the lattice. A hairline behind a
-     paragraph is a texture a reader stops seeing within a second; a beam that
-     strikes behind one is movement at the edge of vision, which is the most
-     distracting thing a background can do. So it is defended twice — the
-     field's own scheduler keeps strikes out in the margins as well, and this
-     catches whatever runs in from there.
-
-     Four stops a side rather than two. A straight ramp from full to dim over
-     90px has a corner at each end of it, and a corner in a mask shows up as a
-     faint vertical seam down the page — the one artefact a texture this quiet
-     cannot afford, because the seam would be the only hard edge on the whole
-     ground. Bending the ramp puts the change where no single line is, which is
-     the entire point of a falloff. */
   --field-reading-mask: linear-gradient(
     90deg,
     #000 0,
@@ -358,44 +168,20 @@
   );
   --shine-core: 8%;
 
-  /* The colours the big soft washes behind the page are mixed from.
-     ------------------------------------------------------------
-     Separate from the accents because they are light, not ink. An accent has
-     to be readable, which on a white page means walking it down until it is
-     nearly a dark; a wash at 6–13% of that dark is not a tint of the brand,
-     it is a grey-green haze. These stay vivid on both grounds — nothing is
-     ever set in them — so the day theme gets the same lit page the night one
-     has rather than a dusty version of it. */
   --wash-amber: var(--color-amber);
   --wash-green: var(--color-green);
   --wash-blue: var(--color-blue);
 
-  /* The falloff that keeps type off a field or a photograph. Ink on the dark
-     theme; on the light one it has to be the page itself, or every hero gets
-     a navy bruise across it. */
   --veil-heavy: rgba(0, 6, 15, 0.55);
   --veil-mid: rgba(1, 18, 39, 0.42);
   --veil-soft: rgba(1, 18, 39, 0.2);
 
-  /* The far end of the signature gradient. Pale against the navy; the mark's
-     blue against the white, which is the pairing the light theme is built
-     on — green into blue, both of them the logo's own. */
   --gradient-far: var(--logo-pale);
 
-  /* The far end of the stage ramp — see `ramp()` in kit.tsx. Separate from
-     `--gradient-far` because that one is type and this one is what type sits
-     on, so they invert in opposite directions. */
   --ramp-far: var(--logo-pale);
 
-  /* And its middle. `--logo-green` is the mark's own value, measured off the
-     artwork, and it stays that on the navy ground. On the day ground a stage
-     filled with it carries the page's own near-white at 2.1:1, so the middle
-     steps to the readable green the rest of the day theme uses. The mark is
-     not being restated here — the ramp is. */
   --ramp-mid: var(--logo-green);
 
-  /* Daylight photography glares on a dark page and goes flat on a light one,
-     so the grade is per theme rather than baked into the utility. */
   --img-grade: brightness(0.82) contrast(1.06) saturate(0.92);
 
   --scroll-track: #010d1e;
@@ -416,9 +202,6 @@
     rgba(255, 255, 255, 0.08) 40%,
     rgba(255, 255, 255, 0.18)
   );
-  /* Glare is the reflection of a bright room in dark glass; over the day
-     theme's white screen the same white sheen would be invisible, so it
-     inverts into a faint cool shadow raking the same way. */
   --device-glare: linear-gradient(
     118deg,
     transparent 32%,
@@ -427,164 +210,26 @@
     transparent 57%
   );
 
-  /* Stands in for a photograph that failed to load. It has to belong to the
-     page it fails on, or a missing file leaves a hole of the opposite theme. */
   --photo-fallback: radial-gradient(ellipse at 30% 20%, color-mix(in srgb, var(--color-green) 20%, transparent), transparent 62%),
     radial-gradient(ellipse at 78% 74%, color-mix(in srgb, var(--color-blue) 20%, transparent), transparent 64%),
     linear-gradient(160deg, var(--color-panel-2), var(--color-bg));
 }
 
-/* ============================================================
-   Command theme — the platform's own surface
-   ------------------------------------------------------------
-   The home page is not a journey. It is the product introducing itself, and it
-   should read as an instrument rather than as a brochure about one — so it runs
-   on its own ground: near-black charcoal rather than the site's blue-black,
-   warm white type rather than pure white, and amber rather than the green-blue
-   ramp.
-
-   The accent change is the substantive one. Green-to-blue is the brand's
-   signature and it stays everywhere a journey is being told; here the subject
-   is energy itself, and energy is amber. Green survives in exactly one role on
-   this surface — a system that is fine — which is more useful than green as
-   decoration.
-
-   Radii collapse to near-square. A 18px corner is friendly; this page is meant
-   to look measured, and the difference between a card and an instrument panel
-   is mostly the corner.
-
-   Scoped rather than global, so the three journey pages keep the system they
-   were designed in. Tailwind compiles every colour utility to `var(--color-…)`,
-   so a class on <html> flips the whole route.
-   ============================================================ */
-/* ---- The brand palette -------------------------------------------------
-
-   Four colours, and the whole site is built out of them:
-
-     #011227  navy     the "G" — the ground everything sits on
-     #17222d  slate    the panel the ground steps up into
-     #7fb902  green    the "C" — the one accent
-     #dcebbe  pale     the type, and the light end of every ramp
-
-   The green is the mark's own, measured: the most saturated pixel in the C's
-   swoosh, hue 129 at C 0.19. It sat at #589009 here for a while, which is a
-   third of the way down that same hue toward black — a green chosen to carry
-   white text rather than to match the artwork. Now that the buttons cut navy
-   out of the green instead of printing white on it, the darker value has no
-   job left, and the ramps this constant feeds — the record fan, the parts
-   fan, the brand gradient — read as the logo rather than as a muted version
-   of it.
-
-   See **Accents** above for the working pair derived from this hue and the
-   G's blue, and why they are set where they are.
-
-   The pale is the ink. Stepping it down toward the navy to make the muted and
-   faint greys does not work — hue 80 into hue 213 crosses through neutral and
-   lands on a grey-green mush at hue 116 — so those two are the pale's own hue
-   held at lower saturation and lightness instead. A side effect worth having:
-   `--color-faint` clears 5.1:1 for the first time. It has failed at around
-   3.5:1 through every previous palette this site has had.
-
-   Declared on :root rather than inside the theme block. These are brand
-   constants, not theme values — they are the same on every route — and the
-   footer, which renders under every page, draws with them. */
 :root {
   --logo-navy: #011227;
   --logo-slate: #17222d;
   --logo-green: #7fb902;
   --logo-pale: #dcebbe;
 
-  /* The pale is also the light end of every ramp on the site — the diagrams
-     that run a sequence of stages, the brand gradient, the lit end of a rule.
-     That job used to belong to the gold glint at the centre of the mark, which
-     is not one of the four and now appears only as `--color-amber`, a status
-     tone. A ramp reading pale → green → blue is the palette; one reading gold
-     → green → blue was the palette plus a fifth colour nobody asked for. */
-
-  /* The call to action, which is one colour on both grounds.
-     ------------------------------------------------------------
-     Declared here rather than per theme on purpose: a button that changes
-     colour between the navy hero and the white page below it stops reading as
-     the same control. The fill is the mark's green at the chroma its hue can
-     hold, and the hover is the same hue brighter — see **Accents** above.
-
-     The ink is navy, not white, and that is the part worth reading.
-
-     White on the old #589009 measured 3.88:1. Every button label on this site
-     is 12px bold uppercase — which is not "large text" under WCAG, so that
-     was failing AA wherever it appeared, and brightening the green to the
-     mark's own value would have taken it to 2.5:1.
-
-     Flipping the ink solves it in the only direction that also serves the
-     brief: navy on this green is 7.4:1, and it goes *up* as the fill
-     brightens — 10.6:1 on hover — where white went down. A vivid green pill
-     with the ground's own navy cut out of it is also the more energetic
-     object, which is what was asked for. One token flips every button. */
   --cta: #7ab300;
   --cta-hover: #93d600;
   --cta-strong: #629100;
   --cta-ink: #011227;
 }
 
-/* ============================================================
-   Day
-   ------------------------------------------------------------
-   The same site with the light coming from the other side.
-
-   Nothing below re-describes the design. Every surface, rule, rim, shadow and
-   veil on this site already resolves through a token, so a theme is a list of
-   values and not a second stylesheet — which is the only version of this that
-   stays true a month from now.
-
-   Three things are genuinely different, and they are differences of physics
-   rather than of taste:
-
-   **The accents drop.** The vibrant pair is tuned to hold its own against
-   #011227 and measures 2.4:1 on white — visible as a block of colour, not
-   readable as a word. The hue is kept and the lightness is walked down until
-   it clears AA on the page *and* on a white panel: green #456f06 at 5.3:1 on
-   the page and 5.9:1 on a panel, blue #0a5fb5 at 5.6:1 and 6.3:1. Same two
-   colours from the mark, same relationship, legible in both rooms.
-
-   **The button inverts.** Everywhere else the brief was one CTA colour on both
-   grounds, and that held while the fill was a vivid green on navy. On white it
-   does not: #7ab300 against #f4f1ea is 2.2:1, so the control's own edge fails
-   the 3:1 a UI component needs and the button stops looking like a button.
-   The fill steps to #3f6a00 with white on it — 5.7:1 for the edge, 6.4:1 for
-   the label — and the pill is still unmistakably the green one.
-
-   **The light flips.** A panel raised off a dark page is white along its top
-   edge; the same panel on a white page is defined by what it casts, so the
-   rim inverts to a dark hairline that strengthens toward the foot and the
-   drop shadow carries the lift. Without that a card on the day theme is a
-   white rectangle on a white rectangle.
-
-   Opt-in, never automatic. The dark theme is the product's own surface and
-   stays the default on a first visit whatever the operating system says; the
-   header toggle writes the choice to localStorage and `data-theme` lands on
-   <html> before first paint.
-   ============================================================ */
 :root[data-theme='day'] {
   color-scheme: light;
 
-  /* Surfaces. The ramp inverts: the page is the light grey, a panel is the
-     white it steps up into, and the second step goes cooler rather than
-     brighter because on this ground "raised" cannot mean "lighter".
-
-     The page is warm now and it used to be cool (#f7fafc). Two reasons, and
-     visibility of the ground is *not* one of them — see the note on the bolts
-     below, where the arithmetic goes the other way. The first is that white
-     panels need somewhere to stand: #ffffff on #f7fafc is a half-step, and the
-     rim and drop tokens were carrying the whole of the lift on their own. Off
-     a warm page the same white panel separates on hue as well as on value, and
-     reads as paper rather than as a slightly different white. The second is
-     that this is a solar product — the night theme is the cold room and the day
-     theme should be the one with the sun in it, which a blue-white page
-     actively works against.
-
-     Everything mixed from the page moved with it: both veils and the scrollbar
-     track below are this value at other alphas, and leaving them cool would put
-     a blue cast over every photograph and down the side of every page. */
   --color-bg: #f4f1ea;
   --color-bg-2: #ebe6da;
   --color-panel: #ffffff;
@@ -593,20 +238,10 @@
   --color-line: rgba(69, 111, 6, 0.32);
   --color-line-2: rgba(6, 24, 44, 0.13);
 
-  /* Type. Navy rather than black — a true black on this palette reads as a
-     different brand — and the third step clears 5.0:1 on the page, so the
-     mono captions survive the move.
-
-     That third step went down a shade with the page. #666b70 measured 5.1:1 on
-     the old cool ground and 4.8:1 on this one, which is the same nominal pass
-     sitting right on its own threshold — and a caption that only just clears AA
-     is one rounding error from not clearing it. #63686d buys the margin back
-     for a change nobody will see. */
   --color-ink: #06182c;
   --color-muted: #4e5358;
   --color-faint: #63686d;
 
-  /* Accents, walked down their own hue until they are readable. */
   --color-green: #456f06;
   --color-green-bright: #35590a;
   --color-green-deep: #2b4700;
@@ -619,73 +254,24 @@
   --color-red: #c23321;
   --color-purple: #5b46c9;
 
-  /* Glass over a light ground is white, not slate. */
   --color-glass: rgba(255, 255, 255, 0.74);
   --color-glass-2: rgba(255, 255, 255, 0.93);
 
   --btn-glow: rgba(63, 106, 0, 0.4);
 
-  /* The light, from the other side. */
   --sheen: rgba(255, 255, 255, 0.8);
   --sheen-strong: rgba(255, 255, 255, 0.95);
 
-  /* Ink rather than white, and weaker. A field on a white panel is a shadow
-     pressed into it; the same few per cent of white would be invisible. */
   --field: rgba(6, 24, 44, 0.04);
   --field-lit: rgba(6, 24, 44, 0.065);
   --drop: rgba(6, 24, 44, 0.18);
   --drop-strong: rgba(6, 24, 44, 0.26);
 
-  /* Rim inverted: faintest at the top where the light lands, firmest at the
-     foot where the surface lifts away from the page. */
   --rim-top: rgba(6, 24, 44, 0.06);
   --rim-upper: rgba(6, 24, 44, 0.09);
   --rim-lower: rgba(6, 24, 44, 0.11);
   --rim-foot: rgba(6, 24, 44, 0.17);
 
-  /* The same current, lit the other way.
-     ------------------------------------------------------------
-     This block was wrong in its first version and the fix is worth writing
-     down, because the intuition that produced it is the natural one.
-
-     A beam on a pale page cannot be white at its core — that part was right.
-     What was missed is that it cannot be a *pale colour* either, and the washes
-     are pale colours: #ffb02e, #8ac800 and #22a3ff measure 1.7:1, 1.9:1 and
-     2.6:1 against this page at full strength, before the halo alpha takes them
-     down by two thirds again. A beam drawn in them is not faint, it is absent.
-
-     So the bolts leave the washes here. Same three hues, walked down until they
-     are events rather than suggestions — 2.9:1, 3.5:1 and 4.0:1, which is
-     roughly double across the board. They stop short of the accent values
-     (#456f06, #0a5fb5) on purpose: an accent has to be readable *as type*, and
-     a beam pushed that far stops being light and starts being a drawn wire,
-     which is the exact failure the lattice was removed for.
-
-     **And why the page being warmer does not help this.** It is the obvious
-     second lever and it pulls the wrong way. Every one of these tones is darker
-     than the page, so a day beam is dark-on-light, and taking the page down
-     towards the tone closes the gap instead of opening it: the bolts lose about
-     8% of their contrast on the warm ground (3.2:1 rather than 3.5:1 for the
-     green). The page is warm for the reasons given up at --color-bg, which are
-     about panels and about the brand, and the bolts simply pay the 8% out of a
-     100% gain. Anyone tempted to darken it further to make the ground read
-     should know they will be making it worse.
-
-     The alphas all come up as well, and not because the two grounds are
-     symmetrical. A dark page swallows light and a pale one does not — but what
-     it does to a *thin* mark is take the edges off it, so the halo has to be
-     heavier here to survive, not lighter. `--arc-peak` comes back up to near
-     full for the same reason.
-
-     Measured, composited, against this page, so the next person to touch these
-     does not have to guess what they are trading. Beam cores went 1.9/2.1/2.6
-     to 3.7/4.2/4.7 — roughly double, and the whole of the reason the ground is
-     visible at all now. Halos went 1.5/1.6/1.7 at 46% to 1.9/2.0/2.3 at 66%,
-     against night's 2.9/2.8/2.4; that last step is the one with a limit on it,
-     because the halo alpha is the peak of a radial that falls to nothing by
-     70%, and pushing it past about 70% stops reading as a glow and starts
-     reading as paint. Day will not reach night here and should not try: night
-     cores sit at 13–15:1, which on a pale page is not light, it is ink. */
   --bolt-amber: #e07a00;
   --bolt-green: #5f9400;
   --bolt-blue: #0d7fd4;
@@ -696,17 +282,11 @@
   --arc-halo-soft: 28%;
   --arc-peak: 0.95;
 
-  /* The flare core stops being a pale warm white and becomes a saturated one.
-     A flash of sun on a dark page is white because it is brighter than the
-     page; on a pale page nothing is, so the only honest way to draw the same
-     event is as a dense warm bloom. Amber at strength, not cream. */
   --flare-hot: rgba(224, 118, 0, 0.9);
   --flare-halo: 44%;
   --flare-peak: 0.88;
   --shine-core: 8%;
 
-  /* The veils become the page holding itself back over a field, instead of
-     ink laid across it. */
   --veil-heavy: rgba(244, 241, 234, 0.82);
   --veil-mid: rgba(244, 241, 234, 0.66);
   --veil-soft: rgba(244, 241, 234, 0.4);
@@ -724,10 +304,6 @@
   --scroll-thumb: rgba(6, 24, 44, 0.2);
   --scroll-thumb-hover: rgba(6, 24, 44, 0.36);
 
-  /* The handset stays a dark object — that is what makes it read as hardware
-     rather than as one more white card — but a white highlight down its rail
-     is invisible against a white page, so the rail becomes brushed steel and
-     the glare inverts into a faint cool shadow raking the same way. */
   --device-rail: linear-gradient(
     155deg,
     rgba(6, 24, 44, 0.42),
@@ -749,34 +325,12 @@
     transparent 57%
   );
 
-  /* One colour on both grounds was right while the fill was vivid green on
-     navy; on white the same fill is 2.4:1 and the control loses its own edge.
-     See the note above the block. */
   --cta: #3f6a00;
   --cta-hover: #2f5800;
   --cta-strong: #24450a;
   --cta-ink: #ffffff;
 }
 
-/* ---- Chrome that stays night ------------------------------------------
-
-   The bar and the footer keep the navy on the day theme: they are the frame
-   the page sits in rather than part of the page, and a light site bookended
-   by two dark bands is a stronger object than one that fades out at both
-   ends. It is also where the mark lives, and the mark was drawn for navy.
-
-   Setting a dark background alone would not do it — everything inside those
-   two elements resolves through the same tokens as the page, so a navy footer
-   would be navy with #06182c type on it. This puts the night palette back for
-   the subtree, which is why it is a list of values and not `background: navy`.
-
-   The values mirror the @theme block above. That duplication is the cost of
-   CSS having no way to say "this group of declarations, again" — if a night
-   value is retuned up there, its twin here has to follow. Only the tokens the
-   two bands actually draw with are listed, which keeps that list short.
-
-   Specificity: :root[data-theme='day'] .on-navy is (0,2,1) against the day
-   block's (0,1,1), so this wins wherever both apply. */
 :root[data-theme='day'] .on-navy {
   color-scheme: dark;
 
@@ -802,19 +356,12 @@
   --ramp-far: var(--logo-pale);
   --ramp-mid: var(--logo-green);
 
-  /* The light comes from above again, so the rim and the cast shadow flip
-     back with everything else. */
   --sheen: rgba(255, 255, 255, 0.07);
   --drop: rgba(0, 0, 0, 0.9);
 
-  /* And a field goes back to a lift rather than a shadow. Nothing on the site
-     puts a form inside a navy band today; this is here so that the first thing
-     which does is not the bug report. */
   --field: rgba(255, 255, 255, 0.055);
   --field-lit: rgba(255, 255, 255, 0.085);
 
-  /* And the button goes back to the vivid green with navy cut out of it —
-     the pairing that was only ever a problem on a white ground. */
   --btn-glow: rgba(122, 179, 0, 0.45);
   --cta: #7ab300;
   --cta-hover: #93d600;
@@ -822,9 +369,6 @@
   --cta-ink: #011227;
 }
 
-/* ============================================================
-   Base
-   ============================================================ */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -851,11 +395,6 @@
     max-width: 100%;
   }
 
-  /* Scroll chrome. The default bar is a strip of operating system dropped down
-     the edge of the page; at this width it reads as part of the design instead.
-     Both syntaxes are needed — the standard two properties for Firefox, the
-     -webkit- pseudo-elements for everything else — and the same rules cover the
-     inner scrollers too, like the day chart on a phone. */
   html {
     scrollbar-width: thin;
     scrollbar-color: var(--scroll-thumb) var(--scroll-track);
@@ -872,8 +411,6 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    /* The border is the track showing through, which insets the thumb without
-       needing a second element. */
     border: 2px solid var(--scroll-track);
     border-radius: 999px;
     background: var(--scroll-thumb);
@@ -888,16 +425,6 @@
       scroll-behavior: auto;
     }
 
-    /* Delays go too, not only durations. Collapsing the duration alone leaves
-       every staggered reveal waiting out its delay invisible — the entrance
-       tokens fill backwards, so a delayed element holds its `from` frame — and
-       the page then assembles itself piece by piece, up to half a second late.
-       That staggered popping is motion of its own, delivered to exactly the
-       reader who asked for none. */
-    /* And one iteration, not infinity. An endless loop squeezed to 0.01ms does
-       not stop — it lands on an arbitrary phase every frame, so a crawling dot
-       or a drifting wave flickers instead of holding still. Run once, each
-       looping animation settles and stays put. */
     *,
     *::before,
     *::after {
@@ -910,17 +437,11 @@
   }
 }
 
-/* ============================================================
-   Utilities
-   ============================================================ */
-
-/* Tabular figures for metrics and readouts. */
 @utility mono {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 
-/* The signature green-to-blue gradient, clipped to text. */
 @utility text-brand-gradient {
   background: linear-gradient(100deg, var(--color-green), var(--gradient-far));
   background-clip: text;
@@ -928,13 +449,10 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* The same gradient as a fill, for buttons and rules. */
 @utility bg-brand-gradient {
   background: linear-gradient(100deg, var(--color-green), var(--gradient-far));
 }
 
-/* Layered radial glows behind the entry splitter and the two journey heroes.
-   Kept as utilities because the multi-stop values are unreadable inline. */
 @utility bg-entry-glow {
   background:
     radial-gradient(ellipse 800px 560px at 22% 20%, color-mix(in srgb, var(--wash-green) 12%, transparent), transparent 60%),
@@ -942,15 +460,6 @@
     linear-gradient(180deg, var(--color-bg), var(--color-bg-2));
 }
 
-/* `bg-business-glow` stood here. The business hero draws its own light now —
-   the console field runs the length of that page and the hero is simply its
-   brightest band — so a second glow layered over it had nothing left to do. */
-
-/* A translucent surface with a lit top edge. The inset highlight is what makes
-   a flat panel read as a pane of glass catching light from above rather than as
-   a rectangle of slightly different grey. */
-/* The ground inside a control. Paired with a `ring-line-2` for its edge, which
-   is what actually marks the field out — see the note on `--field`. */
 @utility bg-field {
   background-color: var(--field);
 }
@@ -971,7 +480,6 @@
   box-shadow: inset 0 1px 0 var(--sheen);
 }
 
-/* Elevation for the two surfaces a visitor is meant to reach for. */
 @utility shadow-lift {
   box-shadow:
     inset 0 1px 0 var(--sheen),
@@ -984,68 +492,22 @@
     0 30px 70px -30px var(--drop-strong);
 }
 
-/* ---- Entry solar field ---------------------------------------------------
-
-   The points themselves are painted on a canvas; this is the falloff that
-   keeps the copy and the two cards off the brightest part of the field. */
 @utility bg-solar-veil {
   background:
     radial-gradient(ellipse 640px 340px at 50% 26%, var(--veil-heavy), transparent 74%),
     radial-gradient(ellipse 900px 460px at 50% 78%, var(--veil-mid), transparent 76%);
 }
 
-/* The falloff over the consumer journey's day-cycle field. Weaker than the
-   entry veil — that one sits under centred type on a single screen, this one
-   has to leave charts and readouts legible for the length of a page. */
 @utility bg-home-veil {
   background:
     radial-gradient(ellipse 900px 520px at 50% 34%, var(--veil-mid), transparent 76%),
     radial-gradient(ellipse 1000px 560px at 50% 82%, var(--veil-soft), transparent 78%);
 }
 
-/* Photographs sit on a dark page, so every one of them is graded down and
-   cooled slightly before it lands — an untreated daylight photo dropped into
-   this palette glares, and reads as stock art pasted onto a product. */
 @utility img-graded {
   filter: var(--img-grade);
 }
 
-/* ---- The lit grounds ----------------------------------------------------
-
-   Two paints, two strikes, and a mask that keeps them off the words.
-
-   `CurrentField` owns every random number — where a beam starts, which way it
-   runs, how long it is, how long it burns and how long the field waits before
-   the next one. Everything here is the part that does not vary, and the split
-   is the point: the *look* of a discharge is not random at all, it is one fixed
-   sequence of flicker and decay that every strike shares. Keeping that sequence
-   in CSS keyframes also means the compositor runs it, so a page with twenty
-   beams on it is still animating nothing but transform and opacity.
-
-   Both paints start at `animation-name: none`. The field sets a name to fire
-   one, clears it on `animationend`, and sets it again after a random wait —
-   which is the whole reason there is a name in the shorthand and the reason it
-   is `none`. A reader who asked for reduced motion gets `data-still` and the
-   name is never set at all: one random arrangement of beams, frozen and dimmed,
-   which is a composition rather than a blank page. */
-
-/* A beam.
-   ------------------------------------------------------------------------
-   Three background layers on one element. No filter and no box-shadow, both of
-   which would repaint on every frame of the scale rather than riding it.
-
-   Layer one is the core: a 2px band down the middle of the box, dim at the tail
-   and hot at the head, so the beam has a direction and is not just a stick.
-   Layer two is the glow at that head. Layer three is the same glow spread along
-   the whole length at about half strength, so the tail is lit rather than a
-   bare rule hanging off the back.
-
-   `transform-origin: left` plus `scaleX` is the whole of the extension. The
-   element is positioned at the point the beam strikes *from*, and scaling about
-   its own left edge runs it outward without moving that point. The rotation is
-   what makes the direction random, and it has to come before the scale in the
-   list — the other order stretches the beam along the screen's axis instead of
-   its own, which turns every diagonal into a wedge. */
 @utility paint-arc {
   transform-origin: left;
   transform: rotate(var(--arc-a, 0deg)) scaleX(1);
@@ -1078,12 +540,6 @@
   animation: none var(--arc-dur, 800ms) linear 1 normal both;
 }
 
-/* A flare.
-   ------------------------------------------------------------------------
-   A round core with two streaks crossing it that run past its edge, which is
-   the difference between a blob of light and light coming off something. Warm
-   on both themes: this is the sun, and it is the only thing on the ground that
-   is not the wiring. */
 @utility paint-flare {
   transform: translate(-50%, -50%) scale(1);
   opacity: 0;
@@ -1115,17 +571,11 @@
   animation: none var(--arc-dur, 1600ms) ease-out 1 normal both;
 }
 
-/* The band the ground keeps out of. Its own utility because two fields ask for
-   it and neither should be the one that owns it. */
 @utility mask-reading {
   mask-image: var(--field-reading-mask);
   -webkit-mask-image: var(--field-reading-mask);
 }
 
-/* Held still for a reader who asked for no motion. Unlayered on purpose, so it
-   outranks the utilities above without an `!important` — the field never sets
-   an animation name on these, so there is nothing to fight, only a resting
-   opacity to supply. */
 .paint-arc[data-still] {
   opacity: calc(var(--arc-peak) * 0.42);
 }
@@ -1134,19 +584,6 @@
   opacity: calc(var(--flare-peak) * 0.4);
 }
 
-/* The strike.
-   ------------------------------------------------------------------------
-   Declared out here rather than in @theme for the same reason as `conduit`
-   below: Tailwind only emits a theme keyframe when some utility references its
-   matching --animate-* token, and these are named from JavaScript, so inside
-   the block they would compile to nothing.
-
-   The shape is attack, flicker, decay. There is no rise time at the front
-   because a discharge has none — it is already there on the frame it appears —
-   and the two flicker dips are deliberately uneven, because an even one reads
-   as a lamp being dimmed rather than as current finding its way. It is still
-   extending slightly while it fades, so the light leaves along the beam rather
-   than switching off in place. */
 @keyframes arc-strike {
   0% {
     opacity: 0;
@@ -1178,9 +615,6 @@
   }
 }
 
-/* The flare, which is the opposite animation in every respect: it swells, it
-   holds, and it takes its time going. A slow drift of rotation keeps the two
-   streaks from reading as a fixed crosshair. */
 @keyframes sun-flare {
   0% {
     opacity: 0;
@@ -1200,26 +634,10 @@
   }
 }
 
-
-/* The fade that marries a photograph to the page underneath it. */
 @utility bg-photo-veil {
   background: linear-gradient(180deg, var(--veil-soft) 0%, var(--veil-heavy) 62%, var(--color-bg) 100%);
 }
 
-/* ---- Lit borders --------------------------------------------------------
-
-   A flat 1px hairline all the way round reads as a container *drawn on* the
-   page. A real surface catching light from above is bright along its top edge
-   and almost nothing along its bottom, and that one difference is most of what
-   separates a modern panel from a boxed one.
-
-   A plain `border` cannot be graded, so the rim is a masked pseudo-element: a
-   gradient filling the box, with its own middle punched out by compositing two
-   masks, leaving exactly the 1px frame. `border-radius: inherit` keeps it
-   locked to whatever radius the panel is using, so a panel can change shape
-   without the rim being retuned.
-
-   Anything wearing this should drop its own `border`, or the two stack. */
 @utility ring-lit {
   position: relative;
 
@@ -1238,11 +656,6 @@
       var(--rim-lower) 64%,
       var(--rim-foot)
     );
-    /* Longhands, not the `mask` shorthand: the shorthand resets
-       `mask-composite` back to `add`, and the build reorders it after the
-       composite declaration — which fills the whole panel with the gradient
-       instead of punching its middle out. Chrome survived that on the -webkit-
-       properties; Firefox would not have. */
     mask-image:
       linear-gradient(#000 0 0),
       linear-gradient(#000 0 0);
@@ -1256,8 +669,6 @@
   }
 }
 
-/* The same rim with its top edge left open, for a panel attached beneath
-   something else — the strip above already drew that line. */
 @utility ring-lit-open-top {
   position: relative;
 
@@ -1275,11 +686,6 @@
       var(--rim-lower) 55%,
       var(--rim-foot)
     );
-    /* Longhands, not the `mask` shorthand: the shorthand resets
-       `mask-composite` back to `add`, and the build reorders it after the
-       composite declaration — which fills the whole panel with the gradient
-       instead of punching its middle out. Chrome survived that on the -webkit-
-       properties; Firefox would not have. */
     mask-image:
       linear-gradient(#000 0 0),
       linear-gradient(#000 0 0);
@@ -1293,18 +699,6 @@
   }
 }
 
-/* ---- Conduits ----------------------------------------------------------
-
-   A charge travelling down a line between two nodes.
-
-   This is the page's one motion rule made concrete: the animation is the
-   energy moving, not decoration applied to a static diagram. The pulse is a
-   short segment of a tall track, so the same two elements work at any length —
-   a 40px gap in the hero card and a 700px spine in the record diagram.
-
-   Declared here rather than in @theme: Tailwind only emits a theme keyframe
-   when a utility references its --animate-* token, and this is driven from an
-   inline animation shorthand so it would compile to nothing inside the block. */
 @keyframes conduit {
   0% {
     transform: translateY(-120%);
@@ -1339,36 +733,12 @@
   }
 }
 
-/* ---- Dotted flow -------------------------------------------------------
-
-   Dots marching along a curve.
-
-   The hero's whole diagram is drawn in dotted line — objects and parabolas
-   alike — so the energy travelling through it cannot be a solid pulse sliding
-   over a dotted track without breaking the one rule the drawing has. Instead
-   the dots themselves crawl: same dash pattern, offset animating, which reads
-   as current moving and leaves the line dotted at every frame.
-
-   The offset lands on a whole number of dash periods so the loop has no seam.
-   Every path using this must carry `stroke-dasharray: 2 8` (period 10) or the
-   -200 below stops being a multiple and the dots visibly jump on repeat. */
 @keyframes crawl {
   to {
     stroke-dashoffset: -200;
   }
 }
 
-/* ---- Dotted rail -------------------------------------------------------
-
-   The same crawling dots as the hero, but for a DOM element rather than an SVG
-   path. A CSS `dotted` border cannot be animated, so the dots are a tiled
-   gradient and what moves is the background position. The offset is a whole
-   number of tiles so the loop has no seam; the tile is 10px, matching the
-   `background-size` the rail sets. */
-/* A slow turn, for the rings around the customer record. Slow enough that it
-   reads as a system idling rather than as a loading spinner — anything under
-   about twenty seconds a revolution starts to look like the page is waiting
-   for something. */
 @keyframes orbit {
   to {
     transform: rotate(360deg);
@@ -1387,8 +757,6 @@
   }
 }
 
-/* The slow breath under a live readout. Deliberately not `animate-blip`, which
-   is a warning rhythm — this one says "reading" rather than "attention". */
 @keyframes live {
   0%,
   100% {
@@ -1401,13 +769,6 @@
   }
 }
 
-/* ---- Steps -------------------------------------------------------------
-
-   The consumer journey shows one step at a time — the others are not below the
-   fold, they are not rendered — so each one stands its own screen and centres
-   what it holds. `100dvh` rather than `100vh` so a phone's collapsing address
-   bar does not leave a gap under the step. Steps taller than a screen (the
-   result) simply grow past it. */
 @utility slide {
   min-height: 100dvh;
   display: flex;

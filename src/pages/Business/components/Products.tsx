@@ -6,20 +6,6 @@ import {PRODUCTS} from '../../../data/businessFlow';
 import {TONE_TEXT, TONE_VAR} from '../../../data/command';
 import {cn} from '../../../lib/cn';
 
-/**
- * Three products, one record.
- *
- * The platform is genuinely three pieces of software, and pretending otherwise
- * would fall apart on the first demo. But three products is also the moment a
- * reader starts calculating how much of their year this would take, so each one
- * is given a two-word instruction set large — Capture it, Run it, Show them —
- * and the detail is three fragments underneath rather than a paragraph.
- *
- * The rail beneath the three is the part that actually sells it. Everything a
- * company already owns is scattered across a CRM, an installer's phone and
- * three different monitoring portals; one record under all three products is
- * the thing none of those can offer, and it is worth exactly one line.
- */
 export default function Products() {
   return (
     <Section id="products" hairline className="py-16 min-[760px]:py-24">
@@ -72,7 +58,6 @@ export default function Products() {
           ))}
         </div>
 
-        {/* ---------- What holds them together ---------- */}
         <Reveal
           delay={0.2}
           className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-frame px-6 py-5 text-center"

@@ -6,25 +6,6 @@ import {TONE_TEXT, TONE_VAR} from '../../../data/command';
 import {EVENTS, PORTFOLIO, PRIORITIES} from '../../../data/platform';
 import {cn} from '../../../lib/cn';
 
-/**
- * The operational brain.
- *
- * Four counters and four events, which is the smallest honest sample of what an
- * operations screen actually looks like. The point is not the volume of data —
- * it is that a queue of thousands of systems arrives as a list of four things,
- * each one already carrying its priority, its reason and its reference.
- *
- * The priority ladder underneath is the platform's own, not a generic severity
- * scale, and it is printed with what each level *obliges* rather than with how
- * bad it is. That is the difference between a colour-coded list and an
- * operations tool: a level that does not tell somebody whether to act is
- * decoration.
- *
- * Every status carries a shape as well as a colour — filled for anything that
- * obliges a person, hollow for anything that does not. Five levels is more than
- * hue can carry on its own, and the amber-to-orange step in particular is not
- * one every reader can see.
- */
 export default function Operations() {
   return (
     <Section id="operations" hairline className="py-16 min-[760px]:py-24">
@@ -40,7 +21,6 @@ export default function Operations() {
         </Reveal>
 
         <div className="glass ring-lit overflow-hidden rounded-frame">
-          {/* ---------- The portfolio ---------- */}
           <div className="grid grid-cols-2 gap-px bg-line-2 min-[760px]:grid-cols-4">
             {PORTFOLIO.map((kpi) => (
               <div key={kpi.label} className="bg-panel px-6 py-7 min-[760px]:px-8 min-[760px]:py-9">
@@ -59,7 +39,6 @@ export default function Operations() {
             ))}
           </div>
 
-          {/* ---------- The queue ---------- */}
           <div className="border-t border-line-2 px-6 pb-2 pt-7 min-[760px]:px-9">
             <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
               Priority events
@@ -76,8 +55,6 @@ export default function Operations() {
                   key={event.ref}
                   className="flex items-start gap-4 border-b border-line-2 px-6 py-4 transition-colors duration-150 last:border-b-0 hover:bg-panel-2/50 min-[760px]:items-center min-[760px]:px-9"
                 >
-                  {/* Filled or hollow, then coloured. Shape first, because the
-                      shape is the part every reader can see. */}
                   <span
                     aria-hidden="true"
                     className="mt-[6px] h-2.5 w-2.5 shrink-0 rounded-full border min-[760px]:mt-0"
@@ -111,7 +88,6 @@ export default function Operations() {
             })}
           </div>
 
-          {/* ---------- What each level obliges ---------- */}
           <div className="border-t border-line-2 bg-bg/40 px-6 py-7 min-[760px]:px-9">
             <div className="mono mb-5 text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
               Priority levels

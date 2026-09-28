@@ -16,33 +16,8 @@ import {
   type Field
 } from '../../lib/enquiry';
 
-/**
- * Talk to somebody.
- *
- * Every field is required, which is the brief and is also the honest shape for
- * this particular form: an enquiry with no number on it cannot be called back,
- * and one with no role on it cannot be routed to whoever should answer it. So
- * there are no optional fields to weigh up — five things, all of them used.
- *
- * **Validation is on submit first, then live per field.** A form that turns red
- * while you are still typing your email is telling you that you are wrong at the
- * exact moment you are still doing it right, so nothing is marked until either
- * the field is left or the form is sent. After that a field with a complaint
- * against it re-checks on every keystroke, because once somebody is *fixing*
- * something, silence until they leave the field again is the wrong feedback.
- *
- * On a failed submit the first bad field takes focus. Scrolling somebody to a
- * wall of red and leaving them to find the top of it is the commonest way a
- * long form becomes unfinishable on a phone.
- *
- * **It does not send yet, and it does not pretend to.** See `lib/enquiry` for
- * the seam and for why this page carries the phone number and address beside
- * the form rather than only inside it — a visitor should never have to discover
- * afterwards that their message went nowhere.
- */
 export default function Contact() {
   const [enquiry, setEnquiry] = useState<Enquiry>(EMPTY_ENQUIRY);
-  /* Which fields have earned the right to complain: left once, or submitted. */
   const [touched, setTouched] = useState<Partial<Record<Field, boolean>>>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
   const [failure, setFailure] = useState('');
@@ -51,7 +26,6 @@ export default function Contact() {
   const found = problems(enquiry);
   const sending = status === 'sending';
 
-  /** Shown only where the field has been left alone or the form was sent. */
   const errorFor = (field: Field) => (touched[field] ? found[field] : undefined);
 
   function write(field: Field, value: string) {
@@ -66,8 +40,6 @@ export default function Contact() {
     const order: Field[] = ['name', 'email', 'phone', 'role', 'message'];
 
     if (Object.keys(found).length > 0) {
-      /* Everything is marked at once — a form that reveals its faults one at a
-         time makes the visitor submit five times to learn five things. */
       setTouched(Object.fromEntries(order.map((field) => [field, true])));
 
       const first = order.find((field) => found[field]);
@@ -92,12 +64,6 @@ export default function Contact() {
     <main className="relative isolate overflow-hidden">
       <ContactField />
 
-      {/* One section, not two.
-          The heading and the form were a section each, which bought a dividing
-          rule and two sets of vertical padding between a four-word title and
-          the thing the page exists for. Merged, the rule has nothing to divide
-          and the gap is a single margin — so the form is on screen at the top
-          of the page rather than a scroll below it. */}
       <Section className="py-10 min-[760px]:py-14">
         <Wrap>
           <Reveal>
@@ -107,7 +73,6 @@ export default function Contact() {
           </Reveal>
 
           <div className="mt-8 grid gap-4 min-[760px]:mt-10 min-[1000px]:grid-cols-[1.25fr_0.75fr] min-[1000px]:items-start">
-            {/* ---------- The form ---------- */}
             <Reveal className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
               {status === 'sent' ? (
                 <Sent
@@ -161,17 +126,12 @@ export default function Contact() {
                       onLeave={setTouched}
                     />
 
-                    {/* ---- Role ---- */}
                     <FieldShell
                       field="role"
                       label="Which are you?"
                       error={errorFor('role')}
                       value={enquiry.role}
                     >
-                      {/* `appearance-none` so the control matches the inputs
-                          beside it, which means drawing the affordance it just
-                          removed — without a chevron this is a field that looks
-                          typed-into and is not. */}
                       <span className="relative mt-2.5 flex items-center">
                         <select
                           id="role"
@@ -210,7 +170,6 @@ export default function Contact() {
                       </span>
                     </FieldShell>
 
-                    {/* ---- Message ---- */}
                     <div className="min-[620px]:col-span-2">
                       <FieldShell
                         field="message"
@@ -253,7 +212,6 @@ export default function Contact() {
               )}
             </Reveal>
 
-            {/* ---------- The routes that work today ---------- */}
             <Reveal delay={0.08} className="grid gap-4">
               <div className="glass ring-lit overflow-hidden rounded-frame">
                 <div className="border-b border-line-2 px-6 py-4">
@@ -309,17 +267,6 @@ const NEXT = [
   'Nothing is added to a mailing list. This is an enquiry, not a sign-up.'
 ];
 
-/* ---------- Pieces ---------- */
-
-/**
- * The box a control sits in, and the one place a field's error is drawn.
- *
- * The ring is the whole error state — a red outline on the container rather than
- * red type alone, because the message sits under the field and somebody
- * scrolling a long form needs to find the field from a glance at the edge of it.
- * `value` only decides whether the label has lifted its own emphasis; it does
- * not affect validity, which belongs to the caller.
- */
 function FieldShell({
   field,
   label,
@@ -437,8 +384,6 @@ function Sent({onAgain}: {onAgain: () => void}) {
         Your message has been checked and is ready to go to whoever handles the role you picked.
       </p>
 
-      {/* The confirmation is where this page could most easily lie, so it is
-          also where the truth is repeated. */}
       <p className="mt-4 rounded-card bg-field px-4 py-3 text-[13px] font-light leading-[1.55] text-faint ring-1 ring-line-2">
         {NOT_CONNECTED}
       </p>

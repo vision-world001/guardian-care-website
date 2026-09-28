@@ -11,21 +11,6 @@ import {
 } from '../../../data/businessFlow';
 import {cn} from '../../../lib/cn';
 
-/**
- * What the six answers add up to.
- *
- * The suggestion is adaptive because the honest answer genuinely differs. A
- * company that already monitors has a different first move from one holding
- * two thousand dormant records and no visibility at all, and telling both of
- * them to "start with the existing customer base" would be advice for one and
- * filler for the other.
- *
- * The portfolio figure is the one number on this page derived from the
- * reader's own answer rather than from Guardian Care's demonstration data, so
- * it is set large. Everything a company has ever installed is still running;
- * seeing their own count printed next to that sentence is the moment the
- * argument stops being about somebody else's portfolio.
- */
 export default function Model({position}: {position: BusinessPosition}) {
   const suggestion = suggest(position);
 
@@ -40,7 +25,6 @@ export default function Model({position}: {position: BusinessPosition}) {
         />
 
         <div className="grid gap-4 min-[1000px]:grid-cols-[0.85fr_1.15fr]">
-          {/* ---------- What you told us ---------- */}
           <Reveal className="glass ring-lit rounded-frame p-6 min-[760px]:p-8">
             <div className={cn(LABEL, 'text-green')}>Your profile</div>
 
@@ -72,7 +56,6 @@ export default function Model({position}: {position: BusinessPosition}) {
             ) : null}
           </Reveal>
 
-          {/* ---------- What we would do first ---------- */}
           <Reveal delay={0.06} className="ring-lit overflow-hidden rounded-frame">
             <div className="bg-[linear-gradient(120deg,var(--color-green-glow),var(--color-blue-glow))] p-6 min-[760px]:p-9">
               <div className={cn(LABEL, 'text-green')}>&#9671; Guardian Care suggests</div>
@@ -85,7 +68,6 @@ export default function Model({position}: {position: BusinessPosition}) {
               </p>
             </div>
 
-            {/* ---------- The order it happens in ---------- */}
             <div className="glass-solid border-t border-line-2 p-6 min-[760px]:px-9 min-[760px]:py-7">
               <div className={cn(LABEL, 'text-faint')}>Your first five moves</div>
 
@@ -132,8 +114,6 @@ function Row({label, value, tone}: {label: string; value: string; tone?: string}
     </div>
   );
 }
-
-/* ---------- What the answers add up to ---------- */
 
 function suggest(position: BusinessPosition): {headline: string; body: string} {
   if (position.reactive && position.installedCount && position.installedCount >= 500) {

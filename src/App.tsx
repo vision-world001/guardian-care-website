@@ -7,13 +7,6 @@ import Home from './pages/Home/Home';
 import Plan from './pages/Plan/Plan';
 import Start from './pages/Start/Start';
 
-/**
- * Three journeys and the door they open from.
- *
- * The home page shares the chrome now rather than standing alone: it is no
- * longer only a splitter, and a page that explains the platform without a way
- * back into it is a dead end.
- */
 export default function App() {
   return (
     <BrowserRouter>
@@ -21,20 +14,12 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/consumer" element={<Consumer />} />
-          {/* The journey's old address, kept so earlier links still land. */}
           <Route path="/existing" element={<Navigate to="/consumer" replace />} />
           <Route path="/plan" element={<Plan />} />
           <Route path="/business" element={<Business />} />
 
-          {/* The way in, from anywhere. The header's button points here on
-              every route, so it is a page rather than a section — a visitor
-              who clicks "get started" on the home page should not land in the
-              middle of the business page to find the form. */}
           <Route path="/start" element={<Start />} />
 
-          {/* Reached from the footer on every page, so it is a route rather
-              than a section: a contact form that only exists at the bottom of
-              one journey is unreachable from the other three. */}
           <Route path="/contact" element={<Contact />} />
         </Route>
 

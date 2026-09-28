@@ -10,26 +10,6 @@ import {cn} from '../../../lib/cn';
 import {LiveDot} from '../../Home/components/Conduit';
 import {Caption, Panel} from './parts';
 
-/**
- * Installation is not the end.
- *
- * The hinge of the whole journey, and the one thing that separates this page
- * from a solar quotation. Everything above it is estimated — the page has said
- * so on every figure — and this is where the estimates are replaced by what
- * the system actually does.
- *
- * So the dashboard is shown rather than described, filled in for the same
- * example household, and the badge on it says *measured* where every earlier
- * card said *estimated*. A reader who has been watching that label all the way
- * down the page gets the point without a sentence being spent on it.
- *
- * The suggestions below it are a picker rather than a list, because the shape
- * is what matters: Guardian Care never states a conclusion. It says what it
- * saw, and what it would look at. Two clicks and a reader has recognised the
- * pattern, which no amount of explaining it achieves.
- */
-
-/** What monitoring answers that an estimate never can. */
 const ANSWERS = [
   'Are you generating what was expected?',
   'How much are you actually using yourself?',
@@ -53,7 +33,6 @@ export default function Afterwards() {
           body="Once connected, Guardian Care stops estimating. Every figure becomes a reading."
         />
 
-        {/* ---------- What you would be looking at ---------- */}
         <Reveal animation="animate-card-in" className="min-w-0">
           <Panel
             title="Your Guardian Care account · today"
@@ -97,18 +76,15 @@ export default function Afterwards() {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line-2 bg-bg/40 px-5 py-4 min-[520px]:px-6">
               <Caption>Log in whenever you like</Caption>
               <span aria-hidden="true" className="text-faint/40">
-                
               </span>
               <Caption>Nothing you have to check</Caption>
               <span aria-hidden="true" className="text-faint/40">
-                
               </span>
               <Caption>Guardian Care watches it for you</Caption>
             </div>
           </Panel>
         </Reveal>
 
-        {/* ---------- And what it starts telling you ---------- */}
         <div className="mt-16 grid gap-10 min-[1080px]:grid-cols-[0.78fr_1.22fr] min-[1080px]:gap-14">
           <div>
             <Reveal>
@@ -124,7 +100,6 @@ export default function Afterwards() {
               {ANSWERS.map((line) => (
                 <li key={line} className="flex items-start gap-3">
                   <span aria-hidden="true" className="mt-[7px] text-[9px] text-green">
-                    
                   </span>
                   <span className="text-[14.5px] font-light leading-[1.45] text-ink/85">
                     {line}
@@ -134,7 +109,6 @@ export default function Afterwards() {
             </Reveal>
           </div>
 
-          {/* ---------- The suggestions ---------- */}
           <div className="min-w-0">
             <Reveal className="grid gap-2.5 min-[620px]:grid-cols-2">
               {SUGGESTIONS.map((suggestion, index) => {
@@ -155,8 +129,6 @@ export default function Afterwards() {
                     )}
                     style={on ? {boxShadow: `inset 0 0 0 2px ${colour}`} : undefined}
                   >
-                    {/* Unselected, the chip keeps a trace of its own tone —
-                        see the note on the goal picker. */}
                     <span
                       className={cn(
                         'grid h-9 w-9 shrink-0 place-items-center rounded-tile',
@@ -187,7 +159,6 @@ export default function Afterwards() {
               })}
             </Reveal>
 
-            {/* What it saw, then what it would look at. Never a conclusion. */}
             <Reveal key={picked.key} animation="animate-card-in" className="mt-3">
               <div className="glass ring-lit overflow-hidden rounded-frame">
                 <div className="flex items-center gap-3.5 border-b border-line-2 px-5 py-4 min-[520px]:px-6">

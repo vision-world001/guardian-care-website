@@ -1,7 +1,3 @@
-/* Note: the glyph-and-number block in each stage card is commented out, so
-   `Glyph` is not imported. Restoring that block needs
-   `import Glyph from '../../../components/Glyph';` back at the top — lint fails
-   on the unused import otherwise. */
 import {Fragment, useState} from 'react';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
@@ -9,19 +5,6 @@ import {TONE_TEXT} from '../../../data/command';
 import {INSIGHT, PIPELINE} from '../../../data/platform';
 import {cn} from '../../../lib/cn';
 
-/**
- * Data, intelligence, action — and then one real event to prove it.
- *
- * The three columns are the claim. The card underneath is the evidence, and it
- * is interactive for a specific reason: the platform's sharpest principle is
- * that operations and the customer are shown *the same event in different
- * words*, and that is close to impossible to land in prose. Two tabs on one
- * alert land it in about two seconds — a fault code and a string number for the
- * team, a sentence about whether to worry for the household.
- *
- * Which is also the moment a visitor stops reading this as another monitoring
- * dashboard.
- */
 export default function Intelligence() {
   const [at, setAt] = useState(0);
   const view = INSIGHT[at];
@@ -37,11 +20,6 @@ export default function Intelligence() {
           </h2>
         </Reveal>
 
-        {/* ---------- The three stages ----------
-
-            The arrows are their own grid cells rather than children of a
-            wrapper, because a `display: contents` wrapper generates no box and
-            would silently discard the reveal it was supposed to be carrying. */}
         <div className="grid items-stretch gap-4 min-[900px]:grid-cols-[1fr_auto_1fr_auto_1fr]">
           {PIPELINE.map((stage, index) => (
             <Fragment key={stage.key}>
@@ -61,14 +39,6 @@ export default function Intelligence() {
                   stage.key === 'ai' ? 'border-amber/30' : 'border-line-2'
                 )}
               >
-                {/* <div className="flex items-center justify-between gap-4">
-                  <span className={TONE_TEXT[stage.tone]}>
-                    <Glyph name={stage.glyph} className="h-8 w-8" />
-                  </span>
-                  <span className="mono text-[11px] text-faint">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div> */}
 
                 <div
                   className={cn(
@@ -77,11 +47,7 @@ export default function Intelligence() {
                   )}
                 >
                   {stage.line}
-                  {/* {stage.name} */}
                 </div>
-
-                {/* <div className="mt-2.5 font-display text-[22px] font-semibold uppercase leading-[1.1] text-ink">
-                </div> */}
 
                 <ul className="mt-6 flex-1 space-y-2 border-line-2 pt-5">
                   {stage.items.map((item) => (
@@ -98,14 +64,12 @@ export default function Intelligence() {
           ))}
         </div>
 
-        {/* ---------- One event, both ways ---------- */}
         <Reveal className="glass ring-lit mt-4 overflow-hidden rounded-frame">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line-2 px-6 py-4 min-[760px]:px-9">
             <span className="mono inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[.13em] text-amber">
                Guardian Care Intelligence
             </span>
 
-            {/* The same alert, addressed to two different readers. */}
             <div
               role="tablist"
               aria-label="Who this alert is written for"

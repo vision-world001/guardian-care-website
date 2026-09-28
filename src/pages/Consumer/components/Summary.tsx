@@ -7,15 +7,6 @@ import Conduit from '../../Home/components/Conduit';
 import {Heading, LABEL, SECONDARY} from '../../../components/kit';
 import SystemSummary from './steps/SystemSummary';
 
-/**
- * The visitor's own summary — step 02, for real.
- *
- * Rendered by the same component that illustrated step 02, so what the page
- * promised is exactly what arrives. Beside it, the one observation the answers
- * support; beneath it, where this sits on the way to a dashboard. A result that
- * ends on a set of figures leaves the reader holding numbers; one that ends on
- * "you are here, and this is next" leaves them holding a direction.
- */
 export default function Summary({position}: {position: ExistingPosition}) {
   const observation = observe(position);
 
@@ -38,7 +29,6 @@ export default function Summary({position}: {position: ExistingPosition}) {
             />
           </Reveal>
 
-          {/* ---------- What the answers suggest ---------- */}
           <Reveal delay={0.08} className="glass shadow-lift ring-lit flex flex-col overflow-hidden rounded-frame">
             <div className="border-b border-line-2 px-6 py-4">
               <span className={cn(LABEL, 'text-amber')}> Guardian Care Intelligence · Initial observation</span>
@@ -58,7 +48,6 @@ export default function Summary({position}: {position: ExistingPosition}) {
           </Reveal>
         </div>
 
-        {/* ---------- Where this sits on the way to a dashboard ---------- */}
         <Reveal delay={0.12} className="glass ring-lit mt-4 overflow-hidden rounded-frame">
           <div className="border-b border-line-2 px-6 py-4">
             <span className={cn(LABEL, 'text-faint')}>From here to your dashboard</span>

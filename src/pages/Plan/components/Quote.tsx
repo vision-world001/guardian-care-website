@@ -6,24 +6,6 @@ import {TONE_VAR} from '../../../data/command';
 import {QUOTE, type PlanPosition} from '../../../data/plan';
 import {cn} from '../../../lib/cn';
 
-/**
- * What a Guardian Care proposal is made of.
- *
- * Six things, and next to each one the reason it is on the list. That is the
- * whole section, and the reason is the part almost no quotation carries: a
- * priced bill of materials asks to be trusted, and a list where every line
- * explains itself does not have to.
- *
- * The verb is set larger than the product name on purpose. A reader scanning
- * this grid should come away with *generate it, make it usable, keep it,
- * protect it, see it, improve it* — six words that are the system's actual
- * argument — rather than with a parts list they cannot evaluate.
- *
- * The last two items are not hardware, which is the point of putting them in
- * the same grid rather than in a section about aftercare. A system installed
- * and never looked at again is the failure this entire platform exists to
- * prevent.
- */
 export default function Quote({position}: {position: PlanPosition}) {
   return (
     <Section id="quote" hairline className="py-16 min-[760px]:py-24">
@@ -51,14 +33,6 @@ export default function Quote({position}: {position: PlanPosition}) {
                 </span>
               </div>
 
-              {/* The thing, then the job it does.
-                  ----------------------------------------------------------
-                  The verb was the headline here until the closing section
-                  ended up doing the same trick with the same first word, and
-                  two big GENERATE ITs on one page read as a template rather
-                  than as an argument. This is a quotation: the product is the
-                  headline, the verb is the tag beside it, and the page's big
-                  verbs belong to the sign-off alone. */}
               <div className="mt-6 font-display text-[clamp(25px,2.8vw,32px)] font-semibold uppercase leading-[0.98] tracking-[-0.015em] text-ink">
                 {item.name}
               </div>

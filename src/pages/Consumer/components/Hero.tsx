@@ -8,23 +8,6 @@ import {cn} from '../../../lib/cn';
 import {LiveDot} from '../../Home/components/Conduit';
 import {LABEL, LABEL_BASE, PRIMARY, SECONDARY} from '../../../components/kit';
 
-/**
- * "Already have solar?"
- *
- * The reader here already owns the thing being discussed, and usually arrives
- * with a quiet suspicion — that it is not doing what they were told it would,
- * or that nobody could tell them if it wasn't. So the page does not open by
- * selling anything. It opens by showing the answer to that suspicion.
- *
- * The brief's own list — generating, using, storing, exporting, buying, what it
- * costs, whether anything is worth reviewing — is not printed as a list here.
- * It is the card beside the headline, filled in for one real-looking day. Seven
- * bullet points ask to be believed; seven readings on one card are the thing
- * itself, and a visitor understands the product before they have finished the
- * paragraph next to it.
- */
-
-/** Where the day's generation went, in the order the eye reads the bar. */
 const SPLIT: Array<{label: string; value: number; tone: StatusTone}> = [
   {label: 'Used yourself', value: DAY.used, tone: 'green'},
   {label: 'Stored', value: DAY.stored, tone: 'purple'},
@@ -34,8 +17,6 @@ const SPLIT: Array<{label: string; value: number; tone: StatusTone}> = [
 export default function Hero() {
   return (
     <header className="relative isolate overflow-hidden">
-      {/* The sun, somewhere behind the card. Warm, because the card is about
-          what the roof made today. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-[12%] -top-[18%] -z-10 h-[70vw] w-[70vw] rounded-full blur-[140px] min-[1000px]:h-[52vw] min-[1000px]:w-[52vw]"
@@ -44,7 +25,6 @@ export default function Hero() {
 
       <Wrap>
         <div className="grid items-center gap-14 py-20 min-[760px]:py-24 min-[1000px]:min-h-[86vh] min-[1000px]:grid-cols-[1.02fr_0.98fr] min-[1000px]:gap-12 min-[1180px]:gap-20">
-          {/* ---------- The words ---------- */}
           <div>
             <Reveal
               className={cn(LABEL_BASE, 'inline-flex items-center text-[12px] tracking-[.12em] text-amber')}
@@ -83,11 +63,8 @@ export default function Hero() {
                 What we find
               </a>
             </Reveal>
-
-            {/* What the check costs the visitor, answered before they ask. */}
           </div>
 
-          {/* ---------- The answer ---------- */}
           <Reveal animation="animate-card-in" delay={0.2} className="mx-auto w-full max-w-[520px]">
             <TodayCard />
           </Reveal>
@@ -97,16 +74,9 @@ export default function Hero() {
   );
 }
 
-/**
- * One day at one house, as Guardian Care would show it.
- *
- * Laid out in the order a household asks the questions: how much did it make,
- * where did that go, what did I still have to buy, and is anything wrong.
- */
 function TodayCard() {
   return (
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
-      {/* ---------- Status ---------- */}
       <div className="flex items-center justify-between gap-4 border-b border-line-2 px-6 py-4 min-[520px]:px-7">
         <span className="flex items-center gap-2.5">
           <LiveDot />
@@ -117,7 +87,6 @@ function TodayCard() {
         <span className="mono text-[11px] uppercase tracking-[.12em] text-faint">Example home</span>
       </div>
 
-      {/* ---------- What it made ---------- */}
       <div className="px-6 pb-6 pt-7 min-[520px]:px-7">
         <div className="flex items-end justify-between gap-4">
           <div>
@@ -130,11 +99,6 @@ function TodayCard() {
           <Glyph name="generation" className="mb-1 h-10 w-10 text-amber/70" />
         </div>
 
-        {/* ---------- And where it went ----------
-
-            One bar rather than three: the three parts are shares of a single
-            whole, and a household reads "most of it I used or kept" faster from
-            proportion than from arithmetic. */}
         <div
           className="mt-7 flex h-2.5 gap-[3px] overflow-hidden rounded-pill"
           role="img"
@@ -169,7 +133,6 @@ function TodayCard() {
         </dl>
       </div>
 
-      {/* ---------- What still had to be bought ---------- */}
       <dl className="grid grid-cols-2 gap-px border-t border-line-2 bg-line-2">
         <div className="bg-panel px-6 py-5 min-[520px]:px-7">
           <dt className="text-[12.5px] font-light leading-tight text-muted">Bought from the grid</dt>
@@ -186,7 +149,6 @@ function TodayCard() {
         </div>
       </dl>
 
-      {/* ---------- And whether anything is worth a look ---------- */}
       <div className="border-t border-line-2 bg-bg/40 px-6 py-5 min-[520px]:px-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span className={cn(LABEL, 'text-amber')}> Guardian Care Intelligence</span>

@@ -2,13 +2,6 @@ import Glyph from '../../../../components/Glyph';
 import {TRACKED} from '../../../../data/consumer';
 import {Tile} from '../../../../components/kit';
 
-/**
- * Step 04: the six things Guardian Care tracks.
- *
- * Each one in the colour it wears everywhere else on the page — the hero card,
- * the bird's-eye view, the dashboard — so by the time a reader meets "exported"
- * in blue for the third time, blue already means exported.
- */
 export default function Tracked() {
   return (
     <ul className="ring-lit grid gap-px overflow-hidden rounded-frame bg-line-2 min-[520px]:grid-cols-2">

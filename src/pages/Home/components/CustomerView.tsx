@@ -1,6 +1,5 @@
 import {Link} from 'react-router';
 import Counter from '../../../components/Counter';
-// Restore with the commented-out <Glyph> below: import Glyph from '../../../components/Glyph';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
 import {TONE_TEXT, TONE_VAR} from '../../../data/command';
@@ -8,20 +7,6 @@ import {TODAY, TODAY_ROWS} from '../../../data/platform';
 import {cn} from '../../../lib/cn';
 import {LiveDot} from './Conduit';
 
-/**
- * And then everything goes quiet.
- *
- * Placed immediately after the operations queue on purpose. The two sections
- * are the same platform on the same day, and the whole argument of the
- * preceding section is that the customer should never see any of it — no
- * priority ladder, no reference numbers, no fault codes. One figure, where it
- * went, and a sentence.
- *
- * The split is drawn rather than described: three bars against one total. A
- * household understands "most of it went into the house, the rest is stored or
- * sold" faster from proportions than from three numbers, and the proportions
- * are the actual readings rather than an illustration of them.
- */
 export default function CustomerView() {
   return (
     <Section id="customer" hairline className="py-16 min-[760px]:py-24">
@@ -36,7 +21,6 @@ export default function CustomerView() {
 
         <div className="mx-auto max-w-[560px]">
           <Reveal className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
-            {/* ---------- Status ---------- */}
             <div className="flex items-center gap-2.5 border-b border-line-2 px-6 py-4 min-[520px]:px-8">
               <LiveDot />
               <span className="mono text-[11px] font-semibold uppercase tracking-[.12em] text-green">
@@ -44,7 +28,6 @@ export default function CustomerView() {
               </span>
             </div>
 
-            {/* ---------- The one figure ---------- */}
             <div className="px-6 py-9 text-center min-[520px]:px-8">
               <div className="mono text-[11.5px] font-semibold uppercase tracking-[.13em] text-faint">
                 Today’s solar
@@ -55,7 +38,6 @@ export default function CustomerView() {
               </div>
             </div>
 
-            {/* ---------- And where it went ---------- */}
             <div className="border-t border-line-2 px-6 py-8 min-[520px]:px-8">
               <div className="space-y-5">
                 {TODAY_ROWS.map((row) => (
@@ -87,7 +69,6 @@ export default function CustomerView() {
               </p>
             </div>
 
-            {/* ---------- What the platform made of it ---------- */}
             <div className="border-t border-line-2 bg-bg/40 px-6 py-6 min-[520px]:px-8">
               <span className="mono block text-[11px] font-semibold uppercase tracking-[.13em] text-amber">
                 Guardian Care Intelligence
@@ -106,14 +87,10 @@ export default function CustomerView() {
               Explore my energy →
             </Link>
 
-            {/* The third journey. It is not one of the three products, but it is
-                a real page and a real reader, and leaving it reachable only from
-                the footer would be hiding it. */}
             <Link
               to="/plan"
               className="group inline-flex items-center gap-2 text-[13.5px] font-light text-faint transition-colors hover:text-ink"
             >
-              {/* <Glyph name="plan" className="h-4 w-4" /> */}
               No system yet? Build an energy plan
               <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </Link>

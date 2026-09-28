@@ -6,24 +6,6 @@ import {CC_ATTENTION, CC_KPIS, CC_ROWS, TONE_TEXT, TONE_VAR} from '../../../data
 import {cn} from '../../../lib/cn';
 import {LiveDot} from '../../Home/components/Conduit';
 
-/**
- * The console, working.
- *
- * This is the section the page exists to reach, so it is the one place that
- * stops describing and lets the reader operate something. Four customers are
- * queued; clicking one opens what the operator would actually see. A
- * screenshot would make the same claim and be believed less, because every
- * competitor in this market also has a screenshot.
- *
- * The queue is deliberately not sorted by severity. Real attention queues are
- * mixed — an opportunity sits above an outage — and an operator's first skill
- * is reading a list that does not agree with itself. Sorting it into a tidy
- * red-to-green gradient would be a prettier drawing of a product that does not
- * exist.
- *
- * The counters come from `CC_KPIS`, which the home page and the hero's dot
- * field also read. One portfolio, described once.
- */
 export default function Console() {
   const [at, setAt] = useState(0);
   const row = CC_ROWS[at];
@@ -40,7 +22,6 @@ export default function Console() {
 
         <Reveal animation="animate-card-in">
           <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
-            {/* ---------- Chrome ---------- */}
             <div className="flex items-center justify-between gap-4 border-b border-line-2 px-5 py-3.5 min-[520px]:px-6">
               <span className="flex items-center gap-2.5">
                 <LiveDot />
@@ -49,7 +30,6 @@ export default function Console() {
               <Caption>command.guardiancare.io</Caption>
             </div>
 
-            {/* ---------- The portfolio, counted ---------- */}
             <dl className="grid grid-cols-2 gap-px border-b border-line-2 bg-line-2 min-[620px]:grid-cols-3 min-[1000px]:grid-cols-6">
               {CC_KPIS.map((kpi) => (
                 <div key={kpi.label} className="bg-panel/60 px-5 py-4">
@@ -63,7 +43,6 @@ export default function Console() {
               ))}
             </dl>
 
-            {/* ---------- The queue, and what is behind a row ---------- */}
             <div className="grid min-[900px]:grid-cols-[1fr_1fr]">
               <ul className="border-b border-line-2 min-[900px]:border-b-0 min-[900px]:border-r">
                 <li className="border-b border-line-2 px-5 py-3 min-[520px]:px-6">
@@ -124,7 +103,6 @@ export default function Console() {
                 })}
               </ul>
 
-              {/* ---------- The open record ---------- */}
               <div className="bg-bg-2/40 px-5 py-6 min-[520px]:px-6">
                 <div className={cn(LABEL, TONE_TEXT[row.tone])}>{row.name}</div>
 

@@ -2,67 +2,22 @@ import {TONE_VAR} from '../../../data/command';
 import type {StatusTone} from '../../../data/command';
 import {LIVE} from '../../../data/platform';
 
-/**
- * The whole energy system, drawn across the back of the first screen.
- *
- * Everything is dotted line — the sun, the array, the house, the battery, the
- * pylon and every parabola between them. That is the one rule the drawing has,
- * and it is what lets it sit behind a 140px headline without competing: dotted
- * line at 2px reads as technical draughting rather than as illustration, and it
- * carries almost no visual weight until you look for it.
- *
- * The energy moving through it is the dots themselves crawling, not a solid
- * pulse sliding over a dotted track. A bright segment travelling a dotted line
- * would break the rule at the exact moment the eye is drawn to it; marching the
- * dash offset keeps the line dotted in every frame and still reads as current.
- *
- * On composition: at desktop the headline block covers most of this canvas, so
- * there is no "outside" to hide in. The objects are pushed to the left and
- * right margins where the veil is weakest and only the thin parabolas cross the
- * middle — a dotted 2px curve behind a word costs nothing, a dotted house does.
- *
- * The readings deliberately live in the foreground rather than here. They were
- * SVG text beside each object and they collided with the button and the status
- * strip, which is the predictable outcome of putting two kinds of type in the
- * same place and hoping. The drawing carries the objects; the hero carries the
- * numbers.
- *
- * Entirely presentational: `aria-hidden`, no pointer events, negative z-index.
- * The crawl stops under `prefers-reduced-motion` through the base stylesheet,
- * and the drawing is exactly as legible standing still.
- */
-
 const VB = {w: 1600, h: 900};
-
-/* ---------- Where everything sits ----------
-
-   Anchors, for anyone moving a piece: the array is centred on (395, 520), the
-   battery on (330, 792), the house on (1190, 600) and the pylon on (1405, 330).
-   Only the sun is a constant, because it is the one object drawn from its
-   centre rather than from explicit path data. */
 
 const SUN = {x: 215, y: 160, r: 48};
 
-/* ---------- The objects, in dotted line ---------- */
-
-/** A module in three-quarter view: skewed face, cells, and a stand. */
 const ARRAY_ART = [
   'M 265 478 L 525 448 L 525 570 L 265 600 Z',
-  /* Cells. Three verticals and one horizontal is enough to read as an array
-     without turning into a grid nobody can see through. */
   'M 330 470 L 330 592',
   'M 395 462 L 395 584',
   'M 460 455 L 460 577',
   'M 265 539 L 525 509',
-  /* Stand. */
   'M 350 585 L 350 645',
   'M 465 572 L 465 632',
   'M 325 645 L 375 645',
   'M 440 632 L 490 632'
 ];
 
-/** Roof, walls, door, window — and a chimney, because a roofline without one
-    reads as a shed. */
 const HOUSE_ART = [
   'M 1104 592 L 1190 522 L 1276 592',
   'M 1122 586 L 1122 682',
@@ -73,17 +28,13 @@ const HOUSE_ART = [
   'M 1242 556 L 1242 526 L 1262 526 L 1262 578'
 ];
 
-/** A wall cell with its terminal, its charge mark and a bolt. */
 const BATTERY_ART = [
   'M 288 748 L 372 748 L 372 842 L 288 842 Z',
   'M 313 748 L 313 735 L 347 735 L 347 748',
   'M 342 768 L 318 800 L 338 800 L 331 826 L 356 792 L 336 792 Z',
-  /* Drawn at the state of charge the system is actually at, so the object is a
-     reading rather than a picture of one. */
   `M 288 ${(842 - 94 * (LIVE.charge / 100)).toFixed(1)} L 372 ${(842 - 94 * (LIVE.charge / 100)).toFixed(1)}`
 ];
 
-/** A transmission tower. */
 const PYLON_ART = [
   'M 1352 456 L 1392 232',
   'M 1458 456 L 1418 232',
@@ -98,9 +49,6 @@ const PYLON_ART = [
   'M 1446 388 L 1364 456'
 ];
 
-/* ---------- Sunlight ---------- */
-
-/** Rays fanning off the sun and landing across the face of the array. */
 const RAYS = [
   'M 255 196 C 280 280, 290 380, 300 466',
   'M 262 186 C 300 260, 330 370, 358 458',
@@ -109,7 +57,6 @@ const RAYS = [
   'M 261 140 C 336 160, 452 280, 520 436'
 ];
 
-/** The short spokes around the disc itself. */
 const SUN_SPOKES = Array.from({length: 12}, (_, i) => {
   const a = (i * Math.PI * 2) / 12;
   const [x1, y1] = [SUN.x + Math.cos(a) * 60, SUN.y + Math.sin(a) * 60];
@@ -117,16 +64,12 @@ const SUN_SPOKES = Array.from({length: 12}, (_, i) => {
   return `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`;
 });
 
-/* ---------- The parabolas ---------- */
-
 type Flow = {
   key: string;
   d: string;
   tone: StatusTone;
-  /** Thicker for the channels carrying more. */
   weight: number;
   delay: number;
-  /** The arc crossing highest is held back further — the headline is there. */
   faint?: boolean;
 };
 
@@ -169,18 +112,11 @@ const FLOWS: Flow[] = [
   }
 ];
 
-/* ---------- Shared stroke settings ---------- */
-
-/* Period 10, matching the -200 the crawl keyframe ends on. */
 const DOTS = {strokeDasharray: '2 8', strokeLinecap: 'round' as const, fill: 'none'};
 
 export default function EnergyField() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      {/* Never narrower than the composition can survive. Below this the art
-          would be squeezed until the objects stopped being recognisable, so it
-          crops at the margins instead — losing the outer edges of the sun and
-          the pylon rather than the system between them. */}
       <svg
         viewBox={`0 0 ${VB.w} ${VB.h}`}
         preserveAspectRatio="xMidYMid meet"
@@ -194,7 +130,6 @@ export default function EnergyField() {
           </radialGradient>
         </defs>
 
-        {/* ---- The sun ---- */}
         <circle cx={SUN.x} cy={SUN.y} r="300" fill="url(#ef-sun)" />
         <circle
           cx={SUN.x}
@@ -209,7 +144,6 @@ export default function EnergyField() {
           <path key={d} d={d} stroke="var(--ramp-far)" strokeWidth="2.6" opacity="0.44" {...DOTS} />
         ))}
 
-        {/* ---- Sunlight arriving ---- */}
         {RAYS.map((d, index) => (
           <path
             key={d}
@@ -222,7 +156,6 @@ export default function EnergyField() {
           />
         ))}
 
-        {/* ---- Energy distributed ---- */}
         {FLOWS.map((flow) => (
           <path
             key={flow.key}
@@ -235,14 +168,9 @@ export default function EnergyField() {
           />
         ))}
 
-        {/* ---- The objects ---- */}
         {ARRAY_ART.map((d) => (
           <path key={d} d={d} stroke="var(--ramp-far)" strokeWidth="2.6" opacity="0.58" {...DOTS} />
         ))}
-        {/* Carried a little brighter than its neighbours. It is drawn in the ink
-            colour rather than an accent, and a warm white at the same opacity as
-            a saturated gold simply does not read as strongly against this
-            ground. */}
         {HOUSE_ART.map((d) => (
           <path key={d} d={d} stroke="var(--color-ink)" strokeWidth="2.6" opacity="0.56" {...DOTS} />
         ))}
@@ -254,16 +182,6 @@ export default function EnergyField() {
         ))}
       </svg>
 
-      {/* The veil. Weighted to the centre where the headline lands, but softer
-          than it wants to be — the drawing has to stay a drawing. It closes to
-          the page's own ground at the bottom edge so the hero has no seam.
-
-          Mixed from `--color-bg` rather than written as a literal rgba().
-          These stops were charcoal, which is what the ground used to be; once
-          the site moved to the brand navy the hero was fading to a grey that
-          no longer existed anywhere else on the page, and the seam this
-          comment promises there would not be was plainly visible. Against the
-          token it cannot happen again. */}
       <div
         className="absolute inset-0"
         style={{

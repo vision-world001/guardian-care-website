@@ -3,17 +3,6 @@ import {plain, type Row, type Summary} from '../lib/deliver';
 import type {GlyphName} from '../components/Glyph';
 import type {StatusTone} from './command';
 
-/* ============================================================
-   "I'm a solar or energy company."
-
-   The operator's journey. Same platform, same six quantities, read across a
-   portfolio instead of a property — and the assessment at the top is asking
-   about a business rather than a house, which is the only structural
-   difference between this page and the other two.
-   ============================================================ */
-
-/* ---------- The business assessment ---------- */
-
 export const BUSINESS_STEPS: Step[] = [
   {
     key: 'market',
@@ -142,8 +131,6 @@ export const BUSINESS_STEPS: Step[] = [
   }
 ];
 
-/* ---------- Reading the answers ---------- */
-
 export const MARKET_LABEL: Record<string, string> = {
   'fit-early': '2010 – 2012',
   'fit-mid': '2013 – 2015',
@@ -179,7 +166,6 @@ const IMPROVE_LABEL: Record<string, string> = {
   sales: 'Structured sales opportunities'
 };
 
-/** The midpoint of each band, so the page can print a portfolio rather than a range. */
 const INSTALLED_COUNT: Record<string, number> = {
   'under-100': 60,
   '100-500': 300,
@@ -193,7 +179,6 @@ export type BusinessPosition = {
   installedBand: string | null;
   installedCount: number | null;
   aftercare: string | null;
-  /** Whether the current process waits for the customer to make contact. */
   reactive: boolean;
   monitoringCoverage: string;
   primaryGoal: string | null;
@@ -201,25 +186,6 @@ export type BusinessPosition = {
   customerTypes: string[];
 };
 
-/* ---------- The portfolio position, as something you can forward ---------- */
-
-/**
- * The installer's summary, in both lengths.
- *
- * Written to be read in about fifteen seconds, standing up, on a phone, by
- * somebody who is going to forward it to a director. That is the actual job:
- * this message is not the pitch, it is the thing the pitch gets pasted into,
- * so it leads with the count and the gap rather than with the platform.
- *
- * The rows are the same five the profile beside the questions filled in, in the
- * same order and the same words, for the same reason the household's summary
- * reuses `summaryOf` — what arrives should be what they were looking at.
- *
- * Where a question went unanswered the row says so rather than being dropped.
- * A five-row table with two rows missing reads as a system that lost them; the
- * same table saying "not stated" twice reads as a form somebody skipped, which
- * is what happened.
- */
 export function businessSummary(position: BusinessPosition): Summary {
   const UNSTATED = 'Not stated';
   const installed = position.installedBand ? INSTALLED_LABEL[position.installedBand] : UNSTATED;
@@ -235,10 +201,6 @@ export function businessSummary(position: BusinessPosition): Summary {
     ['Priority', goal, position.goals.length > 1 ? `Plus ${position.goals.length - 1} more` : undefined]
   ];
 
-  /* The finding, and it is the same one in every case that matters: a base
-     nobody is watching is a base that only calls when it is already a problem.
-     Stated as a consequence rather than as a feature list, because an installer
-     already knows what monitoring is. */
   const note = position.reactive
     ? 'On this setup the first you hear of a fault is a customer calling about a bill. Every system between handover and that call is generating less than it should, and nobody is in a position to know which ones.'
     : 'The gap is between the systems you can see and the ones you cannot. Whatever share of the base is unmonitored is the share that can only report a problem after it has cost the customer money.';
@@ -294,27 +256,15 @@ export function readBusiness(answers: Answers): BusinessPosition {
     customerTypes: answers.multi.customers ?? []
   };
 }
-/* ============================================================
-   What the page says, in as few words as it can say it.
-
-   The reader here runs an installation company. They are not reading; they
-   are deciding whether to keep scrolling, and every section below therefore
-   carries one idea, drawn, with a line of text under it rather than a
-   paragraph beside it. Where a sentence could be a diagram it is a diagram.
-   ============================================================ */
-
-/* ---------- The three products ---------- */
 
 export type Product = {
   key: string;
   glyph: GlyphName;
   tone: StatusTone;
   name: string;
-  /** Two words. What this product does, as an instruction. */
   verb: string;
   who: string;
   line: string;
-  /** Three capabilities, four words each. Scanned, never read. */
   points: string[];
 };
 
@@ -351,27 +301,14 @@ export const PRODUCTS: Product[] = [
   }
 ];
 
-/* ---------- What it watches, so nobody has to ---------- */
-
 export type Watch = {
   key: string;
   glyph: GlyphName;
   tone: StatusTone;
-  /** The condition, in four or five words. */
   trigger: string;
-  /** What the platform does about it, in five or six. */
   action: string;
 };
 
-/**
- * The rules engine as six lines.
- *
- * The specification lists nine or ten conditions and a paragraph for each.
- * Six, at five words, make the same point faster: this is already running, and
- * none of it needs a person to notice first. The `action` column is the half
- * that matters — a platform that only detects things has moved the work rather
- * than removed it.
- */
 export const WATCH: Watch[] = [
   {
     key: 'offline',
@@ -417,17 +354,6 @@ export const WATCH: Watch[] = [
   }
 ];
 
-/* ---------- One event, two readings ---------- */
-
-/**
- * The same fault, written twice.
- *
- * This is the shortest possible statement of what the platform is for, and it
- * is why the page can carry both a consumer product and an operations console
- * without contradicting itself. The customer is protected from the detail; the
- * team is given all of it. Neither is a simplification of the other — they are
- * two renderings of one record.
- */
 export const EVENT = {
   raw: 'Inverter fault 205',
   customer: {
@@ -449,16 +375,6 @@ export const EVENT = {
   }
 };
 
-/* ---------- Revenue that argues for itself ---------- */
-
-/**
- * The upgrade conversation, before and after.
- *
- * Both sentences sell the same battery. The first is the one every installer
- * in the market is already sending, and it is ignored because it could have
- * been sent to anybody. The second could only have been sent to this customer,
- * and that is the entire difference the platform makes to a sales team.
- */
 export const OPPORTUNITY = {
   exported: 2200,
   imported: 1800,
@@ -468,24 +384,14 @@ export const OPPORTUNITY = {
     'Your system sold 2,200 kWh to the grid this year and bought 1,800 kWh back after dark. Storage would keep most of it.'
 };
 
-/* ---------- Joining ---------- */
-
 export type JoinStep = {
   key: string;
   glyph: GlyphName;
   name: string;
   line: string;
-  /** The objection this step answers, in two words. */
   note: string;
 };
 
-/**
- * Four steps, because the honest answer is four steps.
- *
- * Each one carries the objection it exists to remove — no rebuild, your
- * branding, day one — because an installer's first three questions about a
- * platform are always how long, how much work, and whose name is on it.
- */
 export const JOIN: JoinStep[] = [
   {
     key: 'talk',
@@ -517,13 +423,6 @@ export const JOIN: JoinStep[] = [
   }
 ];
 
-/* ---------- Which systems this is for ----------
-
-    This strip used to name five markets and four currencies. The product's own
-    screens say MCS, DNO, consumer unit and p/kWh — it is a UK Feed-in Tariff
-    job — so the strip now says what the app's installation-date question says,
-    and the five entries are the five answers it offers. */
-
 export const ERAS: Array<{name: string; rate: string; note: string}> = [
   {name: '2010 – 2012', rate: 'Highest FIT', note: 'Most to protect'},
   {name: '2013 – 2015', rate: 'High FIT', note: 'Inverters now ageing'},
@@ -532,9 +431,6 @@ export const ERAS: Array<{name: string; rate: string; note: string}> = [
   {name: 'Unknown', rate: 'We find it', note: 'From the MCS record'}
 ];
 
-/* ---------- What the assessment suggests first ---------- */
-
-/** The rollout Guardian Care suggests to a business with a dormant database. */
 export const ROLLOUT = [
   'Recapture customer system information',
   'Build digital system profiles',

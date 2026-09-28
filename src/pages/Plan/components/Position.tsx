@@ -8,32 +8,11 @@ import {SELF_USE, money, type PlanPosition} from '../../../data/plan';
 import {cn} from '../../../lib/cn';
 import {Caption, Figure, Panel, UnitKey, Units, type Segment} from './parts';
 
-/**
- * The estimate, with its arithmetic on the page.
- *
- * Every solar quotation in existence contains a saving figure and almost none
- * of them show where it came from, which is most of why almost none of them
- * are believed. This one prints the multiplication — kilowatt-hours displaced,
- * times the rate the visitor themselves gave — so a reader can check it, argue
- * with it, or take it to an installer and ask why their number is different.
- *
- * The motif lands for the third time, and this time the squares are theirs: a
- * whole year of household electricity as twenty units, every one of them
- * bought today, and the same twenty with the reader's own estimated solar and
- * storage filled in. Nothing in the two rows is new information — it is the
- * figures below restated as a picture — but a reader who has followed the page
- * this far already knows how to read it, and reads it in a second.
- */
-
-/** Twenty cells, so each one is a clean 5% of the year. */
 const CELLS = 20;
 
 export default function Position({position}: {position: PlanPosition}) {
   const {annualKwh, directKwh, batteryExtraKwh, importRate} = position;
 
-  /* Cells are apportioned rather than each rounded independently: rounding
-     three shares separately lets them sum to nineteen or twenty-one, and a row
-     that is one square short of the row above it looks like a bug. */
   const solarCells = annualKwh && directKwh ? Math.round((directKwh / annualKwh) * CELLS) : 0;
   const batteryCells =
     annualKwh && batteryExtraKwh
@@ -63,7 +42,6 @@ export default function Position({position}: {position: PlanPosition}) {
           body="Built from your answers, at the rate you gave us. Every figure that matters shows the sum behind it."
         />
 
-        {/* ---------- A year, as twenty squares ---------- */}
         <Reveal animation="animate-card-in" className="min-w-0">
           <Panel
             title="Your household electricity, one year"
@@ -121,7 +99,6 @@ export default function Position({position}: {position: PlanPosition}) {
           </Panel>
         </Reveal>
 
-        {/* ---------- And what that is worth ---------- */}
         <Reveal delay={0.08} className="mt-4 min-w-0">
           <Panel
             title="Estimated grid cost avoided"
@@ -205,12 +182,10 @@ export default function Position({position}: {position: PlanPosition}) {
           </Panel>
         </Reveal>
 
-        {/* ---------- Where that leaves you ---------- */}
         <Reveal delay={0.14} className="mt-4 min-w-0">
           <Compare position={position} />
         </Reveal>
 
-        {/* ---------- The part solar cannot touch ---------- */}
         <Reveal delay={0.2} className="mt-4">
           <div className="glass ring-lit flex flex-col gap-5 rounded-frame px-6 py-6 min-[760px]:flex-row min-[760px]:items-center min-[760px]:gap-8 min-[760px]:px-8">
             <Glyph name="grid" className="h-9 w-9 shrink-0 text-faint" />
@@ -234,8 +209,6 @@ export default function Position({position}: {position: PlanPosition}) {
     </Section>
   );
 }
-
-/* ---------- One half of the sum ---------- */
 
 function Working({
   tone,
@@ -272,14 +245,6 @@ function Working({
   );
 }
 
-/* ---------- Today, and potentially ---------- */
-
-/**
- * The two positions side by side, one row per thing that changes.
- *
- * A table rather than two cards: the reader is comparing row against row, and
- * two cards make them hold one column in their head while they read the other.
- */
 function Compare({position}: {position: PlanPosition}) {
   const rows: Array<[string, string, string, boolean]> = [
     ['Grid dependency', 'High', 'Potentially reduced', true],
@@ -310,7 +275,6 @@ function Compare({position}: {position: PlanPosition}) {
   return (
     <div className="glass ring-lit overflow-hidden rounded-frame">
       <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)_minmax(0,1.1fr)] gap-px bg-line-2 min-[620px]:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1.2fr)]">
-        {/* Header */}
         <div className="bg-panel-2 px-4 py-3.5 min-[620px]:px-6">
           <span className={cn(LABEL, 'text-faint')}>Position</span>
         </div>

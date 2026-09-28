@@ -5,21 +5,6 @@ import {cn} from '../../../../lib/cn';
 import Conduit, {LiveDot} from '../../../Home/components/Conduit';
 import {Tile} from '../../../../components/kit';
 
-/**
- * Step 03: what connecting actually means.
- *
- * Four objects and the lines between them, with the one piece of hardware
- * marked where it sits. A household asked to let somebody "connect monitoring"
- * wants to know two things — what goes where, and whether anything about the
- * system changes — so the drawing answers the first and the strip under it
- * answers the second.
- *
- * The labels are positioned off the tiles rather than stacked under them. The
- * conduits join tile centre to tile centre; a label in the flow would push each
- * node's middle down by half a line and leave every connector visibly off
- * true.
- */
-
 const PROMISES = [
   'Fitted only where suitable',
   'Works with compatible monitoring',
@@ -30,9 +15,6 @@ export default function Monitoring() {
   return (
     <div className="glass shadow-lift ring-lit overflow-hidden rounded-frame">
       <div className="px-4 pb-10 pt-12 min-[520px]:px-9">
-        {/* The roof, and generation coming down into the house. Centred rather
-            than placed in a grid column: the row beneath is symmetric, so the
-            house sits exactly on the centre line. */}
         <div className="flex flex-col items-center">
           <Node glyph="generation" tone="amber" label="Solar" labelAbove />
           <Conduit direction="down" tone="amber" className="h-12" />
@@ -55,7 +37,6 @@ export default function Monitoring() {
         </p>
       </div>
 
-      {/* Estimates → readings, in one line. */}
       <div className="mono flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-line-2 bg-bg/40 px-6 py-4 text-[11.5px] font-semibold uppercase tracking-[.12em]">
         <span className="text-amber">Estimated</span>
         <span aria-hidden="true" className="text-faint">
@@ -121,7 +102,6 @@ function Node({
   );
 }
 
-/** The CT clamp, where it actually sits: on the line between house and grid. */
 function Clamp() {
   return (
     <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -130,8 +110,6 @@ function Clamp() {
         className="block h-4 w-4 rounded-full border-2 border-green bg-bg"
         style={{boxShadow: '0 0 0 4px color-mix(in srgb, var(--color-green) 14%, transparent)'}}
       />
-      {/* On a phone the connector is shorter than the label, so the label moves
-          into a legend under the diagram instead of sitting across two tiles. */}
       <span className="mono absolute bottom-full left-1/2 mb-2.5 hidden -translate-x-1/2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[.12em] text-green min-[520px]:block">
         CT clamp
       </span>

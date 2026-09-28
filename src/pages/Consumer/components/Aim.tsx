@@ -5,14 +5,6 @@ import {Section, Wrap} from '../../../components/ui';
 import {AIMS, AIM_SUM} from '../../../data/consumer';
 import {Heading, PRIMARY, Tile, ramp} from '../../../components/kit';
 
-/**
- * Our aim.
- *
- * Seven outcomes, but not seven equal ones: the first six are specific, and the
- * seventh is what they add up to. So the six sit in a grid lit down the brand's
- * own ramp, and the seventh runs underneath them as the line the whole page has
- * been building to — the system you already own, working harder for you.
- */
 export default function Aim() {
   return (
     <Section id="aim" hairline className="py-16 min-[760px]:py-24">
@@ -40,7 +32,6 @@ export default function Aim() {
           ))}
         </ul>
 
-        {/* The seventh, which is the sum of the six. */}
         <Reveal
           delay={0.2}
           className="mt-4 rounded-frame p-px"
@@ -59,10 +50,6 @@ export default function Aim() {
           </div>
         </Reveal>
 
-        {/* ---------- And the way in ----------
-
-            The same button the other two journeys end on, so all three hand
-            over to the same place rather than each inventing its own exit. */}
         <Reveal delay={0.26} className="mt-16 flex justify-center min-[760px]:mt-24">
           <Link to="/start" className={PRIMARY}>
             Go to dashboard &#8594;

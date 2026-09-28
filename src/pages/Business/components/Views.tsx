@@ -6,20 +6,6 @@ import {EVENT} from '../../../data/businessFlow';
 import {TONE_TEXT, TONE_VAR, type StatusTone} from '../../../data/command';
 import {cn} from '../../../lib/cn';
 
-/**
- * One event, two readings.
- *
- * The shortest statement of what this platform is, and the reason a single
- * company can put a consumer app and an operations console in front of two
- * audiences without either of them catching it out. The customer is protected
- * from the detail. The team is given all of it. Neither is a summary of the
- * other — they are one record, rendered twice.
- *
- * Drawn as a fork rather than as two columns: the fault code sits above both,
- * so the eye sees one source before it sees two readings. Two cards side by
- * side with a heading over them would have said "we have two dashboards",
- * which is a feature list rather than an argument.
- */
 export default function Views() {
   return (
     <Section id="views" hairline className="py-16 min-[760px]:py-24">
@@ -32,7 +18,6 @@ export default function Views() {
         />
 
         <div className="mx-auto max-w-[940px]">
-          {/* ---------- The event ---------- */}
           <Reveal className="flex flex-col items-center">
             <span
               className={cn(LABEL_BASE, 'rounded-pill px-4 py-2 text-[11px] tracking-[.13em] text-red')}
@@ -44,9 +29,6 @@ export default function Views() {
               {EVENT.raw}
             </span>
 
-            {/* The fork. Drawn in two passes — a stem down to the split, then
-                the bar with its two legs — because a single SVG would need a
-                fixed width to sit on, and this has to hold from 320px up. */}
             <span aria-hidden="true" className="h-7 w-px bg-line-2" />
             <span aria-hidden="true" className="h-px w-1/2 bg-line-2 min-[760px]:w-[52%]" />
             <span aria-hidden="true" className="relative w-1/2 min-[760px]:w-[52%]">
@@ -56,11 +38,6 @@ export default function Views() {
             </span>
           </Reveal>
 
-          {/* ---------- The two readings ----------
-
-              Written out rather than mapped. The two halves genuinely differ —
-              one ends in a reassurance, the other in a record — and a map over
-              them would have to branch twice inside the markup to say so. */}
           <div className="grid gap-4 min-[760px]:grid-cols-2">
             <Reveal>
               <Panel
@@ -120,7 +97,6 @@ export default function Views() {
   );
 }
 
-/** The panel's own colour, running out under it. Says which reading this is. */
 function Underline({tone}: {tone: StatusTone}) {
   return (
     <span

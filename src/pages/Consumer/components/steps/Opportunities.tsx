@@ -4,18 +4,6 @@ import {OPPORTUNITIES, type Opportunity} from '../../../../data/consumer';
 import {cn} from '../../../../lib/cn';
 import {LABEL, LABEL_BASE, Tile, tint} from '../../../../components/kit';
 
-/**
- * Steps 06 and 07: what Guardian Care notices, and how it says so.
- *
- * Two halves of one idea, split across two steps because the brief splits them
- * — and joined by state, so the split does not lose the connection. Choosing a
- * card in step 06 changes the explanation in step 07, which shows the thing
- * the page most needs a household to believe: an alert never arrives as a bare
- * label. "High export" is where Guardian Care starts, not what it sends.
- */
-
-/* ---------- Step 06 ---------- */
-
 export function OpportunityPicker({at, onPick}: {at: number; onPick: (index: number) => void}) {
   return (
     <div className="grid gap-3 min-[620px]:grid-cols-2">
@@ -78,9 +66,6 @@ export function OpportunityPicker({at, onPick}: {at: number; onPick: (index: num
   );
 }
 
-/* ---------- Step 07 ---------- */
-
-/** The three parts every insight carries, and what each one is for. */
 const PARTS: Array<{key: 'identified' | 'matters' | 'recommend'; name: string; purpose: string}> = [
   {key: 'identified', name: 'What we identified', purpose: 'What the data is showing'},
   {key: 'matters', name: 'Why it matters', purpose: 'What the impact could be'},
@@ -108,9 +93,6 @@ export function Explanation({opportunity}: {opportunity: Opportunity}) {
         </span>
       </div>
 
-      {/* Keyed on the opportunity so a change re-mounts it and plays the
-          entrance again — the reader sees that something new arrived, not
-          three paragraphs silently swapping underneath them. */}
       <div key={opportunity.key} className="animate-fadeup" aria-live="polite">
         {PARTS.map((part) => {
           const recommend = part.key === 'recommend';

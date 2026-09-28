@@ -6,18 +6,6 @@ import {Section, Wrap} from '../../../components/ui';
 import {QUESTIONS} from '../../../data/plan';
 import {cn} from '../../../lib/cn';
 
-/**
- * The questions people actually have.
- *
- * Every one of these gets asked at a kitchen table, usually after a quotation
- * has already been written, and rarely gets a straight answer. Answering them
- * on the page, before any contact details are requested, is the posture of the
- * whole journey.
- *
- * An accordion rather than prose, and one panel open at a time: a reader has
- * one or two of these questions, not seven, and seven open answers is the wall
- * of prose again.
- */
 export default function Ask() {
   const [open, setOpen] = useState<number | null>(null);
 
@@ -65,8 +53,6 @@ export default function Ask() {
                       {item.q}
                     </span>
 
-                    {/* A plus becoming a minus: the horizontal stroke stays, the
-                        vertical one turns into it. */}
                     <span
                       aria-hidden="true"
                       className={cn(
@@ -97,11 +83,6 @@ export default function Ask() {
           })}
         </ul>
 
-        {/* ---------- And the way in ----------
-
-            The same button the business journey ends on, for the same reason:
-            a reader who has run out of questions should have somewhere to go
-            that is not the footer. */}
         <Reveal delay={0.12} className="mt-16 flex justify-center min-[760px]:mt-24">
           <Link to="/start" className={PRIMARY}>
             Go to dashboard &#8594;

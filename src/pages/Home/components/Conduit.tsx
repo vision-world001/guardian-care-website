@@ -2,22 +2,6 @@ import {TONE_VAR} from '../../../data/command';
 import type {StatusTone} from '../../../data/command';
 import {cn} from '../../../lib/cn';
 
-/**
- * A charge travelling between two nodes.
- *
- * The page's one motion rule, made into a component: what moves is the energy,
- * not the interface. Every diagram on this page is joined by these, so a
- * reader's eye is always being led along the direction electricity is actually
- * going rather than around a decorative loop.
- *
- * The pulse is a short segment of a tall track and is positioned in percentages
- * of it, so the same two elements work at any length — a 44px gap between two
- * rows in the hero card, and a 700px spine in the record diagram.
- *
- * The track stays visible under `prefers-reduced-motion`: the base stylesheet
- * collapses the animation, and a diagram whose connections disappear for a
- * reader who asked for less motion is a diagram that has lost its edges.
- */
 export default function Conduit({
   direction = 'down',
   tone = 'amber',
@@ -27,7 +11,6 @@ export default function Conduit({
 }: {
   direction?: 'down' | 'right';
   tone?: StatusTone;
-  /** Stagger, in seconds. Negative values start the pulse mid-travel. */
   delay?: number;
   duration?: number;
   className?: string;
@@ -48,8 +31,6 @@ export default function Conduit({
       <span
         className="absolute inset-0 block"
         style={{
-          /* The lit segment. Sized as a fraction of the track so it scales with
-             whatever gap it has been dropped into. */
           [vertical ? 'height' : 'width']: '34%',
           background: vertical
             ? `linear-gradient(180deg, transparent, ${colour}, transparent)`
@@ -62,7 +43,6 @@ export default function Conduit({
   );
 }
 
-/** The dot that marks a reading as live rather than as a printed figure. */
 export function LiveDot({tone = 'green', className}: {tone?: StatusTone; className?: string}) {
   return (
     <span

@@ -1,43 +1,20 @@
 import type {ReactNode} from 'react';
 import {cn} from '../lib/cn';
 
-/**
- * One hand, drawn once, used on every journey.
- *
- * The three journeys ask the same reader to recognise the same six quantities —
- * generation, consumption, storage, export, import, cost — on a homeowner's
- * dashboard, on a planner's estimate and on an operator's console. If each page
- * drew its own picture of a battery, the platform would read as three products
- * that happen to share a logo.
- *
- * Every mark is built from primitives with checked coordinates rather than from
- * one long hand-written path, because a path that is wrong is invisible in the
- * source and obvious the moment it renders. Nothing here overlaps a container it
- * belongs inside, and nothing sits partly outside one it does not.
- *
- * One 40×40 box, one 1.7px stroke, `currentColor` throughout, so a card can
- * light its own mark from whatever tone it is already wearing.
- */
-
 export type GlyphName =
-  /* The six quantities. */
   | 'generation'
   | 'consumption'
   | 'storage'
   | 'export'
   | 'import'
   | 'cost'
-  /* The thing on the other side of the meter. */
   | 'grid'
-  /* The box between the roof and the house. */
   | 'inverter'
-  /* The three doors. */
   | 'solarRoof'
   | 'savings'
   | 'existing'
   | 'plan'
   | 'business'
-  /* Everything the journeys ask about or report on. */
   | 'tool'
   | 'connect'
   | 'monitoring'
@@ -52,11 +29,9 @@ export type GlyphName =
   | 'capture'
   | 'retain'
   | 'portfolio'
-  /* The human on the other end of it. */
   | 'call';
 
 const PATHS: Record<GlyphName, ReactNode> = {
-  /* The sun, for what the roof makes. */
   generation: (
     <>
       <circle cx="20" cy="20" r="7" />
@@ -64,7 +39,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A house with its windows lit — a building somebody is using. */
   consumption: (
     <>
       <path d="M5 19.5 20 7l15 12.5" />
@@ -74,7 +48,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A cell, and the charge in it. */
   storage: (
     <>
       <rect x="12" y="9" width="16" height="24" rx="3" />
@@ -85,7 +58,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* Energy leaving the house. The arrow starts clear of the roof. */
   export: (
     <>
       <path d="M5 17.5 14.5 9 24 17.5" />
@@ -95,7 +67,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* The same house, with the arrow pointing back in. */
   import: (
     <>
       <path d="M16 17.5 25.5 9 35 17.5" />
@@ -105,7 +76,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A bill. The line that matters is inside it, where a line on a bill is. */
   cost: (
     <>
       <rect x="11" y="6" width="18" height="28" rx="2.5" />
@@ -115,9 +85,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A transmission tower. Nothing else says "the grid" this fast — and the
-     export mark beside it is a house, so without this the network and the
-     property would be wearing the same building. */
   grid: (
     <>
       <path d="M10 34 17.5 7M30 34 22.5 7M17.5 7h5" />
@@ -127,9 +94,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* The electrician's symbol for an inverter: a box split on the diagonal,
-     direct current in the upper corner and a sine wave in the lower. The two
-     marks sit either side of the diagonal without touching it. */
   inverter: (
     <>
       <rect x="8" y="6" width="24" height="28" rx="3" />
@@ -140,14 +104,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A house whose roof *is* the array.
-     ------------------------------------------------------------
-     For "I already have solar". The earlier mark put a clock beside a roof and
-     asked the reader to assemble "an existing system" out of the two; at 32px
-     that is a roof and a smudge. Making the panel the roof means there is
-     nothing to assemble — the whole silhouette says it at a glance, and the
-     cell lines are drawn to meet the pitch exactly rather than being ruled
-     across it. */
   solarRoof: (
     <>
       <path d="M20 6 37 21H3Z" />
@@ -158,11 +114,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* Cost coming down.
-     ------------------------------------------------------------
-     For "I want to spend less on electricity". Three bars shortening left to
-     right, plus the arrow — two channels saying the same thing, because a bar
-     chart alone is read as "data" and an arrow alone is read as "down". */
   savings: (
     <>
       <path d="M5 33V15h6v18" />
@@ -174,7 +125,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A roof that already carries an array, with a clock on it: solar plus time. */
   existing: (
     <>
       <path d="M4 21 18 9.5 32 21" />
@@ -185,7 +135,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* An empty roof and a panel arriving on it: the system that is not there yet. */
   plan: (
     <>
       <path d="M4 22 17 10.5 30 22" />
@@ -196,7 +145,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* Three buildings: a portfolio rather than a property. */
   business: (
     <>
       <path d="M5 34V16l8-5v23" />
@@ -207,16 +155,12 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A spanner. For the stage where something about the installation actually
-     changes — as opposed to the stage where it is watched. */
   tool: (
     <>
       <path d="M26.9 6.3a9.7 9.7 0 0 0-11.4 12.6L6.9 27.4a3.7 3.7 0 0 0 5.4 5.4l8.6-8.6a9.7 9.7 0 0 0 12.6-11.4l-5.7 5.7-5.4-1.4-1.4-5.4z" />
     </>
   ),
 
-  /* Two links closing. The hinge of the whole lifecycle: before it the platform
-     is estimating, after it the platform is reading. */
   connect: (
     <>
       <path d="M16.8 23.2a6 6 0 0 1 0-8.4l4.6-4.6a6 6 0 0 1 8.4 8.4l-2.4 2.4" />
@@ -224,7 +168,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A meter with a clamp around the line running into it. */
   monitoring: (
     <>
       <circle cx="20" cy="18" r="10.5" />
@@ -235,7 +178,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A generation dial, and the payment it earns beside it. */
   fit: (
     <>
       <path d="M4.5 25a12 12 0 0 1 23 0" />
@@ -246,7 +188,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A reading that has been understood: a chart inside a thinking frame. */
   insight: (
     <>
       <path d="M20 5a10 10 0 0 0-5.5 18.3V28h11v-4.7A10 10 0 0 0 20 5Z" />
@@ -255,7 +196,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A shield with a pulse in it: the system being kept an eye on. */
   health: (
     <>
       <path d="M20 5.5 32 9.5v9.2c0 7.4-4.9 12.9-12 14.8-7.1-1.9-12-7.4-12-14.8V9.5z" />
@@ -263,7 +203,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A rate card: what one unit costs, and what it is worth going the other way. */
   tariff: (
     <>
       <rect x="5" y="9" width="30" height="22" rx="2.5" />
@@ -276,7 +215,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A target with something already in it. */
   goal: (
     <>
       <circle cx="19" cy="21" r="13" />
@@ -287,7 +225,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A plan of a building rather than a picture of one. */
   property: (
     <>
       <path d="M6 34V13.5L20 5l14 8.5V34" />
@@ -297,7 +234,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* Somebody asking. */
   question: (
     <>
       <path d="M6 10.5A3.5 3.5 0 0 1 9.5 7h21a3.5 3.5 0 0 1 3.5 3.5v13a3.5 3.5 0 0 1-3.5 3.5H17l-8 6v-6A3.5 3.5 0 0 1 6 23.5z" />
@@ -306,7 +242,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A funnel: many arriving, one route through. */
   acquire: (
     <>
       <path d="M5 7h30L23.5 20v13L16.5 29V20z" />
@@ -314,7 +249,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A clipboard, filled in on site. */
   capture: (
     <>
       <path d="M14 8H10a2.5 2.5 0 0 0-2.5 2.5v21A2.5 2.5 0 0 0 10 34h20a2.5 2.5 0 0 0 2.5-2.5v-21A2.5 2.5 0 0 0 30 8h-4" />
@@ -324,7 +258,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A cycle that closes rather than a line that ends. */
   retain: (
     <>
       <path d="M33 20a13 13 0 1 1-4.6-9.9" />
@@ -333,7 +266,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* Many systems seen at once. */
   portfolio: (
     <>
       <rect x="5" y="7" width="12" height="12" rx="2" />
@@ -345,12 +277,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
     </>
   ),
 
-  /* A handset, for the one action on the site that reaches a person.
-
-     Drawn as the classic bent path rather than a rounded rectangle, because at
-     18px a smartphone outline and a battery outline are the same mark, and
-     this one sits on pages that also draw batteries. The two arcs off the
-     shoulder are the signal leaving it. */
   call: (
     <>
       <path d="M13.4 8.5h-3.1a3.2 3.2 0 0 0-3.2 3.4c.5 6 3.2 11.5 7.4 15.7 4.2 4.2 9.7 6.9 15.7 7.4a3.2 3.2 0 0 0 3.4-3.2v-3.1a2.2 2.2 0 0 0-1.9-2.2 16 16 0 0 1-3.6-.9 2.2 2.2 0 0 0-2.3.5l-1.6 1.6a24 24 0 0 1-8.8-8.8l1.6-1.6a2.2 2.2 0 0 0 .5-2.3 16 16 0 0 1-.9-3.6 2.2 2.2 0 0 0-2.2-1.9Z" />
@@ -360,17 +286,6 @@ const PATHS: Record<GlyphName, ReactNode> = {
   )
 };
 
-/**
- * `bold` is for a mark set inside a solid tile.
- *
- * At its native 1.7 the stroke renders at about a pixel once the mark is drawn
- * at 24px, and many details carry their own finer width (1.3–1.5) on top of
- * that — fine for a line icon on a dark ground, faint and hard to read as a
- * dark mark cut into a coloured tile. The override is a CSS rule on every
- * descendant rather than a new default on the <svg>, because CSS beats SVG
- * presentation attributes: it reaches the fine details too, and gives the
- * whole mark one even weight.
- */
 export default function Glyph({
   name,
   className,

@@ -4,21 +4,6 @@ import {Section, Wrap} from '../../../components/ui';
 import {OPPORTUNITY} from '../../../data/businessFlow';
 import {cn} from '../../../lib/cn';
 
-/**
- * The upgrade conversation, before and after.
- *
- * Both messages on this section sell the same battery to the same customer.
- * The first is the one the whole market is already sending, and it is ignored
- * because it could have been sent to anybody. The second could only have been
- * sent to this house, and the difference between them is the only thing a
- * sales director needs to understand about this platform.
- *
- * The two bars are the evidence, and they are drawn to the same scale on
- * purpose: seeing 2,200 sold cheap sitting above 1,800 bought dear is the
- * entire argument for storage, and it makes itself in about a second. The
- * money is deliberately absent — it differs by market and by tariff, and an
- * invented figure here would undo the credibility the drawing just bought.
- */
 export default function Revenue() {
   const scale = Math.max(OPPORTUNITY.exported, OPPORTUNITY.imported);
 
@@ -33,7 +18,6 @@ export default function Revenue() {
         />
 
         <div className="mx-auto grid max-w-[1000px] gap-4 min-[900px]:grid-cols-[0.85fr_1.15fr]">
-          {/* ---------- The evidence ---------- */}
           <Reveal className="glass ring-lit rounded-frame p-6 min-[760px]:p-7">
             <div className={cn(LABEL, 'text-faint')}>One customer, {OPPORTUNITY.window}</div>
 
@@ -60,7 +44,6 @@ export default function Revenue() {
             </p>
           </Reveal>
 
-          {/* ---------- The two messages ---------- */}
           <Reveal delay={0.08} className="flex flex-col gap-4">
             <Message
               label="What everyone sends"
@@ -87,7 +70,6 @@ export default function Revenue() {
   );
 }
 
-/** One quantity, drawn against the larger of the two so the pair compare. */
 function Bar({
   label,
   value,
@@ -123,13 +105,6 @@ function Bar({
   );
 }
 
-/**
- * A message, as it would land.
- *
- * The weak one is held back rather than struck through: an installer reading
- * this page probably sent it last week, and crossing it out reads as being
- * told off by a supplier.
- */
 function Message({
   label,
   tone,

@@ -1,24 +1,6 @@
 import {useEffect, useState} from 'react';
 import {cn} from '../lib/cn';
 
-/**
- * Back to the top, with the read position drawn around it.
- *
- * The ring is the reason this is worth building rather than importing. A bare
- * arrow tells someone what the button does; the ring also tells them where
- * they are, which on a seven-section page is the more useful of the two. It
- * costs one extra circle and no extra listener — the scroll position is
- * already being read to decide whether the button should exist at all.
- *
- * It appears after a full screen of travel, because a control that shows up
- * immediately is answering a question nobody has yet.
- *
- * Kept mounted and faded rather than unmounted, so it can transition out
- * instead of vanishing, with `pointer-events` and `tabIndex` withdrawn while
- * it is invisible — a hidden control that still takes a tab stop is worse than
- * no control.
- */
-
 const RADIUS = 20;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
@@ -53,10 +35,6 @@ export default function ScrollTop() {
   }, []);
 
   function toTop() {
-    /* The base stylesheet drops <html> to `scroll-behavior: auto` under
-       reduced motion, but an explicit `behavior` here outranks the CSS — so
-       the preference has to be read rather than assumed, or this one control
-       would animate past a reader who asked for no motion. */
     const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({top: 0, behavior: still ? 'auto' : 'smooth'});
   }
@@ -76,8 +54,6 @@ export default function ScrollTop() {
           : 'pointer-events-none translate-y-3 opacity-0'
       )}
     >
-      {/* Read position, drawn round the edge. Rotated so it fills clockwise
-          from the top rather than from three o'clock. */}
       <svg
         viewBox="0 0 52 52"
         className="absolute inset-0 h-full w-full -rotate-90"

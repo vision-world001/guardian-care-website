@@ -4,16 +4,7 @@ import {cn} from '../lib/cn';
 
 type RevealProps = {
   as?: ElementType;
-  /** Stagger, in seconds, matching the original animation-delay values. */
   delay?: number;
-  /**
-   * The entrance this uses. Defaults to the site-wide fade-up, which is tuned
-   * for type; a large surface can ask for a longer one — see
-   * `--animate-card-in`. Passed as the utility name rather than through
-   * `className`, because the two would otherwise both apply and the later
-   * declaration in the stylesheet, not the later class in the string, would
-   * decide which one ran.
-   */
   animation?: string;
   className?: string;
   style?: CSSProperties;
@@ -21,11 +12,6 @@ type RevealProps = {
   [key: string]: unknown;
 };
 
-/**
- * Fades content up once it scrolls into view, mirroring the `.reveal` class and
- * IntersectionObserver pairing from the original page. Without observer support
- * everything starts shown, rather than staying hidden forever.
- */
 export default function Reveal({
   as: Tag = 'div',
   delay = 0,
@@ -58,10 +44,6 @@ export default function Reveal({
     return () => observer.disconnect();
   }, [shown]);
 
-  /* The caller's style and the stagger are merged, not raced. `style` used to
-     arrive inside `rest`, spread after this component's own — so passing any
-     style at all (a height, a border colour) silently discarded the delay, and
-     a staggered list would arrive all at once with nothing to say why. */
   const merged: CSSProperties | undefined =
     shown && delay ? {...style, animationDelay: `${delay}s`} : style;
 

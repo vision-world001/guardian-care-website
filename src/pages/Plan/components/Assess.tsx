@@ -4,19 +4,6 @@ import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
 import {GOAL_LABEL, PLAN_STEPS, type PlanPosition} from '../../../data/plan';
 
-/**
- * Your own numbers, finally.
- *
- * Everything above this point is one example household. This is where the page
- * stops describing and starts asking, and the profile beside the questions
- * fills in with the reader's position rather than with a system specification.
- * That ordering is the argument the whole journey makes: the annual grid spend
- * appears before any mention of capacity, because the capacity is a
- * consequence of it and not the other way round.
- *
- * Question three arrives already answered for anybody who used the picker at
- * the top of the page — see `Goal`.
- */
 export default function Assess({
   answers,
   position,
@@ -79,13 +66,6 @@ export default function Assess({
   );
 }
 
-/**
- * What the answers have bought, so far.
- *
- * "Being calculated" rather than a blank wherever a figure genuinely depends
- * on an answer that has not arrived yet — an empty row says the platform has
- * nothing, and this one has something waiting on the reader.
- */
 function profileLines(position: PlanPosition): ProfileLine[] {
   return [
     {

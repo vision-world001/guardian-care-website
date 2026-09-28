@@ -1,27 +1,6 @@
 import type {GlyphName} from '../components/Glyph';
 import type {StatusTone} from './command';
 
-/* ============================================================
-   Guardian Care, stated once.
-
-   The home page's whole subject: one live system, three products, the loop
-   between data and action, and the single customer record everything hangs
-   off. Every figure the page prints comes from here, so the hero, the flow
-   diagram, the operations strip and the customer card cannot contradict each
-   other.
-   ============================================================ */
-
-/* ---------- One system, right now ---------- */
-
-/**
- * An instantaneous reading, in kilowatts.
- *
- * It balances exactly — 14.2 into the house, 5.3 into the battery and 5.3 out
- * to the grid accounts for all 24.8 coming off the roof — because the hero and
- * the flow diagram below it draw the same moment from opposite directions, and
- * a diagram whose arrows do not sum is the fastest way to lose a reader who
- * knows what they are looking at.
- */
 export const LIVE = {
   solar: 24.8,
   home: 14.2,
@@ -32,31 +11,16 @@ export const LIVE = {
   ai: 'Everything is operating normally.'
 };
 
-/** Stated rather than computed, then asserted against the parts. */
 export const LIVE_BALANCES = LIVE.home + LIVE.battery + LIVE.grid === LIVE.solar;
-
-/* ---------- The three journeys ----------
-
-   Routed by who the reader is rather than by which product they would end up
-   using. The eyebrow is the question somebody recognises themselves in, and the
-   headline is what they get for answering it — which is the right way round: a
-   visitor arrives knowing their own situation, not knowing our product names.
-
-   Each one now lands on a page that actually exists, which the earlier
-   product-led trio did not. */
 
 export type Journey = {
   key: 'existing' | 'plan' | 'business';
   index: string;
-  /** Two words, for the compressed restatement at the foot of the page. */
   name: string;
-  /** The question the reader recognises themselves in. */
   eyebrow: string;
-  /** What they get for answering it. */
   headline: string;
   paras: string[];
   list?: {label: string; items: string[]};
-  /** One line after the list, where the content has one. */
   close?: string;
   cta: string;
   to: string;
@@ -131,21 +95,6 @@ export const JOURNEYS: Journey[] = [
     glyph: 'business'
   }
 ];
-
-/* ---------- The lifecycle ----------
-
-   The platform's own sequence, from the specification: capture, analyse,
-   update, connect, monitor, advise, maintain, retain.
-
-   It is drawn as three phases rather than eight equal steps, because the shape
-   is the argument. Three stages establish what is there and what it needs. One
-   stage — Connect — is the hinge: before it the platform is estimating, after
-   it the platform is reading. And four stages run afterwards, for as long as
-   the system does.
-
-   A conventional installation stops somewhere around the third. That is the
-   whole proposition, and it is legible from the diagram before a word of it is
-   read. */
 
 export type Phase = {
   key: 'establish' | 'connect' | 'operate';
@@ -232,14 +181,10 @@ export const LIFECYCLE: LifecycleStage[] = [
   }
 ];
 
-/** Where a job normally ends, and the reason this diagram exists. */
 export const CONVENTIONAL_END = 3;
 
-/** What makes it a cycle rather than a line. */
 export const LIFECYCLE_LOOP =
   'Retain feeds the next capture. The record grows rather than restarting — which is why a system Guardian Care has held for five years is worth more than one it met yesterday.';
-
-/* ---------- The signature diagram ---------- */
 
 export type FlowNode = {
   key: string;
@@ -279,10 +224,7 @@ export const DESTINATIONS: FlowNode[] = [
   {key: 'grid', name: 'Grid', value: LIVE.grid.toFixed(1), unit: 'kW', glyph: 'grid', tone: 'blue'}
 ];
 
-/** The four things that happen to a unit of electricity, named once. */
 export const VERBS = ['Generate', 'Store', 'Consume', 'Export'];
-
-/* ---------- Data → intelligence → action ---------- */
 
 export type Stage = {
   key: string;
@@ -320,8 +262,6 @@ export const PIPELINE: Stage[] = [
   }
 ];
 
-/* ---------- One event, two readers ---------- */
-
 export type Representation = {
   audience: 'operations' | 'customer';
   label: string;
@@ -332,15 +272,6 @@ export type Representation = {
   buttons: string[];
 };
 
-/**
- * The same alert, written twice.
- *
- * This is the platform's sharpest principle and it is almost impossible to
- * explain in prose: operations needs the fault code and the string number, the
- * customer needs to know whether to worry. Showing both versions of one event
- * side by side makes the point in about two seconds, and it is the reason this
- * section is interactive rather than a static screenshot.
- */
 export const INSIGHT: Representation[] = [
   {
     audience: 'operations',
@@ -370,15 +301,8 @@ export const INSIGHT: Representation[] = [
   }
 ];
 
-/* ---------- The portfolio ---------- */
-
 export type Kpi = {value: string; label: string; tone: StatusTone};
 
-/**
- * The portfolio figures, taken from the platform specification rather than
- * invented here — and shared with the business journey's console, so the two
- * pages describe the same company.
- */
 export const PORTFOLIO: Kpi[] = [
   {value: '1,245', label: 'Customers', tone: 'ink'},
   {value: '1,036', label: 'Online', tone: 'green'},
@@ -386,12 +310,10 @@ export const PORTFOLIO: Kpi[] = [
   {value: '42', label: 'Faults', tone: 'red'}
 ];
 
-/** The five levels an alert can arrive at, and what each one obliges. */
 export type PriorityLevel = {
   name: string;
   tone: StatusTone;
   meaning: string;
-  /** Filled dot for anything that obliges somebody; hollow for the rest. */
   filled: boolean;
 };
 
@@ -437,12 +359,6 @@ export const EVENTS: Event[] = [
   }
 ];
 
-/* ---------- One day, as the customer sees it ---------- */
-
-/**
- * Generation splits exactly across used, stored and exported. Same discipline
- * as the live reading above, one time-scale down.
- */
 export const TODAY = {
   generated: 24.6,
   used: 14.2,
@@ -461,18 +377,14 @@ export const TODAY_ROWS: Array<{label: string; value: number; tone: StatusTone}>
   {label: 'Exported', value: TODAY.exported, tone: 'blue'}
 ];
 
-/* ---------- One customer record ---------- */
-
 export type RecordNode = {name: string; line: string; glyph: GlyphName};
 
-/** What a record is made of, before anything happens to it. */
 export const RECORD_ROOTS: RecordNode[] = [
   {name: 'Property', line: 'Address, type, electrical infrastructure', glyph: 'property'},
   {name: 'System', line: 'Panels, inverter, battery, protection', glyph: 'solarRoof'},
   {name: 'Energy', line: 'Tariff, metering, import, export', glyph: 'tariff'}
 ];
 
-/** And what happens to it, in the order it happens. */
 export const RECORD_SPINE: RecordNode[] = [
   {name: 'Monitoring', line: 'The record starts reporting against itself', glyph: 'monitoring'},
   {name: 'Events', line: 'Deviation becomes a classified exception', glyph: 'health'},

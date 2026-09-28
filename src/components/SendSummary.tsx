@@ -13,49 +13,13 @@ import {
   type Summary
 } from '../lib/deliver';
 
-/**
- * Take it with you.
- *
- * A result that only exists on the page is a result that ends when the tab
- * does. This is the one block that asks for something back, and it asks for the
- * smallest thing that makes the summary portable: an address, or a mobile
- * number, whichever the reader would rather have it at.
- *
- * **The preview is the argument, not decoration.** Asking for contact details
- * with nothing shown in return is asking somebody to find out what they
- * subscribed to after they subscribe, and the honest reading of that is a
- * mailing list. So the message is built from the answers already given and
- * shown in full, before the address field is touched — this exact text, these
- * exact figures, this length. There is nothing to find out afterwards, which is
- * the only version of this that deserves the details.
- *
- * It also switches with the channel, because the two messages are genuinely
- * different documents rather than one body at two widths. An email can carry a
- * table; a text message is read once, in a notification queue, and gets the
- * finding and nothing else. Showing the SMS as a bubble with its real segment
- * count is the quickest way to make that difference obvious to whoever is
- * editing the copy later.
- *
- * Shared by both journeys. A household gets its system summary, an installer
- * gets their portfolio position, and the only thing either page supplies is the
- * `summary` — which is why the message templates live in `data/` beside the
- * answers they are built from, and not in here.
- *
- * Nothing is sent yet: see `lib/deliver.ts`. The button works, the states are
- * real, and `PENDING_NOTE` under it says so rather than showing a confirmation
- * for a message that never left.
- */
-
 type SendSummaryProps = {
-  /** Section id, so a CTA elsewhere on the page can land on it. */
   id: string;
   eyebrow: string;
   title: string;
   accent: string;
   body: string;
-  /** Built from the visitor's own answers, in both lengths. */
   summary: Summary;
-  /** "Email my system summary" — the channel-neutral verb for this journey. */
   verb: string;
 };
 
@@ -78,10 +42,6 @@ export default function SendSummary({
   const ready = validFor(channel, to);
   const sending = status.kind === 'sending';
 
-  /* Switching channel clears the address rather than keeping it. An email in a
-     field labelled "mobile number" is not a saving, it is a validation error
-     the reader has to work out for themselves — and the two are never the same
-     string, so there is nothing to preserve. */
   function pick(next: Channel) {
     if (next === channel) return;
     setChannel(next);
@@ -111,7 +71,6 @@ export default function SendSummary({
         <Heading eyebrow={eyebrow} title={title} accent={accent} body={body} />
 
         <div className="grid gap-4 min-[1080px]:grid-cols-[0.9fr_1.1fr]">
-          {/* ---------- What we need from you ---------- */}
           <Reveal className="glass shadow-lift ring-lit flex flex-col overflow-hidden rounded-frame">
             {status.kind === 'sent' ? (
               <Sent channel={channel} to={to.trim()} onAgain={() => setStatus({kind: 'idle'})} />
@@ -122,7 +81,6 @@ export default function SendSummary({
                 </div>
 
                 <div className="flex-1 px-6 py-6">
-                  {/* ---- Channel ---- */}
                   <div
                     role="radiogroup"
                     aria-label="How would you like your summary?"
@@ -164,7 +122,6 @@ export default function SendSummary({
                     })}
                   </div>
 
-                  {/* ---- Address ---- */}
                   <label
                     htmlFor={field}
                     className="mt-4 block rounded-card bg-bg-2 p-4 ring-1 ring-line-2 transition focus-within:ring-green/60"
@@ -216,7 +173,6 @@ export default function SendSummary({
             )}
           </Reveal>
 
-          {/* ---------- And exactly what arrives ---------- */}
           <Reveal delay={0.08} className="min-w-0">
             {channel === 'email' ? (
               <EmailPreview summary={summary} />
@@ -235,14 +191,6 @@ const CHANNELS = [
   {value: 'sms' as const, label: 'Text it', note: 'The short version'}
 ];
 
-/**
- * The same mark the assessment's own choices carry.
- *
- * Copied in shape rather than imported, because the one in `Assessment` is a
- * private piece of that component and exporting it to share two circles would
- * couple a form to a questionnaire for no benefit. What matters is that a
- * reader who has just answered seven questions recognises the control.
- */
 function Tick({picked}: {picked: boolean}) {
   return (
     <span
@@ -267,15 +215,6 @@ function Tick({picked}: {picked: boolean}) {
   );
 }
 
-/* ---------- The example ---------- */
-
-/**
- * The email, drawn as an email.
- *
- * A From and a Subject line above it, because that is where a reader decides
- * whether to open the thing, and a preview that starts at the body quietly
- * skips the only part that has to earn its way into an inbox.
- */
 function EmailPreview({summary}: {summary: Summary}) {
   return (
     <div className="glass ring-lit overflow-hidden rounded-frame">
@@ -338,14 +277,6 @@ function EmailPreview({summary}: {summary: Summary}) {
   );
 }
 
-/**
- * The text message, drawn as a text message.
- *
- * With its real length underneath. 160 characters is one message and 161 is
- * two, which is invisible while you are editing the copy and obvious the moment
- * it is counted — so it is counted, in the place where somebody would be
- * tempted to add one more clause.
- */
 function SmsPreview({text}: {text: string}) {
   const parts = segments(text);
 
@@ -375,8 +306,6 @@ function SmsPreview({text}: {text: string}) {
   );
 }
 
-/* ---------- Afterwards ---------- */
-
 function Sent({
   channel,
   to,
@@ -401,8 +330,6 @@ function Sent({
           : ' Standard message rates from your network apply.'}
       </p>
 
-      {/* The stub speaks for itself here too. A success screen is the easiest
-          place on the site to tell a comfortable lie, so it does not. */}
       <p className="mt-4 rounded-card bg-bg-2 px-4 py-3 text-[12.5px] font-light leading-[1.55] text-faint ring-1 ring-line-2">
         {PENDING_NOTE}
       </p>
