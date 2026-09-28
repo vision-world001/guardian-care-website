@@ -2,12 +2,13 @@ import ConsoleField from './components/ConsoleField';
 import {useCallback, useMemo, useState} from 'react';
 import {NO_ANSWERS, type Answers} from '../../components/Assessment/types';
 import WaveSign from '../../context/layouts/WaveSign';
-import {readBusiness} from '../../data/businessFlow';
+import {businessSummary, readBusiness} from '../../data/businessFlow';
 import Assess from './components/Assess';
 import Console from './components/Console';
 import Hero from './components/Hero';
 import Join from './components/Join';
 import Model from './components/Model';
+import SendSummary from '../../components/SendSummary';
 import Products from './components/Products';
 import Revenue from './components/Revenue';
 import Views from './components/Views';
@@ -90,6 +91,17 @@ export default function Business() {
 
       {/* Only once the visitor has asked for it. */}
       {generated ? <Model position={position} /> : null}
+      {generated ? (
+        <SendSummary
+          id="send"
+          eyebrow=" Take it to the room"
+          title="The short version,"
+          accent="in writing."
+          body="Your portfolio position as one message — the count, the coverage and the gap. Built to be forwarded to whoever signs it off."
+          summary={businessSummary(position)}
+          verb="Send my portfolio summary"
+        />
+      ) : null}
 
       <Products />
       <Console />

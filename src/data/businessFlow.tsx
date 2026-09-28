@@ -1,4 +1,5 @@
 import type {Answers, Step} from '../components/Assessment/types';
+import {plain, type Row, type Summary} from '../lib/deliver';
 import type {GlyphName} from '../components/Glyph';
 import type {StatusTone} from './command';
 
@@ -199,6 +200,73 @@ export type BusinessPosition = {
   goals: string[];
   customerTypes: string[];
 };
+
+/* ---------- The portfolio position, as something you can forward ---------- */
+
+/**
+ * The installer's summary, in both lengths.
+ *
+ * Written to be read in about fifteen seconds, standing up, on a phone, by
+ * somebody who is going to forward it to a director. That is the actual job:
+ * this message is not the pitch, it is the thing the pitch gets pasted into,
+ * so it leads with the count and the gap rather than with the platform.
+ *
+ * The rows are the same five the profile beside the questions filled in, in the
+ * same order and the same words, for the same reason the household's summary
+ * reuses `summaryOf` — what arrives should be what they were looking at.
+ *
+ * Where a question went unanswered the row says so rather than being dropped.
+ * A five-row table with two rows missing reads as a system that lost them; the
+ * same table saying "not stated" twice reads as a form somebody skipped, which
+ * is what happened.
+ */
+export function businessSummary(position: BusinessPosition): Summary {
+  const UNSTATED = 'Not stated';
+  const installed = position.installedBand ? INSTALLED_LABEL[position.installedBand] : UNSTATED;
+  const market = position.market ? MARKET_LABEL[position.market] : UNSTATED;
+  const aftercare = position.aftercare ? AFTERCARE_LABEL[position.aftercare] : UNSTATED;
+  const goal = position.primaryGoal ?? UNSTATED;
+
+  const rows: Row[] = [
+    ['Installed base', installed, position.reactive ? 'Contacted only when something breaks' : undefined],
+    ['Installation era', market],
+    ['After handover', aftercare],
+    ['Monitoring coverage', position.monitoringCoverage, 'Share of the base with live visibility'],
+    ['Priority', goal, position.goals.length > 1 ? `Plus ${position.goals.length - 1} more` : undefined]
+  ];
+
+  /* The finding, and it is the same one in every case that matters: a base
+     nobody is watching is a base that only calls when it is already a problem.
+     Stated as a consequence rather than as a feature list, because an installer
+     already knows what monitoring is. */
+  const note = position.reactive
+    ? 'On this setup the first you hear of a fault is a customer calling about a bill. Every system between handover and that call is generating less than it should, and nobody is in a position to know which ones.'
+    : 'The gap is between the systems you can see and the ones you cannot. Whatever share of the base is unmonitored is the share that can only report a problem after it has cost the customer money.';
+
+  const count = position.installedCount;
+  const scale =
+    count === null
+      ? 'your installed base'
+      : `around ${count.toLocaleString('en-GB')} installed systems`;
+
+  const sms = plain(
+    `Guardian Care: from your answers - ${scale}, monitoring coverage ${position.monitoringCoverage.toLowerCase()}, ` +
+    `${position.reactive ? 'and aftercare that starts when a customer calls' : 'with aftercare already in place'}. ` +
+    `Priority: ${goal.toLowerCase()}. ` +
+      'The systems you cannot see are the ones that report faults late. Full breakdown by email on request.'
+  );
+
+  return {
+    subject: 'Your Guardian Care portfolio position',
+    intro:
+      'This is what your answers describe, in the order it matters. Every line is what you told us rather than what we measured — the platform replaces all of it with live data from the systems themselves.',
+    rows,
+    notes: [note],
+    action:
+      'Connect a sample of the base and compare what the systems report against what your records say they should be doing. That comparison is the whole proposition, and it takes a fortnight.',
+    sms
+  };
+}
 
 export function readBusiness(answers: Answers): BusinessPosition {
   const aftercare = answers.choice.aftercare ?? null;

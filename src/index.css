@@ -244,6 +244,23 @@
   --sheen: rgba(255, 255, 255, 0.07);
   --sheen-strong: rgba(255, 255, 255, 0.11);
 
+  /* The well an input sits in.
+     ------------------------------------------------------------
+     A tint of whatever is behind it, never a colour of its own. Form fields
+     used `--color-bg-2` here, which is an opaque #081729 — and a panel is
+     `--color-glass`, a translucent slate at 60%. So every field was three things
+     its own panel was not: solid where the panel was see-through, darker, and a
+     different hue. They read as holes cut in the surface rather than as wells
+     pressed into it, and on a page with a photograph behind it they punched that
+     photograph out entirely.
+
+     A few per cent of white on the dark theme and of ink on the light one keeps
+     the field the same material as the panel and lets whatever is behind carry
+     on through it. The delineation is the ring, not the fill — a hairline is
+     enough to say "type here" and costs nothing in contrast. */
+  --field: rgba(255, 255, 255, 0.055);
+  --field-lit: rgba(255, 255, 255, 0.085);
+
   /* What a raised surface casts. */
   --drop: rgba(0, 0, 0, 0.9);
   --drop-strong: rgba(0, 0, 0, 0.95);
@@ -611,6 +628,11 @@
   /* The light, from the other side. */
   --sheen: rgba(255, 255, 255, 0.8);
   --sheen-strong: rgba(255, 255, 255, 0.95);
+
+  /* Ink rather than white, and weaker. A field on a white panel is a shadow
+     pressed into it; the same few per cent of white would be invisible. */
+  --field: rgba(6, 24, 44, 0.04);
+  --field-lit: rgba(6, 24, 44, 0.065);
   --drop: rgba(6, 24, 44, 0.18);
   --drop-strong: rgba(6, 24, 44, 0.26);
 
@@ -785,6 +807,12 @@
   --sheen: rgba(255, 255, 255, 0.07);
   --drop: rgba(0, 0, 0, 0.9);
 
+  /* And a field goes back to a lift rather than a shadow. Nothing on the site
+     puts a form inside a navy band today; this is here so that the first thing
+     which does is not the bug report. */
+  --field: rgba(255, 255, 255, 0.055);
+  --field-lit: rgba(255, 255, 255, 0.085);
+
   /* And the button goes back to the vivid green with navy cut out of it —
      the pairing that was only ever a problem on a white ground. */
   --btn-glow: rgba(122, 179, 0, 0.45);
@@ -921,6 +949,16 @@
 /* A translucent surface with a lit top edge. The inset highlight is what makes
    a flat panel read as a pane of glass catching light from above rather than as
    a rectangle of slightly different grey. */
+/* The ground inside a control. Paired with a `ring-line-2` for its edge, which
+   is what actually marks the field out — see the note on `--field`. */
+@utility bg-field {
+  background-color: var(--field);
+}
+
+@utility bg-field-lit {
+  background-color: var(--field-lit);
+}
+
 @utility glass {
   background: var(--color-glass);
   backdrop-filter: blur(14px);

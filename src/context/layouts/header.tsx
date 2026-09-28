@@ -102,7 +102,12 @@ const JOURNEYS: Record<string, Journey> = {
 
   /* The form has one section and nothing to navigate to, so the bar carries
      only the mark and the way back. */
-  '/start': {links: [], switcher: true}
+  '/start': {links: [], switcher: true},
+
+  /* Same shape, same reason. Without an entry here `JOURNEYS[pathname]` is
+     undefined and the header returns null, so a new route that forgets this
+     line loses the whole bar. */
+  '/contact': {links: [], switcher: true}
 };
 
 export default function Header() {
@@ -122,6 +127,11 @@ export default function Header() {
      over a white page is a washed slate, not the mark's colour. */
   const grounded = scrolled || theme === 'day';
 
+  /* The start button is drawn everywhere but on itself, and whether it is there
+     decides how much room the rest of the bar has. Read once, so the two places
+     that care cannot disagree. */
+  const showStart = pathname !== START.to;
+
   return (
     <nav
       className={cn(
@@ -136,7 +146,18 @@ export default function Header() {
           scrolled ? 'py-2.5 min-[760px]:py-3' : 'py-4 min-[760px]:py-5'
         )}
       >
-        <Link to="/" aria-label="Guardian Care — home">
+        {/* `min-w-0` so the mark is what gives way if the bar is ever asked for
+            more than it has. A flex item defaults to `min-width: auto`, which
+            means it refuses to shrink below its content and pushes whatever
+            follows it out of the bar instead — and what follows it here is the
+            one button the bar exists for. The wordmark is the right thing to
+            lose: it is already dropped below 400px by `Lockup`'s own sizing, so
+            clipping it is the same concession made a little earlier. */}
+        <Link
+          to="/"
+          aria-label="Guardian Care — home"
+          className="min-w-0 overflow-hidden"
+        >
           <Lockup size="nav" />
         </Link>
 
@@ -153,24 +174,43 @@ export default function Header() {
 
         <ThemeToggle className="ml-auto min-[1180px]:ml-[22px]" />
 
+        {/* Held back until there is room for it, and only when it is sharing the
+            bar with the start button.
+
+            It is the right thing to hold back, because it goes to `/` — exactly
+            where the mark to its left already goes — so on a crowded bar it is
+            a second control for a destination that already has one, spending
+            about 145px to say so. Dropping it is what stops the row
+            overflowing: mark, wordmark, toggle and both pills all set
+            `whitespace-nowrap`, so nothing in the row could give, and the start
+            button was pushed clean out of the header's own background.
+
+            On `/start` the button is not drawn, the row measures 332 against
+            368 at the narrowest width the wordmark appears at, and this is the
+            way back — so there it stays at every size. Hiding it on a bar that
+            fits would be removing the only labelled exit to solve a problem
+            that page does not have. */}
         {journey.switcher ? (
           <Link
             to="/"
-            className="ml-2 whitespace-nowrap rounded-pill border border-line-2 px-3 py-[9px] text-[11.5px] font-semibold uppercase tracking-[.06em] text-faint transition duration-200 min-[520px]:ml-3 min-[520px]:px-4 min-[520px]:tracking-[.08em] hover:border-line hover:bg-ink/5 hover:text-ink"
+            className={cn(
+              'ml-2 shrink-0 whitespace-nowrap rounded-pill border border-line-2 px-3 py-[9px] text-[11.5px] font-semibold uppercase tracking-[.06em] text-faint transition duration-200 min-[520px]:ml-3 min-[520px]:px-4 min-[520px]:tracking-[.08em] hover:border-line hover:bg-ink/5 hover:text-ink',
+              showStart && 'hidden min-[640px]:block'
+            )}
           >
             Switch journey
           </Link>
         ) : null}
 
         {/* Everywhere but on itself. */}
-        {pathname === START.to ? null : (
+        {showStart ? (
           <Link
             to={START.to}
-            className="ml-2 whitespace-nowrap rounded-pill bg-[var(--cta)] px-3.5 py-[10px] text-[11.5px] font-bold uppercase tracking-[.05em] text-[var(--cta-ink)] shadow-[0_8px_24px_-12px_var(--btn-glow)] transition duration-200 min-[520px]:ml-3 min-[520px]:px-5 min-[520px]:py-[11px] min-[520px]:text-[12px] min-[520px]:tracking-[.07em] hover:bg-[var(--cta-hover)]"
+            className="ml-2 shrink-0 whitespace-nowrap rounded-pill bg-[var(--cta)] px-3.5 py-[10px] text-[11.5px] font-bold uppercase tracking-[.05em] text-[var(--cta-ink)] shadow-[0_8px_24px_-12px_var(--btn-glow)] transition duration-200 min-[520px]:ml-3 min-[520px]:px-5 min-[520px]:py-[11px] min-[520px]:text-[12px] min-[520px]:tracking-[.07em] hover:bg-[var(--cta-hover)]"
           >
             {START.label}
           </Link>
-        )}
+        ) : null}
       </div>
     </nav>
   );

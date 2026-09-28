@@ -1,4 +1,5 @@
 import type {Answers, Step} from '../components/Assessment/types';
+import {plain, type Row, type Summary} from '../lib/deliver';
 import {numberOf} from '../components/Assessment/types';
 import type {GlyphName} from '../components/Glyph';
 import type {StatusTone} from './command';
@@ -14,6 +15,22 @@ import type {StatusTone} from './command';
    ============================================================ */
 
 /* ---------- The system check ---------- */
+
+/**
+ * Defaults used where a rate was left blank, so no figure is ever missing.
+ *
+ * Declared up here, above the questions, and that position is load-bearing. The
+ * tariff step prints these same three numbers as the assumption it is about to
+ * make, and a step that advertised one figure and then calculated with another
+ * would be lying in the one place the page asks to be trusted. One object, read
+ * twice — by the question on the way in and by `readPosition` on the way out —
+ * so the two cannot drift apart.
+ */
+export const DEFAULT_RATES = {
+  importRate: 29,
+  exportRate: 15,
+  standingCharge: 58
+};
 
 export const EXISTING_STEPS: Step[] = [
   {
@@ -171,7 +188,17 @@ export const EXISTING_STEPS: Step[] = [
     kind: 'fields',
     glyph: 'tariff',
     title: 'What do you pay for grid electricity?',
-    lead: 'Only what you know. Anything left blank uses a national average until the real figure arrives.',
+    lead: 'Most people do not have these to hand, and the check does not need them. This is what it will assume unless you say otherwise.',
+    estimate: {
+      assumed: [
+        {label: 'Import electricity', value: `${DEFAULT_RATES.importRate}p/kWh`},
+        {label: 'Standing charge', value: `${DEFAULT_RATES.standingCharge}p/day`},
+        {label: 'Export rate', value: `${DEFAULT_RATES.exportRate}p/kWh`}
+      ],
+      source:
+        'UK averages for a standard variable tariff. Each one is replaced by your own figure as soon as supplier and monitoring data reach the platform.',
+      open: 'I know my exact rates'
+    },
     fields: [
       {key: 'importRate', label: 'Import electricity rate', suffix: 'p/kWh', placeholder: '29'},
       {key: 'offPeakRate', label: 'Off-peak rate', note: 'if applicable', suffix: 'p/kWh', placeholder: '—'},
@@ -251,13 +278,6 @@ export const ASSESSMENT_YEAR = 2026;
  * that would be precision the inputs cannot support.
  */
 const KWH_PER_KWP = 970;
-
-/** Defaults used where a rate was left blank, so no figure is ever missing. */
-export const DEFAULT_RATES = {
-  importRate: 29,
-  exportRate: 15,
-  standingCharge: 58
-};
 
 export type ExistingPosition = {
   era: string | null;
@@ -424,6 +444,96 @@ export function summaryOf(position: ExistingPosition): SummaryRow[] {
       note: 'Rate to be confirmed'
     }
   ];
+}
+
+/* ---------- What the answers mean ---------- */
+
+export type Observation = {headline: string; body: string; next: string};
+
+/**
+ * The one paragraph the check exists to produce.
+ *
+ * Three cases rather than one generic sentence, because a household with no
+ * storage, one whose battery still lets surplus go, and one that looks complete
+ * on paper are not looking at the same question — and a page that tells them all
+ * the same thing has told none of them anything.
+ *
+ * It sits in the data rather than in the panel that first drew it because it is
+ * now read twice: by the summary on the page, and by the message that summary
+ * can be sent as. Two copies would eventually be two different findings for the
+ * same household, arriving by two different routes.
+ */
+export function observe(position: ExistingPosition): Observation {
+  const buying = position.monthlyBill !== null && position.monthlyBill > 0;
+
+  if (!position.hasBattery) {
+    return {
+      headline: 'Your system appears to generate without storage',
+      body: buying
+        ? 'Surplus that is not used in the home as it is made is exported. Your bill suggests the property still buys electricity from the grid — most likely in the evening, at a rate well above what those exported units earned.'
+        : 'Surplus that is not used in the home as it is made is exported, rather than being held back for later in the day.',
+      next: 'Measure when your solar is produced, how much of it your home uses, and how much leaves and re-enters through the grid. Until those are measured, whether storage would pay here is a guess.'
+    };
+  }
+
+  if (position.exporting) {
+    return {
+      headline: 'You have storage, and surplus is still leaving the property',
+      body: 'A battery that exports while it still has room is usually a timing question rather than a hardware one — charge settings made for a tariff that has since changed, or reserve the system does not need.',
+      next: 'Measure when your battery charges, when it empties, and how that lines up with the hours your home actually uses electricity.'
+    };
+  }
+
+  return {
+    headline: 'You have generation and storage. The question is timing',
+    body: 'On paper this is the complete setup. Whether it delivers depends on the battery filling from surplus rather than from the grid, and emptying into the hours you are at home.',
+    next: 'Monitor generation, storage and grid import across a full day, so the system is judged on what it does rather than on what it contains.'
+  };
+}
+
+/* ---------- The same finding, as something you can keep ---------- */
+
+/**
+ * The household's summary, in both lengths.
+ *
+ * The rows are `summaryOf` — the identical seven lines drawn on the page, not a
+ * second table assembled from the same position. That is the whole point of
+ * routing it through here: what arrives in somebody's inbox is what they were
+ * looking at when they asked for it, down to the wording of every caption.
+ *
+ * The SMS is written separately rather than derived. A text message is read once,
+ * in a notification, so it gets the finding and the two numbers the finding turns
+ * on, and drops the table entirely. Truncating the email would produce something
+ * that reads as a cut-off email, which is how it would be treated.
+ */
+export function consumerSummary(position: ExistingPosition): Summary {
+  const finding = observe(position);
+  const rows: Row[] = summaryOf(position).map((row) => [row.label, row.value, row.note]);
+
+  /* Plain ASCII throughout, and deliberately: a single curly quote or dash drops
+     the whole message from GSM-7 to UCS-2 and halves what fits in a segment. */
+  const size = position.systemKw === null ? '' : ` (~${position.systemKw} kWp)`;
+  const yearly =
+    position.annualKwh === null
+      ? '. '
+      : ` should generate around ${position.annualKwh.toLocaleString('en-GB')} kWh a year. `;
+
+  const sms = plain(
+    `Guardian Care: your ${position.panels ?? 'solar'} panel system${size}${yearly}` +
+    `${position.hasBattery ? 'You have storage. ' : 'No battery recorded. '}` +
+    `Grid electricity costs ${position.importRate}p/kWh; exported units earn ${position.exportRate}p. ` +
+      'Next: measure when you generate against when you actually use it.'
+  );
+
+  return {
+    subject: 'Your Guardian Care system summary',
+    intro:
+      'This is the initial position built from your answers. Every figure in it is calculated rather than measured — connecting monitoring is the step that turns them into readings.',
+    rows,
+    notes: [`${finding.headline}. ${finding.body}`],
+    action: finding.next,
+    sms
+  };
 }
 
 /* ---------- One household, followed all the way through ----------

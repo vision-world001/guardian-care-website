@@ -2,12 +2,13 @@ import CommandField from '../Home/components/CommandField';
 import {useCallback, useMemo, useState} from 'react';
 import {NO_ANSWERS, type Answers} from '../../components/Assessment/types';
 import WaveSign from '../../context/layouts/WaveSign';
-import {readPosition} from '../../data/consumer';
+import {consumerSummary, readPosition} from '../../data/consumer';
 import Activation from './components/Activation';
 import Aim from './components/Aim';
 import Findings from './components/Findings';
 // import Gap from './components/Gap'; — re-enable with the <Gap /> below
 import Hero from './components/Hero';
+import SendSummary from '../../components/SendSummary';
 import Summary from './components/Summary';
 import SystemCheck from './components/SystemCheck';
 import Why from './components/Why';
@@ -82,6 +83,17 @@ export default function Consumer() {
 
       {/* Only once the visitor has asked for it. */}
       {generated ? <Summary position={position} /> : null}
+      {generated ? (
+        <SendSummary
+          id="send"
+          eyebrow=" Keep your summary"
+          title="Take this"
+          accent="with you."
+          body="Everything above, sent as one message. Read it now, forward it to whoever else decides, or keep it until your system is connected."
+          summary={consumerSummary(position)}
+          verb="Send my system summary"
+        />
+      ) : null}
 
       <Why />
       <Findings />

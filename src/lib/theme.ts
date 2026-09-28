@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useSyncExternalStore} from 'react';
 
 /**
  * Which room the site is lit in.
@@ -44,35 +44,84 @@ function apply(theme: Theme) {
   }
 }
 
+/* ---------- One value, however many components read it ---------- */
+
+/**
+ * The theme is shared state, and it used to be four copies of it.
+ *
+ * `useTheme` held a `useState` of its own, and four components call it — the
+ * header, the lockup inside it, the toggle, and the sign-off wave. Each got its
+ * own copy seeded from the DOM at first render, which agreed with the others
+ * exactly until somebody pressed the switch. Then `toggle` wrote the attribute
+ * and updated *its* copy, the stylesheet repainted the whole page, and the
+ * other three went on believing the theme they were born in, with no render
+ * scheduled to tell them otherwise.
+ *
+ * On the day theme that had a visible cost rather than a theoretical one. The
+ * header decides whether to carry a background from `theme`, so a stale value
+ * left it transparent — white type and a near-white mark, sitting on a page
+ * that had just turned cream. The logo disappeared, which is how the bug was
+ * found.
+ *
+ * So there is one snapshot and a set of subscribers, read through
+ * `useSyncExternalStore`. That hook exists for precisely this shape: a value
+ * that lives outside React — here, an attribute on <html> — which any number of
+ * components need to stay in step with. Adding a context provider would work
+ * too and would mean wrapping the tree to share a two-character string.
+ *
+ * The listener is attached while somebody is subscribed and not before, so
+ * importing this module still costs nothing.
+ */
+const listeners = new Set<() => void>();
+
+let snapshot: Theme = current();
+
+function notify(next: Theme) {
+  if (snapshot === next) return;
+  snapshot = next;
+  for (const listener of listeners) listener();
+}
+
+/** Another tab switched theme. Without this, two windows disagree. */
+function onStorage(event: StorageEvent) {
+  if (event.key !== THEME_KEY) return;
+  const next: Theme = event.newValue === 'day' ? 'day' : 'night';
+  document.documentElement.dataset.theme = next;
+  notify(next);
+}
+
+function subscribe(listener: () => void) {
+  if (listeners.size === 0 && typeof window !== 'undefined') {
+    window.addEventListener('storage', onStorage);
+  }
+  listeners.add(listener);
+
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0 && typeof window !== 'undefined') {
+      window.removeEventListener('storage', onStorage);
+    }
+  };
+}
+
+/** A string, so React can compare snapshots by identity without a cache. */
+function read(): Theme {
+  return snapshot;
+}
+
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(current);
+  const theme = useSyncExternalStore(subscribe, read, serverRead);
 
-  /* No mount-time reconciliation is needed. The initialiser is the lazy form,
-     so `current()` runs during the first render — which happens after the
-     inline script in index.html has already written the attribute — and the
-     two agree from the start. Re-reading it in an effect would only add a
-     second render that changes nothing.
-
-     Another tab switching theme switches this one too. Without it, two open
-     windows disagree and the next navigation in either flips underneath the
-     reader. */
-  useEffect(() => {
-    const sync = (event: StorageEvent) => {
-      if (event.key !== THEME_KEY) return;
-      const next: Theme = event.newValue === 'day' ? 'day' : 'night';
-      document.documentElement.dataset.theme = next;
-      setTheme(next);
-    };
-
-    window.addEventListener('storage', sync);
-    return () => window.removeEventListener('storage', sync);
+  const toggle = useCallback(() => {
+    const next: Theme = snapshot === 'day' ? 'night' : 'day';
+    apply(next);
+    notify(next);
   }, []);
 
-  const toggle = () => {
-    const next: Theme = theme === 'day' ? 'night' : 'day';
-    apply(next);
-    setTheme(next);
-  };
-
   return {theme, toggle};
+}
+
+/** Nothing renders this on a server, but the hook requires the third argument. */
+function serverRead(): Theme {
+  return 'night';
 }

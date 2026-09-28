@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import Glyph from '../Glyph';
 import {cn} from '../../lib/cn';
-import {visibleSteps, type Answers, type ProfileLine, type Step} from './types';
+import {visibleSteps, type Answers, type Estimate, type ProfileLine, type Step} from './types';
 
 /**
  * The guided assessment, shared by all three journeys.
@@ -54,6 +54,12 @@ export default function Assessment({
   onReset
 }: AssessmentProps) {
   const [at, setAt] = useState(0);
+  /* Which optional field sets the visitor has chosen to open. Kept as a list
+     rather than a single flag so going Back to a step that was unfolded finds
+     it unfolded — re-folding a question somebody has already answered would
+     hide what they typed behind a link they would have no reason to press
+     twice. */
+  const [opened, setOpened] = useState<string[]>([]);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -116,6 +122,7 @@ export default function Assessment({
   function restart() {
     clearTimeout(timer.current);
     setAt(0);
+    setOpened([]);
     onReset();
   }
 
@@ -125,6 +132,15 @@ export default function Assessment({
       ? step.options.find((item) => item.value === chosen && item.input)
       : undefined;
   const multiPicked = step?.kind === 'multi' ? (answers.multi[step.key] ?? []) : [];
+
+  /* Open because it was asked for, or open because there is already something
+     in it. The second half matters after a reset-and-return, and after the
+     browser restores a form: a step holding values it will not show is a step
+     that silently discards them. */
+  const unfolded =
+    step?.kind === 'fields' &&
+    (opened.includes(step.key) ||
+      step.fields.some((item) => (answers.field[item.key] ?? '').trim() !== ''));
 
   return (
     <div className="grid gap-px overflow-hidden rounded-panel bg-line-2 ring-1 ring-line-2 min-[980px]:grid-cols-[1fr_306px]">
@@ -153,7 +169,12 @@ export default function Assessment({
             </div>
 
             <div className="mt-7">
-              {step.kind === 'fields' ? (
+              {step.kind === 'fields' && step.estimate && !unfolded ? (
+                <Assumed
+                  estimate={step.estimate}
+                  onOpen={() => setOpened((list) => [...list, step.key])}
+                />
+              ) : step.kind === 'fields' ? (
                 <div className="grid gap-3 min-[620px]:grid-cols-2">
                   {step.fields.map((field) => (
                     <label
@@ -367,6 +388,52 @@ function Progress({at, total}: {at: number; total: number}) {
           />
         ))}
       </div>
+    </div>
+  );
+}
+
+/**
+ * The step, folded.
+ *
+ * What it prints is the assumption itself, not a reassurance about it. "We will
+ * use a national average" is a sentence a reader has to take on trust; the three
+ * figures that average actually is, with where they came from underneath, is
+ * something they can disagree with — and the link to disagree is right there.
+ * That is the whole design: the default answer is visible, so accepting it is a
+ * decision rather than a shrug.
+ *
+ * The opening control is a button, not a link. It changes what is on this screen
+ * rather than going anywhere, and an anchor that navigates nowhere is a promise
+ * to a screen reader that the page then breaks.
+ */
+function Assumed({estimate, onOpen}: {estimate: Estimate; onOpen: () => void}) {
+  return (
+    <div className="rounded-card bg-bg-2 p-5 ring-1 ring-line-2">
+      <div className="text-[11.5px] font-bold uppercase tracking-[.13em] text-faint">
+        What we will assume
+      </div>
+
+      <dl className="mt-4 space-y-px">
+        {estimate.assumed.map((line) => (
+          <div
+            key={line.label}
+            className="flex items-baseline justify-between gap-4 border-b border-line-2 py-2.5 last:border-b-0"
+          >
+            <dt className="text-[14px] font-light text-muted">{line.label}</dt>
+            <dd className="mono shrink-0 text-[15px] font-semibold text-ink">{line.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <p className="mt-4 text-[13px] font-light leading-[1.55] text-faint">{estimate.source}</p>
+
+      <button
+        type="button"
+        onClick={onOpen}
+        className="mt-4 inline-flex items-center gap-2 rounded-full px-4 py-3 text-[13.5px] min-[520px]:py-2.5 font-medium text-green ring-1 ring-green/40 transition duration-200 hover:bg-green-glow hover:ring-green/70"
+      >
+        {estimate.open} →
+      </button>
     </div>
   );
 }

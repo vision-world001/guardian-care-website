@@ -35,6 +35,7 @@ const COLUMNS: Array<{heading: string; links: FooterLink[]}> = [
   {
     heading: 'Contact',
     links: [
+      {href: '/contact', label: 'Contact Us'},
       {href: CONTACT.phoneHref, label: CONTACT.phone, external: true},
       {href: CONTACT.emailHref, label: CONTACT.email, external: true}
     ]

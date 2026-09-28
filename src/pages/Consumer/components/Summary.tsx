@@ -1,7 +1,7 @@
 import {Fragment} from 'react';
 import Reveal from '../../../components/Reveal';
 import {Section, Wrap} from '../../../components/ui';
-import {NEXT_STEPS, type ExistingPosition} from '../../../data/consumer';
+import {NEXT_STEPS, observe, type ExistingPosition} from '../../../data/consumer';
 import {cn} from '../../../lib/cn';
 import Conduit from '../../Home/components/Conduit';
 import {Heading, LABEL, SECONDARY} from '../../../components/kit';
@@ -116,44 +116,4 @@ export default function Summary({position}: {position: ExistingPosition}) {
       </Wrap>
     </Section>
   );
-}
-
-/* ---------- What the answers add up to ---------- */
-
-type Observation = {headline: string; body: string; next: string};
-
-/**
- * The one paragraph the check exists to produce.
- *
- * Three cases rather than one generic sentence, because a household with no
- * storage, one whose battery still lets surplus go, and one that looks complete
- * on paper are not looking at the same question — and a page that tells them
- * all the same thing has told none of them anything.
- */
-function observe(position: ExistingPosition): Observation {
-  const buying = position.monthlyBill !== null && position.monthlyBill > 0;
-
-  if (!position.hasBattery) {
-    return {
-      headline: 'Your system appears to generate without storage',
-      body: buying
-        ? 'Surplus that is not used in the home as it is made is exported. Your bill suggests the property still buys electricity from the grid — most likely in the evening, at a rate well above what those exported units earned.'
-        : 'Surplus that is not used in the home as it is made is exported, rather than being held back for later in the day.',
-      next: 'Measure when your solar is produced, how much of it your home uses, and how much leaves and re-enters through the grid. Until those are measured, whether storage would pay here is a guess.'
-    };
-  }
-
-  if (position.exporting) {
-    return {
-      headline: 'You have storage, and surplus is still leaving the property',
-      body: 'A battery that exports while it still has room is usually a timing question rather than a hardware one — charge settings made for a tariff that has since changed, or reserve the system does not need.',
-      next: 'Measure when your battery charges, when it empties, and how that lines up with the hours your home actually uses electricity.'
-    };
-  }
-
-  return {
-    headline: 'You have generation and storage. The question is timing',
-    body: 'On paper this is the complete setup. Whether it delivers depends on the battery filling from surplus rather than from the grid, and emptying into the hours you are at home.',
-    next: 'Monitor generation, storage and grid import across a full day, so the system is judged on what it does rather than on what it contains.'
-  };
 }

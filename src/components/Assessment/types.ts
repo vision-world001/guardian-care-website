@@ -58,11 +58,39 @@ type Base = {
   showIf?: (answers: Answers) => boolean;
 };
 
+/**
+ * What a `fields` step does when nobody fills it in.
+ *
+ * Present, and the step arrives folded: the figures the assessment will assume
+ * are listed, the reason they are safe to assume is stated, and the inputs stay
+ * behind one link for the minority who know their exact numbers. Absent, and
+ * the fields are simply shown.
+ *
+ * This exists because the alternative shapes are both worse. Deleting the step
+ * loses the people who do know and would have told us, which is the answer with
+ * the most value in it. Showing five empty boxes stops everybody else dead — a
+ * page of blanks labelled "if known" reads as work, and a reader who cannot
+ * answer the first one assumes the result needs all five and leaves. Folded, the
+ * default path is a glance and a Continue, and the precision is still on offer.
+ *
+ * The listed figures are not decoration. They are what the estimate is actually
+ * built from, so a reader can see the assumption before agreeing to it, which is
+ * the difference between an estimate and a guess presented as a number.
+ */
+export type Estimate = {
+  /** The figures used when the fields are left folded. */
+  assumed: {label: string; value: string}[];
+  /** Where they come from: "Ofgem price cap, January 2026". */
+  source: string;
+  /** The link that unfolds the inputs. */
+  open: string;
+};
+
 export type Step = Base &
   (
     | {kind: 'choice'; options: Option[]}
     | {kind: 'multi'; options: Option[]}
-    | {kind: 'fields'; fields: Field[]}
+    | {kind: 'fields'; fields: Field[]; estimate?: Estimate}
   );
 
 /**

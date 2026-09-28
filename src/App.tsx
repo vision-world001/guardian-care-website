@@ -2,6 +2,7 @@ import {BrowserRouter, Navigate, Route, Routes} from 'react-router';
 import Layout from './context/layouts';
 import Business from './pages/Business/Business';
 import Consumer from './pages/Consumer/Consumer';
+import Contact from './pages/Contact/Contact';
 import Home from './pages/Home/Home';
 import Plan from './pages/Plan/Plan';
 import Start from './pages/Start/Start';
@@ -30,6 +31,11 @@ export default function App() {
               who clicks "get started" on the home page should not land in the
               middle of the business page to find the form. */}
           <Route path="/start" element={<Start />} />
+
+          {/* Reached from the footer on every page, so it is a route rather
+              than a section: a contact form that only exists at the bottom of
+              one journey is unreachable from the other three. */}
+          <Route path="/contact" element={<Contact />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
