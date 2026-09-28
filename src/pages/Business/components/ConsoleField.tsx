@@ -1,3 +1,4 @@
+import CurrentField, {type Weather} from '../../../components/CurrentField';
 import SolarShine, {type Shine} from '../../../components/SolarShine';
 
 /**
@@ -7,21 +8,25 @@ import SolarShine, {type Shine} from '../../../components/SolarShine';
  * console read by someone at a desk, and it should feel like an instrument
  * rather than a document.
  *
- * So the ground is a 56px lattice of white hairlines with three soft blooms
- * behind it — the same two ingredients as the journey field, at a finer pitch.
- * A tighter rule reads as an instrument where a coarser one reads as a roof,
- * and that difference is the only one between the two files.
+ * So the ground is the same two ingredients as the journey field — soft blooms
+ * with the current running over them — wound tighter. Beams here are shorter,
+ * faster, more numerous and lean blue; over there they are long, slow and
+ * amber. That difference is the only one between the two files, and it is the
+ * whole of what separates an instrument from a roof in the sun.
  *
- * The lattice is masked back across the reading column, so it is texture at
- * the margins and almost nothing behind a readout. See `--grid-reading-mask`.
+ * Strikes are biased out to the margins and the field is masked back across the
+ * reading column as well. See `edgeX` in `CurrentField` and
+ * `--field-reading-mask`: a readout is the last thing on the site that can
+ * afford movement behind it.
  *
- * GridPulses used to run short comet traces along this lattice so the ground
- * read as running rather than drawn. It is gone: its comets were 1px
- * hairlines snapped to exact multiples of the 56px pitch, so they doubled the
- * very quality the grid is now masked back to avoid, and they were the most
- * expensive thing on the page for it. If charge needs showing again it
- * belongs on the readouts, where `conduit` and `crawl` already live and where
- * it would mean something.
+ * GridPulses used to run short comet traces along a lattice here so the ground
+ * read as running rather than drawn. The lattice is gone and so is it, but the
+ * instinct was right and this is it done properly. What was wrong with the
+ * comets was that they were snapped to exact multiples of the 56px pitch, so
+ * every trace confirmed the grid it ran on and the two fought each other for
+ * the same job. With no grid left to trace, a beam is free to strike anywhere
+ * and run in any direction — and it costs less than the comets did, because
+ * nothing is animating while it waits its turn.
  *
  * Bounded to the page rather than to the viewport. `absolute` inside the
  * journey's own `relative isolate` main means the field starts under the header
@@ -85,11 +90,33 @@ const SUNS: Shine[] = [
   }
 ];
 
+/**
+ * The weather on this ground.
+ *
+ * Twenty-six beams to the journey field's eighteen, at roughly two thirds the
+ * length and half the rest between strikes. Blue twice in the tone list, amber
+ * once: the console is lit like equipment rather than like a window.
+ *
+ * Three flares, waiting up to eleven seconds. The sun is further away in here.
+ */
+const WEATHER: Weather = {
+  arcs: 26,
+  flares: 3,
+  tones: ['var(--bolt-blue)', 'var(--bolt-blue)', 'var(--bolt-green)', 'var(--bolt-amber)'],
+  reach: [110, 300],
+  thick: [6, 11],
+  strike: [420, 820],
+  gap: [520, 3600],
+  flareSize: [150, 260],
+  flareBurn: [1300, 1900],
+  flareGap: [4200, 11000]
+};
+
 export default function ConsoleField() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <div className="bg-console-grid absolute inset-0" />
       <SolarShine suns={SUNS} />
+      <CurrentField weather={WEATHER} />
 
       {/* Sides down, and the last few per cent held for the handoff to the
           footer. Written as linear passes rather than as an ellipse because the

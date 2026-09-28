@@ -255,22 +255,51 @@
   --rim-lower: rgba(255, 255, 255, 0.045);
   --rim-foot: rgba(255, 255, 255, 0.1);
 
-  /* The measured lattices under the journey and console grounds.
+  /* The charge on the ground.
      ------------------------------------------------------------
-     Hairlines, which is what they always were. A stronger version of this was
-     tried in colour and a photovoltaic array was tried in its place; both were
-     wrong in the same direction. The ground's job is to stop a flat page
-     reading as an empty document, and a rule that a reader can just about
-     feel is the whole of that job. Anything with enough presence to be looked
-     at is competing with the thing it sits behind.
+     There is no lattice here any more, at any weight. A grid is a drawn thing,
+     and what it was standing behind is a page about electricity moving through
+     a house — so the ground became the current instead: short beams that strike
+     at a random point, run out in a random direction and go, and every so often
+     a warm flare where the light the whole product is about comes off something.
 
-     The colour is white here, not green: the light on this page comes from
-     the blooms, which are coloured, and a grid that is also coloured makes
-     the two read as one busy surface rather than as a lit texture. */
-  --grid-line: rgba(255, 255, 255, 0.16);
-  --grid-glow: rgba(255, 255, 255, 0.055);
+     A beam takes one of the mark's three colours. A flare is always amber,
+     because a flare is the sun and the sun is not up for negotiation.
 
-  /* And where the lattice steps back.
+     `--arc-hot` is what the core of a beam tends towards and `--arc-hot-mix` is
+     how far it gets. On navy that is most of the way to white: a discharge
+     against a dark ground is white in the middle and coloured at its edges, and
+     inverting that is the difference between a live wire and a coloured stick.
+     `--arc-halo` is the alpha of the glow around the core, which is always the
+     beam's own colour, and `--arc-halo-soft` is the same glow spread down the
+     length at about half strength.
+
+     `--arc-peak` is the master. Every keyframe multiplies its opacity by it, so
+     a ground that comes out too loud on one theme is one number to change
+     rather than twelve. */
+  /* What a beam is actually made of, as opposed to what a bloom is.
+     ------------------------------------------------------------
+     These are separate from the washes and they have to be. A wash is 400px of
+     soft light and can afford to be a pale, vivid colour; a beam is a 2px
+     filament, and 2px of the same pale colour on a pale ground is nothing at
+     all. On navy the two can still be the same value, because anything at all
+     is bright against near-black — so here they are literally the washes. The
+     day block is where they part company, and the note there explains why. */
+  --bolt-amber: var(--wash-amber);
+  --bolt-green: var(--wash-green);
+  --bolt-blue: var(--wash-blue);
+
+  --arc-hot: #ffffff;
+  --arc-hot-mix: 66%;
+  --arc-halo: 46%;
+  --arc-halo-soft: 20%;
+  --arc-peak: 1;
+
+  --flare-hot: rgba(255, 249, 234, 0.95);
+  --flare-halo: 42%;
+  --flare-peak: 1;
+
+  /* And where the ground steps back.
      ------------------------------------------------------------
      Pinned to the content column, not to the viewport. The obvious version of
      this is a percentage — full value in the outer twelve per cent, dim
@@ -284,14 +313,30 @@
      column plus a little, wherever the column is. Below about 1280px the two
      offsets cross and the whole width dims, which is the right answer — on a
      narrow screen the text spans everything, so there is no margin left to
-     put texture in. */
-  --grid-reading-mask: linear-gradient(
+     put light in.
+
+     This matters more than it did under the lattice. A hairline behind a
+     paragraph is a texture a reader stops seeing within a second; a beam that
+     strikes behind one is movement at the edge of vision, which is the most
+     distracting thing a background can do. So it is defended twice — the
+     field's own scheduler keeps strikes out in the margins as well, and this
+     catches whatever runs in from there.
+
+     Four stops a side rather than two. A straight ramp from full to dim over
+     90px has a corner at each end of it, and a corner in a mask shows up as a
+     faint vertical seam down the page — the one artefact a texture this quiet
+     cannot afford, because the seam would be the only hard edge on the whole
+     ground. Bending the ramp puts the change where no single line is, which is
+     the entire point of a falloff. */
+  --field-reading-mask: linear-gradient(
     90deg,
     #000 0,
-    #000 calc(50% - 660px),
-    rgba(0, 0, 0, 0.38) calc(50% - 570px),
-    rgba(0, 0, 0, 0.38) calc(50% + 570px),
-    #000 calc(50% + 660px),
+    #000 calc(50% - 700px),
+    rgba(0, 0, 0, 0.74) calc(50% - 640px),
+    rgba(0, 0, 0, 0.44) calc(50% - 560px),
+    rgba(0, 0, 0, 0.44) calc(50% + 560px),
+    rgba(0, 0, 0, 0.74) calc(50% + 640px),
+    #000 calc(50% + 700px),
     #000 100%
   );
   --shine-core: 8%;
@@ -480,15 +525,15 @@
    **The accents drop.** The vibrant pair is tuned to hold its own against
    #011227 and measures 2.4:1 on white — visible as a block of colour, not
    readable as a word. The hue is kept and the lightness is walked down until
-   it clears AA on the page *and* on a white panel: green #456f06 at 5.9:1,
-   blue #0a5fb5 at 6.3:1. Same two colours from the mark, same relationship,
-   legible in both rooms.
+   it clears AA on the page *and* on a white panel: green #456f06 at 5.3:1 on
+   the page and 5.9:1 on a panel, blue #0a5fb5 at 5.6:1 and 6.3:1. Same two
+   colours from the mark, same relationship, legible in both rooms.
 
    **The button inverts.** Everywhere else the brief was one CTA colour on both
    grounds, and that held while the fill was a vivid green on navy. On white it
-   does not: #7ab300 against #f7fafc is 2.4:1, so the control's own edge fails
+   does not: #7ab300 against #f4f1ea is 2.2:1, so the control's own edge fails
    the 3:1 a UI component needs and the button stops looking like a button.
-   The fill steps to #3f6a00 with white on it — 6.1:1 for the edge, 6.4:1 for
+   The fill steps to #3f6a00 with white on it — 5.7:1 for the edge, 6.4:1 for
    the label — and the pill is still unmistakably the green one.
 
    **The light flips.** A panel raised off a dark page is white along its top
@@ -507,9 +552,24 @@
 
   /* Surfaces. The ramp inverts: the page is the light grey, a panel is the
      white it steps up into, and the second step goes cooler rather than
-     brighter because on this ground "raised" cannot mean "lighter". */
-  --color-bg: #f7fafc;
-  --color-bg-2: #eef4f9;
+     brighter because on this ground "raised" cannot mean "lighter".
+
+     The page is warm now and it used to be cool (#f7fafc). Two reasons, and
+     visibility of the ground is *not* one of them — see the note on the bolts
+     below, where the arithmetic goes the other way. The first is that white
+     panels need somewhere to stand: #ffffff on #f7fafc is a half-step, and the
+     rim and drop tokens were carrying the whole of the lift on their own. Off
+     a warm page the same white panel separates on hue as well as on value, and
+     reads as paper rather than as a slightly different white. The second is
+     that this is a solar product — the night theme is the cold room and the day
+     theme should be the one with the sun in it, which a blue-white page
+     actively works against.
+
+     Everything mixed from the page moved with it: both veils and the scrollbar
+     track below are this value at other alphas, and leaving them cool would put
+     a blue cast over every photograph and down the side of every page. */
+  --color-bg: #f4f1ea;
+  --color-bg-2: #ebe6da;
   --color-panel: #ffffff;
   --color-panel-2: #f2f7fb;
 
@@ -517,11 +577,17 @@
   --color-line-2: rgba(6, 24, 44, 0.13);
 
   /* Type. Navy rather than black — a true black on this palette reads as a
-     different brand — and the third step clears 4.8:1 on the page, so the
-     mono captions survive the move. */
+     different brand — and the third step clears 5.0:1 on the page, so the
+     mono captions survive the move.
+
+     That third step went down a shade with the page. #666b70 measured 5.1:1 on
+     the old cool ground and 4.8:1 on this one, which is the same nominal pass
+     sitting right on its own threshold — and a caption that only just clears AA
+     is one rounding error from not clearing it. #63686d buys the margin back
+     for a change nobody will see. */
   --color-ink: #06182c;
   --color-muted: #4e5358;
-  --color-faint: #666b70;
+  --color-faint: #63686d;
 
   /* Accents, walked down their own hue until they are readable. */
   --color-green: #456f06;
@@ -555,31 +621,73 @@
   --rim-lower: rgba(6, 24, 44, 0.11);
   --rim-foot: rgba(6, 24, 44, 0.17);
 
-  /* Bolder than the night values, not weaker. On navy a lime stripe at 30%
-     is already a bright line, because the ground is nearly black and any
-     light at all is an event; on #f7fafc the same mix is most of the way
-     back to the page.
+  /* The same current, lit the other way.
+     ------------------------------------------------------------
+     This block was wrong in its first version and the fix is worth writing
+     down, because the intuition that produced it is the natural one.
 
-     Only about 1.5x, though — the lattice these replaced needed two and a
-     half, and that was the tell. What made the old ground weak on white was
-     never its alpha, which was already 0.44: it was that 0.44 landed on one
-     pixel in every sixty-four, about 1.5% of the field. A fan of rays covers
-     nearer 15%. The boldness comes from area, and area is free — alpha is
-     the part that costs legibility, so it barely has to move. */
-  /* Roughly twice the night values, and not because white and ink are
-     symmetrical. A hairline at 5% of white on navy is a visible edge, because
-     the ground is nearly black and any light on it is an event; the same
-     alpha of ink on #f7fafc is a smudge you are not sure you can see, which
-     is more tiring to look at than either a clear line or no line at all. */
-  --grid-line: rgba(6, 24, 44, 0.2);
-  --grid-glow: rgba(6, 24, 44, 0.07);
+     A beam on a pale page cannot be white at its core — that part was right.
+     What was missed is that it cannot be a *pale colour* either, and the washes
+     are pale colours: #ffb02e, #8ac800 and #22a3ff measure 1.7:1, 1.9:1 and
+     2.6:1 against this page at full strength, before the halo alpha takes them
+     down by two thirds again. A beam drawn in them is not faint, it is absent.
+
+     So the bolts leave the washes here. Same three hues, walked down until they
+     are events rather than suggestions — 2.9:1, 3.5:1 and 4.0:1, which is
+     roughly double across the board. They stop short of the accent values
+     (#456f06, #0a5fb5) on purpose: an accent has to be readable *as type*, and
+     a beam pushed that far stops being light and starts being a drawn wire,
+     which is the exact failure the lattice was removed for.
+
+     **And why the page being warmer does not help this.** It is the obvious
+     second lever and it pulls the wrong way. Every one of these tones is darker
+     than the page, so a day beam is dark-on-light, and taking the page down
+     towards the tone closes the gap instead of opening it: the bolts lose about
+     8% of their contrast on the warm ground (3.2:1 rather than 3.5:1 for the
+     green). The page is warm for the reasons given up at --color-bg, which are
+     about panels and about the brand, and the bolts simply pay the 8% out of a
+     100% gain. Anyone tempted to darken it further to make the ground read
+     should know they will be making it worse.
+
+     The alphas all come up as well, and not because the two grounds are
+     symmetrical. A dark page swallows light and a pale one does not — but what
+     it does to a *thin* mark is take the edges off it, so the halo has to be
+     heavier here to survive, not lighter. `--arc-peak` comes back up to near
+     full for the same reason.
+
+     Measured, composited, against this page, so the next person to touch these
+     does not have to guess what they are trading. Beam cores went 1.9/2.1/2.6
+     to 3.7/4.2/4.7 — roughly double, and the whole of the reason the ground is
+     visible at all now. Halos went 1.5/1.6/1.7 at 46% to 1.9/2.0/2.3 at 66%,
+     against night's 2.9/2.8/2.4; that last step is the one with a limit on it,
+     because the halo alpha is the peak of a radial that falls to nothing by
+     70%, and pushing it past about 70% stops reading as a glow and starts
+     reading as paint. Day will not reach night here and should not try: night
+     cores sit at 13–15:1, which on a pale page is not light, it is ink. */
+  --bolt-amber: #e07a00;
+  --bolt-green: #5f9400;
+  --bolt-blue: #0d7fd4;
+
+  --arc-hot: #06182c;
+  --arc-hot-mix: 22%;
+  --arc-halo: 66%;
+  --arc-halo-soft: 28%;
+  --arc-peak: 0.95;
+
+  /* The flare core stops being a pale warm white and becomes a saturated one.
+     A flash of sun on a dark page is white because it is brighter than the
+     page; on a pale page nothing is, so the only honest way to draw the same
+     event is as a dense warm bloom. Amber at strength, not cream. */
+  --flare-hot: rgba(224, 118, 0, 0.9);
+  --flare-halo: 44%;
+  --flare-peak: 0.88;
   --shine-core: 8%;
 
   /* The veils become the page holding itself back over a field, instead of
      ink laid across it. */
-  --veil-heavy: rgba(247, 250, 252, 0.82);
-  --veil-mid: rgba(247, 250, 252, 0.66);
-  --veil-soft: rgba(247, 250, 252, 0.4);
+  --veil-heavy: rgba(244, 241, 234, 0.82);
+  --veil-mid: rgba(244, 241, 234, 0.66);
+  --veil-soft: rgba(244, 241, 234, 0.4);
 
   --wash-amber: #ffb02e;
   --wash-green: #8ac800;
@@ -590,7 +698,7 @@
   --ramp-mid: var(--color-green);
   --img-grade: brightness(1) contrast(1.02) saturate(1.02);
 
-  --scroll-track: #eaf0f6;
+  --scroll-track: #ece8dd;
   --scroll-thumb: rgba(6, 24, 44, 0.2);
   --scroll-thumb-hover: rgba(6, 24, 44, 0.36);
 
@@ -864,54 +972,196 @@
   filter: var(--img-grade);
 }
 
-/* ---- The measured grounds ----------------------------------------------
+/* ---- The lit grounds ----------------------------------------------------
 
-   A lattice of hairlines, and a mask that takes it out of the way of the
-   words.
+   Two paints, two strikes, and a mask that keeps them off the words.
 
-   The mask is the part worth explaining. A grid strong enough to be felt at
-   the margins is too strong directly behind a paragraph, and the two demands
-   cannot be met by one alpha — which is what every previous attempt at this
-   ground was really failing at. So the strength is not uniform: full value
-   down both outer edges of the page, falling to under half across the middle,
-   where the reading column is. The texture survives where there is nothing to
-   read, and gets out of the way where there is.
+   `CurrentField` owns every random number — where a beam starts, which way it
+   runs, how long it is, how long it burns and how long the field waits before
+   the next one. Everything here is the part that does not vary, and the split
+   is the point: the *look* of a discharge is not random at all, it is one fixed
+   sequence of flicker and decay that every strike shares. Keeping that sequence
+   in CSS keyframes also means the compositor runs it, so a page with twenty
+   beams on it is still animating nothing but transform and opacity.
 
-   Horizontal only, because the constraint is horizontal: the content column
-   is centred and fixed-width at every scroll position, so the band to protect
-   is a vertical strip, not a region.
+   Both paints start at `animation-name: none`. The field sets a name to fire
+   one, clears it on `animationend`, and sets it again after a random wait —
+   which is the whole reason there is a name in the shorthand and the reason it
+   is `none`. A reader who asked for reduced motion gets `data-still` and the
+   name is never set at all: one random arrangement of beams, frozen and dimmed,
+   which is a composition rather than a blank page. */
 
-   Unguarded, deliberately. Without mask support the grid simply paints at
-   full strength all the way across, which is the plain lattice and perfectly
-   acceptable — unlike the array that briefly stood here, whose failure mode
-   was a solid veil over the page. */
-/* Each rule is a bright 1px core with a soft fall-off under it, rather than a
-   flat hairline. That is the whole of the difference between a line that was
-   drawn on the page and one that is lit: a pencil line has an edge on both
-   sides, and light does not. Two stops do it — solid to 1px, then the glow
-   colour fading out by 3.5 — and it costs no extra layers, because the core
-   and its halo are stops in the same gradient.
+/* A beam.
+   ------------------------------------------------------------------------
+   Three background layers on one element. No filter and no box-shadow, both of
+   which would repaint on every frame of the scale rather than riding it.
 
-   The two grounds share their strength now and differ only in pitch. The
-   character is in the spacing: 64px reads as domestic, 56px as an instrument.
-   Making the journey pages quieter as well was doing the same job twice. */
-@utility bg-console-grid {
+   Layer one is the core: a 2px band down the middle of the box, dim at the tail
+   and hot at the head, so the beam has a direction and is not just a stick.
+   Layer two is the glow at that head. Layer three is the same glow spread along
+   the whole length at about half strength, so the tail is lit rather than a
+   bare rule hanging off the back.
+
+   `transform-origin: left` plus `scaleX` is the whole of the extension. The
+   element is positioned at the point the beam strikes *from*, and scaling about
+   its own left edge runs it outward without moving that point. The rotation is
+   what makes the direction random, and it has to come before the scale in the
+   list — the other order stretches the beam along the screen's axis instead of
+   its own, which turns every diagonal into a wedge. */
+@utility paint-arc {
+  transform-origin: left;
+  transform: rotate(var(--arc-a, 0deg)) scaleX(1);
+  opacity: 0;
   background-image:
-    linear-gradient(var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px),
-    linear-gradient(90deg, var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px);
-  background-size: 56px 56px;
-  mask-image: var(--grid-reading-mask);
-  -webkit-mask-image: var(--grid-reading-mask);
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--arc-tone) var(--arc-halo), transparent) 24%,
+      color-mix(in srgb, var(--arc-hot) var(--arc-hot-mix), var(--arc-tone)) 76%,
+      color-mix(in srgb, var(--arc-hot) var(--arc-hot-mix), var(--arc-tone)) 90%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 42% 54% at 78% 50%,
+      color-mix(in srgb, var(--arc-tone) var(--arc-halo), transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 54% 46% at 46% 50%,
+      color-mix(in srgb, var(--arc-tone) var(--arc-halo-soft), transparent) 0%,
+      transparent 74%
+    );
+  background-size:
+    100% 2px,
+    100% 100%,
+    100% 100%;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+  animation: none var(--arc-dur, 800ms) linear 1 normal both;
 }
 
-@utility bg-command-grid {
+/* A flare.
+   ------------------------------------------------------------------------
+   A round core with two streaks crossing it that run past its edge, which is
+   the difference between a blob of light and light coming off something. Warm
+   on both themes: this is the sun, and it is the only thing on the ground that
+   is not the wiring. */
+@utility paint-flare {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
   background-image:
-    linear-gradient(var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px),
-    linear-gradient(90deg, var(--grid-line) 0 1px, var(--grid-glow) 1px, transparent 3.5px);
-  background-size: 64px 64px;
-  mask-image: var(--grid-reading-mask);
-  -webkit-mask-image: var(--grid-reading-mask);
+    radial-gradient(
+      circle at 50% 50%,
+      var(--flare-hot) 0%,
+      color-mix(in srgb, var(--flare-tone) var(--flare-halo), transparent) 17%,
+      transparent 54%
+    ),
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--flare-tone) var(--flare-halo), transparent) 50%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      color-mix(in srgb, var(--flare-tone) var(--flare-halo), transparent) 50%,
+      transparent 100%
+    );
+  background-size:
+    100% 100%,
+    100% 2px,
+    2px 100%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  animation: none var(--arc-dur, 1600ms) ease-out 1 normal both;
 }
+
+/* The band the ground keeps out of. Its own utility because two fields ask for
+   it and neither should be the one that owns it. */
+@utility mask-reading {
+  mask-image: var(--field-reading-mask);
+  -webkit-mask-image: var(--field-reading-mask);
+}
+
+/* Held still for a reader who asked for no motion. Unlayered on purpose, so it
+   outranks the utilities above without an `!important` — the field never sets
+   an animation name on these, so there is nothing to fight, only a resting
+   opacity to supply. */
+.paint-arc[data-still] {
+  opacity: calc(var(--arc-peak) * 0.42);
+}
+
+.paint-flare[data-still] {
+  opacity: calc(var(--flare-peak) * 0.4);
+}
+
+/* The strike.
+   ------------------------------------------------------------------------
+   Declared out here rather than in @theme for the same reason as `conduit`
+   below: Tailwind only emits a theme keyframe when some utility references its
+   matching --animate-* token, and these are named from JavaScript, so inside
+   the block they would compile to nothing.
+
+   The shape is attack, flicker, decay. There is no rise time at the front
+   because a discharge has none — it is already there on the frame it appears —
+   and the two flicker dips are deliberately uneven, because an even one reads
+   as a lamp being dimmed rather than as current finding its way. It is still
+   extending slightly while it fades, so the light leaves along the beam rather
+   than switching off in place. */
+@keyframes arc-strike {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--arc-a)) scaleX(0.06);
+  }
+  6% {
+    opacity: var(--arc-peak);
+    transform: rotate(var(--arc-a)) scaleX(0.54);
+  }
+  22% {
+    opacity: calc(var(--arc-peak) * 0.34);
+    transform: rotate(var(--arc-a)) scaleX(0.72);
+  }
+  34% {
+    opacity: var(--arc-peak);
+    transform: rotate(var(--arc-a)) scaleX(0.85);
+  }
+  52% {
+    opacity: calc(var(--arc-peak) * 0.6);
+    transform: rotate(var(--arc-a)) scaleX(0.94);
+  }
+  64% {
+    opacity: calc(var(--arc-peak) * 0.86);
+    transform: rotate(var(--arc-a)) scaleX(0.99);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--arc-a)) scaleX(1.05);
+  }
+}
+
+/* The flare, which is the opposite animation in every respect: it swells, it
+   holds, and it takes its time going. A slow drift of rotation keeps the two
+   streaks from reading as a fixed crosshair. */
+@keyframes sun-flare {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.46) rotate(0deg);
+  }
+  16% {
+    opacity: var(--flare-peak);
+    transform: translate(-50%, -50%) scale(0.88) rotate(5deg);
+  }
+  44% {
+    opacity: calc(var(--flare-peak) * 0.72);
+    transform: translate(-50%, -50%) scale(1.04) rotate(11deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.24) rotate(19deg);
+  }
+}
+
 
 /* The fade that marries a photograph to the page underneath it. */
 @utility bg-photo-veil {

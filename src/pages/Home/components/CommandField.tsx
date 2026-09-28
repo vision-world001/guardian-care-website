@@ -1,24 +1,29 @@
+import CurrentField, {type Weather} from '../../../components/CurrentField';
 import SolarShine, {type Shine} from '../../../components/SolarShine';
 
 /**
  * The ground the journey pages stand on.
  *
- * Two things, in this order: a 64px lattice of white hairlines, and three
- * soft blooms behind it carrying the mark's amber, green and blue.
+ * Two things, in this order: three soft blooms carrying the mark's amber,
+ * green and blue, and the current itself running over them — short beams that
+ * strike out at the margins and go, with the occasional warm flare.
  *
- * The division of labour is the point. The grid is structure and is not
- * coloured; the blooms are colour and have no structure. Both were tried the
- * other way round — a grid lit in green and blue, then a photovoltaic array
- * of cells and busbars — and both times the ground stopped being a ground and
- * started being a thing to look at. Behind body copy that is simply a fault.
+ * The division of labour is the point. The blooms are colour and hold still;
+ * the beams are event and carry almost no colour of their own. A lattice of
+ * hairlines stood here for a long time, in one weight and then in two, and a
+ * photovoltaic array of cells and busbars before that. Both were the same
+ * mistake in different clothes: a ground that *describes* where energy goes,
+ * drawn on a page whose whole subject is energy actually going there. The beams
+ * are the thing rather than the diagram of it.
  *
- * The lattice is also masked back across the middle of the page, where the
- * reading column sits, so it is a texture at the margins and almost nothing
- * behind a paragraph. See `--grid-reading-mask` for why one alpha could never
- * have served both.
+ * Strikes are biased out to the margins and the field is masked back across the
+ * reading column on top of that — see `edgeX` in `CurrentField` and
+ * `--field-reading-mask`. Two defences rather than one, because movement behind
+ * a paragraph is a good deal worse than texture ever was.
  *
- * A 64px pitch here against the console field's 56px: this is the domestic
- * half of the site and the coarser rule is the quieter one.
+ * Slower and longer-reaching than the console field's weather, and warm rather
+ * than blue: this is the domestic half of the site. An instrument crackles; a
+ * roof in the sun does not.
  *
  * Shared by three routes — Home, Consumer and Plan — so a mistake here is
  * site-wide minus one page.
@@ -82,11 +87,34 @@ const SUNS: Shine[] = [
   }
 ];
 
+/**
+ * The weather on this ground.
+ *
+ * Eighteen beams against the console's twenty-six, longer, slower, and resting
+ * up to five seconds between strikes. Amber twice in the tone list so the
+ * journey reads warm; the blue is there to stop it reading as one colour.
+ *
+ * Four flares to eighteen beams, waiting up to nine seconds each. A flare is
+ * meant to be noticed when it happens, which only works if it is rare.
+ */
+const WEATHER: Weather = {
+  arcs: 18,
+  flares: 4,
+  tones: ['var(--bolt-amber)', 'var(--bolt-amber)', 'var(--bolt-green)', 'var(--bolt-blue)'],
+  reach: [150, 430],
+  thick: [7, 13],
+  strike: [640, 1180],
+  gap: [900, 5200],
+  flareSize: [180, 340],
+  flareBurn: [1500, 2300],
+  flareGap: [3400, 9000]
+};
+
 export default function CommandField() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <div className="bg-command-grid absolute inset-0" />
       <SolarShine suns={SUNS} />
+      <CurrentField weather={WEATHER} />
 
       {/* Sides down, and the last few per cent held for the handoff to the
           footer. Linear passes rather than a vignette: the element is many
