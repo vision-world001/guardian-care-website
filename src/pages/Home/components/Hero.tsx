@@ -27,7 +27,7 @@ export default function Hero() {
       <EnergyField />
 
       <Wrap>
-        <div className="mx-auto flex min-h-[86vh] max-w-[960px] flex-col justify-center py-24 text-center min-[760px]:min-h-[88vh]">
+        <div className="mx-auto flex min-h-[64vh] max-w-[960px] flex-col justify-center py-12 text-center min-[760px]:min-h-[68vh] min-[760px]:py-16">
           <Reveal
             as="h1"
             className="font-display text-[clamp(44px,11vw,140px)] font-semibold uppercase leading-[0.86] tracking-[-0.022em] text-ink"
